@@ -7,11 +7,20 @@
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--gold:#FFD700;--neon-blue:#00D4FF;--neon-green:#00FF88;--neon-red:#FF3366;--neon-orange:#FF8C00;--neon-purple:#BF00FF;--bg:#050510;--ease:cubic-bezier(.23,1,.32,1)}
+:root{
+  --gold:#FFD700;--neon-blue:#00D4FF;--neon-green:#00FF88;
+  --neon-red:#FF3366;--neon-orange:#FF8C00;--neon-purple:#BF00FF;
+  --bg:#050510;--ease:cubic-bezier(.23,1,.32,1);
+}
 html,body{width:100%;min-height:100vh;background:var(--bg);color:#fff;font-family:'Rajdhani',sans-serif;overflow-y:auto}
-.sf{position:fixed;inset:0;z-index:0;background:radial-gradient(ellipse at 20% 50%,rgba(0,80,150,.12) 0%,transparent 50%),radial-gradient(ellipse at 80% 20%,rgba(80,0,150,.12) 0%,transparent 50%),var(--bg);pointer-events:none}
+.sf{position:fixed;inset:0;z-index:0;
+  background:radial-gradient(ellipse at 20% 50%,rgba(0,80,150,.12) 0%,transparent 50%),
+             radial-gradient(ellipse at 80% 20%,rgba(80,0,150,.12) 0%,transparent 50%),
+             var(--bg);pointer-events:none}
 .spots{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}
-.spot{position:absolute;top:-200px;width:5px;height:110vh;background:linear-gradient(to bottom,rgba(255,255,255,.08) 0%,transparent 100%);transform-origin:top center;filter:blur(10px)}
+.spot{position:absolute;top:-200px;width:5px;height:110vh;
+  background:linear-gradient(to bottom,rgba(255,255,255,.08) 0%,transparent 100%);
+  transform-origin:top center;filter:blur(10px)}
 .spot:nth-child(1){left:15%;animation:s1 8s ease-in-out infinite}
 .spot:nth-child(2){left:45%;animation:s2 11s ease-in-out infinite 2s}
 .spot:nth-child(3){left:70%;animation:s3 9s ease-in-out infinite 1s}
@@ -20,8 +29,16 @@ html,body{width:100%;min-height:100vh;background:var(--bg);color:#fff;font-famil
 @keyframes s2{0%,100%{transform:rotate(25deg)}50%{transform:rotate(-18deg)}}
 @keyframes s3{0%,100%{transform:rotate(-15deg)}50%{transform:rotate(22deg)}}
 @keyframes s4{0%,100%{transform:rotate(20deg)}50%{transform:rotate(-25deg)}}
+
+/* === PHASE ENGINE VISUAL STATES === */
+.phase-lobby #btn-start-show{opacity:1;pointer-events:auto}
+.phase-spin #btn-start-show{opacity:.4;pointer-events:none}
+
 /* BUTTONS */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:11px 24px;border:none;border-radius:8px;cursor:pointer;font-family:'Orbitron',sans-serif;font-weight:700;font-size:12px;letter-spacing:1.5px;text-transform:uppercase;transition:all .25s var(--ease)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;
+  padding:11px 24px;border:none;border-radius:8px;cursor:pointer;
+  font-family:'Orbitron',sans-serif;font-weight:700;font-size:12px;
+  letter-spacing:1.5px;text-transform:uppercase;transition:all .25s var(--ease)}
 .btn:active{transform:scale(.97)}
 .btn-gold{background:linear-gradient(135deg,#7a5900,#FFD700,#7a5900);color:#000;box-shadow:0 0 18px rgba(255,215,0,.4)}
 .btn-gold:hover{box-shadow:0 0 35px rgba(255,215,0,.8);transform:translateY(-2px)}
@@ -33,11 +50,15 @@ html,body{width:100%;min-height:100vh;background:var(--bg);color:#fff;font-famil
 .btn-red:hover{box-shadow:0 0 30px rgba(255,51,102,.7);transform:translateY(-2px)}
 .btn-purple{background:linear-gradient(135deg,#3a0066,#BF00FF,#3a0066);color:#fff;box-shadow:0 0 15px rgba(191,0,255,.3)}
 .btn-purple:hover{box-shadow:0 0 30px rgba(191,0,255,.7);transform:translateY(-2px)}
+.btn-orange{background:linear-gradient(135deg,#7a3c00,#FF8C00,#7a3c00);color:#fff;box-shadow:0 0 15px rgba(255,140,0,.3)}
+.btn-orange:hover{box-shadow:0 0 30px rgba(255,140,0,.7);transform:translateY(-2px)}
 .btn-lg{padding:16px 40px;font-size:16px;letter-spacing:2px}
 .btn-sm{padding:7px 14px;font-size:10px;letter-spacing:1px}
 .btn:disabled{opacity:.35;cursor:not-allowed;transform:none!important;box-shadow:none!important}
 /* INPUTS */
-.inp{background:rgba(0,0,0,.4);border:1px solid rgba(0,212,255,.22);border-radius:7px;padding:10px 14px;color:#fff;font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:600;width:100%;transition:border-color .3s,box-shadow .3s;outline:none}
+.inp{background:rgba(0,0,0,.4);border:1px solid rgba(0,212,255,.22);border-radius:7px;
+  padding:10px 14px;color:#fff;font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:600;
+  width:100%;transition:border-color .3s,box-shadow .3s;outline:none}
 .inp:focus{border-color:var(--neon-blue);box-shadow:0 0 12px rgba(0,212,255,.3)}
 .inp::placeholder{color:rgba(255,255,255,.3)}
 .lbl{display:block;font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:2px;color:var(--neon-blue);margin-bottom:5px}
@@ -46,11 +67,24 @@ html,body{width:100%;min-height:100vh;background:var(--bg);color:#fff;font-famil
 /* GLASS */
 .glass{background:rgba(10,15,40,.82);backdrop-filter:blur(18px);border:1px solid rgba(0,212,255,.2);border-radius:14px}
 /* NOTIFICATION */
-#notif{position:fixed;top:76px;right:20px;z-index:500;padding:12px 22px;border-radius:9px;min-width:220px;font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:600;transform:translateX(120%);transition:transform .4s var(--ease);backdrop-filter:blur(16px)}
+#notif{position:fixed;top:76px;right:20px;z-index:500;padding:12px 22px;border-radius:9px;min-width:220px;
+  font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:600;
+  transform:translateX(120%);transition:transform .4s var(--ease);backdrop-filter:blur(16px)}
 #notif.show{transform:translateX(0)}
 #notif.ok{background:rgba(0,255,136,.12);border:1px solid var(--neon-green);color:var(--neon-green)}
 #notif.err{background:rgba(255,51,102,.12);border:1px solid var(--neon-red);color:var(--neon-red)}
 #notif.info{background:rgba(0,212,255,.12);border:1px solid var(--neon-blue);color:var(--neon-blue)}
+/* PHASE BANNER */
+#phase-banner{position:fixed;top:0;left:0;right:0;z-index:200;pointer-events:none;
+  display:flex;align-items:center;justify-content:center;height:3px}
+.phase-bar{width:100%;height:3px;transition:background .6s}
+.pb-lobby{background:rgba(0,212,255,.4)}
+.pb-spin{background:linear-gradient(90deg,var(--neon-blue),var(--neon-purple))}
+.pb-betting{background:linear-gradient(90deg,var(--gold),var(--neon-orange));animation:pbar 1s ease-in-out infinite}
+.pb-answering{background:linear-gradient(90deg,var(--neon-green),var(--neon-blue));animation:pbar .6s ease-in-out infinite}
+.pb-result{background:linear-gradient(90deg,var(--neon-green),var(--gold))}
+.pb-reveal{background:var(--gold)}
+@keyframes pbar{0%,100%{opacity:.7}50%{opacity:1}}
 /* LAYOUT */
 #app{position:relative;z-index:10;min-height:100vh}
 #login{min-height:100vh;display:flex;align-items:center;justify-content:center}
@@ -59,18 +93,22 @@ html,body{width:100%;min-height:100vh;background:var(--bg);color:#fff;font-famil
 .login-sub{font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:3px;color:rgba(255,255,255,.4);margin-bottom:28px}
 .login-err{color:var(--neon-red);font-family:'Rajdhani',sans-serif;font-size:14px;margin-top:10px;min-height:18px}
 #admin{display:none}
-.ahdr{background:rgba(0,0,0,.65);backdrop-filter:blur(18px);border-bottom:1px solid rgba(0,212,255,.18);padding:14px 22px;position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.ahdr{background:rgba(0,0,0,.65);backdrop-filter:blur(18px);border-bottom:1px solid rgba(0,212,255,.18);
+  padding:14px 22px;position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
 .alogo{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--gold);letter-spacing:3px}
 .aphase{font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:2px;color:var(--neon-blue)}
 .abody{display:grid;grid-template-columns:300px 1fr;min-height:calc(100vh - 78px)}
 @media(max-width:900px){.abody{grid-template-columns:1fr}}
-.aside{background:rgba(0,0,0,.4);border-right:1px solid rgba(0,212,255,.12);padding:16px 14px;display:flex;flex-direction:column;gap:16px;overflow-y:auto}
+.aside{background:rgba(0,0,0,.4);border-right:1px solid rgba(0,212,255,.12);
+  padding:16px 14px;display:flex;flex-direction:column;gap:16px;overflow-y:auto}
 .aside-sec{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:11px;padding:14px}
 .aside-ttl{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:var(--neon-blue);margin-bottom:10px}
 .amain{padding:18px 22px;overflow-y:auto}
 /* TABS */
 .tabs{display:flex;gap:3px;margin-bottom:20px;background:rgba(0,0,0,.3);padding:5px;border-radius:10px;flex-wrap:wrap}
-.tab{padding:9px 18px;border:none;border-radius:7px;background:transparent;color:rgba(255,255,255,.4);cursor:pointer;font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:2px;transition:all .3s}
+.tab{padding:9px 18px;border:none;border-radius:7px;background:transparent;color:rgba(255,255,255,.4);
+  cursor:pointer;font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:2px;transition:all .3s}
 .tab.on{background:rgba(0,212,255,.15);color:var(--neon-blue);box-shadow:0 0 12px rgba(0,212,255,.2)}
 .tab:hover:not(.on){color:rgba(255,255,255,.7);background:rgba(255,255,255,.05)}
 .tabp{display:none;animation:fadeIn .3s}
@@ -91,14 +129,17 @@ html,body{width:100%;min-height:100vh;background:var(--bg);color:#fff;font-famil
 .qactions{display:flex;gap:5px;flex-shrink:0}
 .qorow{display:flex;gap:7px;align-items:center;margin-bottom:5px}
 .qorow input{flex:1}
-.corr-dot{width:20px;height:20px;border-radius:50%;border:2px solid rgba(255,255,255,.2);cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;transition:all .2s}
+.corr-dot{width:20px;height:20px;border-radius:50%;border:2px solid rgba(255,255,255,.2);cursor:pointer;
+  flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;transition:all .2s}
 .corr-dot.on{background:var(--neon-green);border-color:var(--neon-green);box-shadow:0 0 8px var(--neon-green)}
 /* LIVE CONTROL */
 .ctrl-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
 @media(max-width:800px){.ctrl-grid{grid-template-columns:1fr}}
-.team-act-btn{display:flex;align-items:center;justify-content:space-between;padding:11px 13px;border-radius:8px;margin-bottom:7px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);cursor:pointer;transition:all .3s}
+.team-act-btn{display:flex;align-items:center;justify-content:space-between;padding:11px 13px;
+  border-radius:8px;margin-bottom:7px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
+  cursor:pointer;transition:all .3s;border-width:0;width:100%;color:#fff;text-align:left}
 .team-act-btn:hover{background:rgba(0,212,255,.08);border-color:rgba(0,212,255,.3)}
-.team-act-btn.on{background:rgba(0,212,255,.14);border-color:var(--neon-blue);box-shadow:0 0 14px rgba(0,212,255,.2)}
+.team-act-btn.on{background:rgba(0,212,255,.14);border:1px solid var(--neon-blue);box-shadow:0 0 14px rgba(0,212,255,.2)}
 /* SIDEBAR DATA ROWS */
 .lb-row{display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:7px;margin-bottom:5px;background:rgba(255,255,255,.03)}
 .lb-row.at{background:rgba(0,212,255,.09);border:1px solid rgba(0,212,255,.3)}
@@ -107,18 +148,27 @@ html,body{width:100%;min-height:100vh;background:var(--bg);color:#fff;font-famil
 /* TIMER BIG */
 .timer-big{font-family:'Orbitron',sans-serif;font-size:52px;font-weight:900;text-align:center;color:var(--neon-blue);text-shadow:0 0 18px var(--neon-blue)}
 /* FOOTER */
-.afoot{display:flex;gap:10px;flex-wrap:wrap;align-items:center;padding:14px 22px;background:rgba(0,0,0,.5);border-top:1px solid rgba(0,212,255,.12);position:sticky;bottom:0;z-index:50}
+.afoot{display:flex;gap:10px;flex-wrap:wrap;align-items:center;padding:14px 22px;
+  background:rgba(0,0,0,.5);border-top:1px solid rgba(0,212,255,.12);position:sticky;bottom:0;z-index:50}
 .dot{width:9px;height:9px;border-radius:50%}
 .dot.on{background:var(--neon-green);box-shadow:0 0 6px var(--neon-green)}
 .dot.wait{background:var(--neon-orange);box-shadow:0 0 6px var(--neon-orange)}
 .wl{display:inline-flex;padding:2px 7px;border-radius:20px;font-family:'Orbitron',sans-serif;font-size:8px;font-weight:700}
 .ww{background:rgba(0,255,136,.15);color:var(--neon-green);border:1px solid rgba(0,255,136,.3)}
 .wloss{background:rgba(255,51,102,.12);color:var(--neon-red);border:1px solid rgba(255,51,102,.25)}
+
+/* PHASE INDICATOR CARD */
+.phase-indicator{padding:10px 16px;border-radius:9px;margin-bottom:14px;display:flex;align-items:center;gap:10px;
+  background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.2);font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:2px;color:var(--neon-blue)}
+.phase-dot-animated{width:10px;height:10px;border-radius:50%;background:var(--neon-green);
+  box-shadow:0 0 8px var(--neon-green);animation:pdot 1s ease-in-out infinite}
+@keyframes pdot{0%,100%{opacity:1}50%{opacity:.2}}
 </style>
 </head>
 <body>
 <div class="sf"></div>
 <div class="spots"><div class="spot"></div><div class="spot"></div><div class="spot"></div><div class="spot"></div></div>
+<div id="phase-banner"><div class="phase-bar pb-lobby" id="phase-bar"></div></div>
 <div id="notif"></div>
 <div id="app">
 
@@ -139,17 +189,30 @@ html,body{width:100%;min-height:100vh;background:var(--bg);color:#fff;font-famil
 <!-- ADMIN PANEL -->
 <div id="admin">
   <div class="ahdr">
-    <div><div class="alogo">⚙ ADMIN CONTROL</div><div style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:rgba(255,255,255,.35)">LOGISTICS AUCTION SHOW · MASTER</div></div>
-    <div class="aphase" id="aphase">PHASE: SETUP</div>
+    <div>
+      <div class="alogo">⚙ ADMIN CONTROL</div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:rgba(255,255,255,.35)">LOGISTICS AUCTION SHOW · MASTER</div>
+    </div>
+    <div class="aphase" id="aphase">PHASE: LOBBY</div>
     <div style="display:flex;gap:8px;flex-wrap:wrap">
-      <button class="btn btn-red btn-sm" id="reset-btn">🔄 RESET</button>
-      <button class="btn btn-gold btn-sm" id="display-btn">📺 MAIN DISPLAY</button>
+      <button class="btn btn-red btn-sm" id="btn-reset">🔄 RESET GAME</button>
+      <button class="btn btn-gold btn-sm" id="btn-display">📺 MAIN DISPLAY</button>
     </div>
   </div>
 
   <div class="abody">
     <!-- SIDEBAR -->
     <div class="aside">
+      <div class="aside-sec">
+        <div class="aside-ttl">📡 CURRENT PHASE</div>
+        <div class="phase-indicator"><div class="phase-dot-animated"></div><span id="aside-phase-txt">LOBBY</span></div>
+        <div style="display:flex;gap:5px;flex-wrap:wrap" id="phase-btns-quick">
+          <button class="btn btn-blue btn-sm" id="btn-phase-spin">→ SPIN</button>
+          <button class="btn btn-purple btn-sm" id="btn-phase-betting">→ BETTING</button>
+          <button class="btn btn-green btn-sm" id="btn-phase-answering">→ ANSWERING</button>
+          <button class="btn btn-orange btn-sm" id="btn-phase-result">→ RESULT</button>
+        </div>
+      </div>
       <div class="aside-sec">
         <div class="aside-ttl">🏆 LEADERBOARD</div>
         <div id="aside-lb"></div>
@@ -184,7 +247,7 @@ html,body{width:100%;min-height:100vh;background:var(--bg);color:#fff;font-famil
           <div class="scard-ttl">TEAM COUNT (2–10)</div>
           <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
             <input class="inp" type="number" id="team-count" min="2" max="10" value="4" style="width:90px">
-            <button class="btn btn-blue btn-sm" id="gen-btn">GENERATE SLOTS</button>
+            <button class="btn btn-blue btn-sm" id="btn-gen-slots">GENERATE SLOTS</button>
           </div>
         </div>
         <div class="scard">
@@ -195,7 +258,7 @@ html,body{width:100%;min-height:100vh;background:var(--bg);color:#fff;font-famil
               <label class="lbl">SET ALL TO SAME AMOUNT</label>
               <input class="inp" type="number" id="all-money" placeholder="e.g. 10000" value="10000">
             </div>
-            <button class="btn btn-blue btn-sm" id="all-money-btn">APPLY ALL</button>
+            <button class="btn btn-blue btn-sm" id="btn-all-money">APPLY ALL</button>
           </div>
         </div>
         <div class="scard">
@@ -205,12 +268,12 @@ html,body{width:100%;min-height:100vh;background:var(--bg);color:#fff;font-famil
             <span style="font-family:'Rajdhani',sans-serif;font-size:14px;color:rgba(255,255,255,.5)">seconds</span>
           </div>
         </div>
-        <button class="btn btn-green" id="save-setup-btn">💾 SAVE CONFIGURATION</button>
+        <button class="btn btn-green" id="btn-save-setup">💾 SAVE CONFIGURATION</button>
         <div id="setup-msg" style="margin-top:10px;font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:2px;min-height:18px"></div>
         <div style="margin-top:24px;padding:22px;border:1px solid rgba(255,215,0,.3);border-radius:12px;background:rgba(255,215,0,.04)">
           <div style="font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:3px;color:var(--gold);margin-bottom:10px">⚡ LAUNCH SEQUENCE</div>
           <p style="font-family:'Rajdhani',sans-serif;font-size:14px;color:rgba(255,255,255,.6);margin-bottom:14px;line-height:1.6">Save configuration above, then click START LIVE SHOW. Teams open index.html on their devices and spin the wheel to claim a team slot.</p>
-          <button class="btn btn-gold btn-lg" id="start-show-btn">🎬 START LIVE SHOW</button>
+          <button class="btn btn-gold btn-lg" id="btn-start-show">🎬 START LIVE SHOW</button>
         </div>
       </div>
 
@@ -218,7 +281,7 @@ html,body{width:100%;min-height:100vh;background:var(--bg);color:#fff;font-famil
       <div id="tabp-questions" class="tabp">
         <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:20px">
           <h2 style="font-family:'Bebas Neue',sans-serif;font-size:30px;color:var(--gold)">QUESTION BANK</h2>
-          <button class="btn btn-green btn-sm" id="add-q-btn">+ ADD QUESTION</button>
+          <button class="btn btn-green btn-sm" id="btn-add-q">+ ADD QUESTION</button>
         </div>
         <div id="q-bank"></div>
       </div>
@@ -226,14 +289,36 @@ html,body{width:100%;min-height:100vh;background:var(--bg);color:#fff;font-famil
       <!-- LIVE CONTROL TAB -->
       <div id="tabp-live" class="tabp">
         <h2 style="font-family:'Bebas Neue',sans-serif;font-size:30px;color:var(--gold);margin-bottom:18px">LIVE SHOW CONTROL</h2>
+
+        <!-- PHASE FLOW GUIDE -->
+        <div class="scard" style="border-color:rgba(255,215,0,.25);background:rgba(255,215,0,.03);margin-bottom:18px">
+          <div class="scard-ttl" style="color:var(--gold)">GAME FLOW (PHASES)</div>
+          <div style="display:flex;gap:6px;flex-wrap:wrap;font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:1px;color:rgba(255,255,255,.5)">
+            <span style="color:var(--neon-blue)">1. SELECT Q</span> →
+            <span style="color:var(--gold)">2. OPEN BETTING</span> →
+            <span style="color:var(--neon-red)">3. CLOSE BETTING</span> →
+            <span style="color:var(--neon-green)">4. ACTIVATE TEAM</span> →
+            <span style="color:var(--neon-orange)">5. START TIMER</span> →
+            <span style="color:var(--neon-purple)">6. JUDGE ANSWER</span>
+          </div>
+        </div>
+
         <div class="ctrl-grid">
           <div class="scard">
             <div class="scard-ttl">SELECT QUESTION</div>
             <select class="inp" id="q-select" style="margin-bottom:10px"><option value="-1">— Choose question —</option></select>
             <div style="display:flex;gap:7px;flex-wrap:wrap">
-              <button class="btn btn-blue btn-sm" id="set-q-btn">📌 SET QUESTION</button>
-              <button class="btn btn-purple btn-sm" id="open-bet-btn">💰 OPEN BETTING</button>
-              <button class="btn btn-red btn-sm" id="close-bet-btn">🔒 CLOSE BETTING</button>
+              <button class="btn btn-blue btn-sm" id="btn-set-q">📌 SET QUESTION</button>
+            </div>
+          </div>
+          <div class="scard">
+            <div class="scard-ttl">BETTING PHASE</div>
+            <div style="display:flex;gap:7px;flex-wrap:wrap">
+              <button class="btn btn-purple" id="btn-open-bet">💰 OPEN BETTING</button>
+              <button class="btn btn-red" id="btn-close-bet">🔒 CLOSE BETTING</button>
+            </div>
+            <div style="margin-top:8px;font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:1px;color:rgba(255,255,255,.4)">
+              Close betting → Phase moves to ANSWERING → Question revealed to teams
             </div>
           </div>
           <div class="scard">
@@ -243,9 +328,9 @@ html,body{width:100%;min-height:100vh;background:var(--bg);color:#fff;font-famil
               <span style="font-family:'Rajdhani',sans-serif;font-size:12px;color:rgba(255,255,255,.4)">override</span>
             </div>
             <div style="display:flex;gap:7px;flex-wrap:wrap">
-              <button class="btn btn-green btn-sm" id="timer-start-btn">▶ START</button>
-              <button class="btn btn-red btn-sm" id="timer-stop-btn">⏹ STOP</button>
-              <button class="btn btn-blue btn-sm" id="timer-reset-btn">↺ RESET</button>
+              <button class="btn btn-green btn-sm" id="btn-timer-start">▶ START</button>
+              <button class="btn btn-red btn-sm" id="btn-timer-stop">⏹ STOP</button>
+              <button class="btn btn-blue btn-sm" id="btn-timer-reset">↺ RESET</button>
             </div>
           </div>
           <div class="scard" style="grid-column:span 2">
@@ -257,14 +342,16 @@ html,body{width:100%;min-height:100vh;background:var(--bg);color:#fff;font-famil
           <div class="scard-ttl">ANSWER RESULT</div>
           <div id="ans-display" style="font-family:'Rajdhani',sans-serif;font-size:17px;color:rgba(255,255,255,.6);margin-bottom:14px">Waiting for team answer...</div>
           <div style="display:flex;gap:10px;flex-wrap:wrap">
-            <button class="btn btn-green" id="correct-btn" disabled>✅ CORRECT — AWARD BET</button>
-            <button class="btn btn-red" id="wrong-btn" disabled>❌ WRONG — DEDUCT BET</button>
+            <button class="btn btn-green" id="btn-correct" disabled>✅ CORRECT — AWARD BET</button>
+            <button class="btn btn-red" id="btn-wrong" disabled>❌ WRONG — DEDUCT BET</button>
           </div>
         </div>
         <div class="scard" style="margin-top:16px">
-          <div class="scard-ttl">END GAME</div>
-          <p style="font-family:'Rajdhani',sans-serif;font-size:14px;color:rgba(255,255,255,.6);margin-bottom:12px">End the show and reveal the winner. The team with the most money wins.</p>
-          <button class="btn btn-gold" id="end-game-btn">🏆 REVEAL WINNER &amp; END SHOW</button>
+          <div class="scard-ttl">NEXT QUESTION / END</div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <button class="btn btn-blue" id="btn-next-q">⏭ NEXT QUESTION</button>
+            <button class="btn btn-gold" id="btn-end-game">🏆 REVEAL WINNER &amp; END SHOW</button>
+          </div>
         </div>
       </div>
 
@@ -276,8 +363,8 @@ html,body{width:100%;min-height:100vh;background:var(--bg);color:#fff;font-famil
           <label class="lbl">MESSAGE</label>
           <textarea class="inp" id="ann-input" rows="3" placeholder="Type announcement..." style="margin-bottom:10px;resize:vertical"></textarea>
           <div style="display:flex;gap:8px">
-            <button class="btn btn-gold" id="ann-send-btn">📢 BROADCAST NOW</button>
-            <button class="btn btn-blue btn-sm" id="ann-clear-btn">✕ CLEAR</button>
+            <button class="btn btn-gold" id="btn-ann-send">📢 BROADCAST NOW</button>
+            <button class="btn btn-blue btn-sm" id="btn-ann-clear">✕ CLEAR</button>
           </div>
         </div>
         <div class="scard">
@@ -295,19 +382,22 @@ html,body{width:100%;min-height:100vh;background:var(--bg);color:#fff;font-famil
   <div class="afoot">
     <div style="display:flex;align-items:center;gap:8px;font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:2px">
       <div class="dot wait" id="phase-dot"></div>
-      <span id="phase-label">SETUP PHASE</span>
+      <span id="phase-label">LOBBY PHASE</span>
     </div>
     <div style="flex:1"></div>
-    <button class="btn btn-blue btn-sm" id="sync-btn">🔄 SYNC ALL</button>
+    <button class="btn btn-blue btn-sm" id="btn-sync">🔄 SYNC ALL</button>
   </div>
 </div>
 
 </div>
-<script>
+
+<script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
 import { getDatabase, ref, set, update, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-
+// ═══════════════════════════════════════
+// FIREBASE CONFIG
+// ═══════════════════════════════════════
 const firebaseConfig = {
   apiKey: "AIzaSyCSyzYtCd-uiolBucZnncuIWpnE5mPG9Cs",
   authDomain: "logistics-auction-show.firebaseapp.com",
@@ -317,35 +407,14 @@ const firebaseConfig = {
   messagingSenderId: "596983567254",
   appId: "1:596983567254:web:91f5b863db7464886503b7"
 };
-
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
+const fbApp = initializeApp(firebaseConfig);
+const db = getDatabase(fbApp);
 const gameRef = ref(db, "gameState");
 
-
-
-
-
-
-
-
-
-
-// LISTEN FOR LIVE UPDATES
-onValue(gameRef, (snapshot) => {
-  const data = snapshot.val();
-  if (!data) {
-    state = defaultState;
-    set(gameRef, defaultState);
-  } else {
-    state = data;
-
-    subscribers.forEach(cb => {
-      try { cb(state); } catch(e) {}
-    });
-  }
-});
-const DQ=[
+// ═══════════════════════════════════════
+// DEFAULT QUESTIONS
+// ═══════════════════════════════════════
+const DQ = [
   {id:'q1',text:'What does "ETA" stand for in logistics?',options:['Estimated Time of Arrival','Electronic Tracking Agent','Express Transport Authorization','Enhanced Transit Algorithm'],correct:0},
   {id:'q2',text:'Which shipping term means the seller bears all risks until goods reach the buyer\'s destination?',options:['FOB Origin','CIF','EXW','DDP'],correct:3},
   {id:'q3',text:'What is the maximum weight allowed for a standard 20-foot intermodal shipping container?',options:['24,000 kg','28,000 kg','33,000 kg','38,000 kg'],correct:0},
@@ -357,303 +426,602 @@ const DQ=[
   {id:'q9',text:'Which technology uses radio waves to automatically identify and track inventory?',options:['GPS','NFC','RFID','Barcode'],correct:2},
   {id:'q10',text:'What is a "cross-dock" operation in logistics?',options:['Loading cargo across borders','Transferring goods from inbound to outbound without storage','A dock shared between two warehouses','Overnight freight handling at airports'],correct:1}
 ];
-const defaultState = {
-  phase:'lobby',
-  teams:[],
-  questions: JSON.parse(JSON.stringify(DQ)),  // 🔥 THIS LINE
-  currentQuestionIndex:-1,
-  activeTeam:null,
-  timerDuration:30,
-  timerRemaining:30,
-  timerRunning:false,
-  timerStartedAt:null,
-  gameStarted:false,
-  announcement:'',
-  round:0,
-  bets:{},
-  bettingOpen:false,
-  selectedAnswer:null,
-  lastResult:null,
-  winner:null,
-  assignedDevices:[],
-  version:0
-};
-let state = defaultState;
-let subscribers = [];
 
-
-// REPLACES S.get()
-function getState(){
-  return state;
+// ═══════════════════════════════════════
+// PHASES: lobby | spin | betting | answering | result | reveal
+// ═══════════════════════════════════════
+function makeDefaultState() {
+  return {
+    phase: 'lobby',
+    version: Date.now(),
+    teams: [],
+    questions: JSON.parse(JSON.stringify(DQ)),
+    currentQuestionIndex: -1,
+    activeTeam: null,
+    timerDuration: 30,
+    timerRemaining: 30,
+    timerRunning: false,
+    timerStartedAt: null,
+    announcement: '',
+    round: 0,
+    bets: {},
+    selectedAnswer: null,
+    lastResult: null,
+    winner: null,
+    assignedDevices: []
+  };
 }
 
-function updateState(newData){
-  update(gameRef, newData);
-}
+// ═══════════════════════════════════════
+// STATE MANAGEMENT
+// ═══════════════════════════════════════
+let _state = makeDefaultState();
+const _subs = [];
 
-
-// REPLACES S.reset()
-function resetState(){
-  set(gameRef, defaultState);
-}
-
-// MAKE GLOBAL (so old functions still work)
-window.S = {
-  get: getState,
-  update: updateState,
-  reset: resetState,
-  sub: function(callback){
-    subscribers.push(callback);
+onValue(gameRef, snap => {
+  const data = snap.val();
+  if (!data) {
+    _state = makeDefaultState();
+    set(gameRef, _state);
+  } else {
+    _state = data;
+    _subs.forEach(fn => { try { fn(_state); } catch(e) { console.warn(e); } });
   }
-};
-// Generate device ID once per browser
-if(!localStorage.getItem('LAS_DEVICE_ID')){
-  localStorage.setItem('LAS_DEVICE_ID', 'dev_' + Math.random().toString(36).substr(2,9));
+});
+
+function getState() { return _state; }
+function updateState(patch) { update(gameRef, patch); }
+function resetState() {
+  const fresh = makeDefaultState();
+  fresh.version = Date.now();
+  set(gameRef, fresh);
 }
-S.did = localStorage.getItem('LAS_DEVICE_ID');
+function setPhase(phase) { updateState({ phase }); }
 
-const SK='LAS_STATE';
+// ═══════════════════════════════════════
+// HELPERS
+// ═══════════════════════════════════════
+const PW = 'admin123';
+function $m(v) { return '$' + Number(v||0).toLocaleString('en-US'); }
+function esc(s) { if(typeof s!=='string') return ''; return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function safeClone(obj) { try { return JSON.parse(JSON.stringify(obj)); } catch{ return obj; } }
 
+let editTeams = [];
 
-function initSt(){return{phase:'lobby',teams:[],questions:JSON.parse(JSON.stringify(DQ)),currentQuestionIndex:-1,activeTeam:null,timerDuration:30,timerRemaining:30,timerRunning:false,timerStartedAt:null,gameStarted:false,announcement:'',round:0,bets:{},bettingOpen:false,selectedAnswer:null,lastResult:null,winner:null,assignedDevices:[],version:0}}
+// ═══════════════════════════════════════
+// NOTIFICATION
+// ═══════════════════════════════════════
+function notif(msg, type='info') {
+  const el = document.getElementById('notif');
+  el.textContent = msg;
+  el.className = `show ${type==='success'?'ok':type==='error'?'err':'info'}`;
+  clearTimeout(el._t);
+  el._t = setTimeout(() => el.className = type==='success'?'ok':type==='error'?'err':'info', 3000);
+}
 
-function $m(v){return'$'+Number(v).toLocaleString('en-US')}
-function esc(s){if(typeof s!=='string')return'';return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
-
-
-const PW='admin123';
-let editTeams=[];
-
-// ─── NOTIF ────────────────────────────────────────────
-function notif(msg,type='info'){const el=document.getElementById('notif');el.textContent=msg;el.className=`show ${type==='success'?'ok':type==='error'?'err':'info'}`;clearTimeout(el._t);el._t=setTimeout(()=>el.className=type==='success'?'ok':type==='error'?'err':'info',3000)}
-
-// ─── LOGIN ────────────────────────────────────────────
-document.getElementById('login-btn').onclick=doLogin;
-document.getElementById('pw').addEventListener('keydown',e=>{if(e.key==='Enter')doLogin()});
-function doLogin(){
-  if(document.getElementById('pw').value===PW){
-    document.getElementById('login').style.display='none';
-    document.getElementById('admin').style.display='block';
+// ═══════════════════════════════════════
+// LOGIN
+// ═══════════════════════════════════════
+function doLogin() {
+  const pw = document.getElementById('pw').value;
+  if (pw === PW) {
+    document.getElementById('login').style.display = 'none';
+    document.getElementById('admin').style.display = 'block';
     initAdmin();
-  }else{document.getElementById('login-err').textContent='❌ Incorrect password';setTimeout(()=>document.getElementById('login-err').textContent='',2200)}
+  } else {
+    document.getElementById('login-err').textContent = '❌ Incorrect password';
+    setTimeout(() => document.getElementById('login-err').textContent = '', 2200);
+  }
+}
+document.getElementById('login-btn').addEventListener('click', doLogin);
+document.getElementById('pw').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+// ═══════════════════════════════════════
+// INIT ADMIN
+// ═══════════════════════════════════════
+function initAdmin() {
+  const st = getState();
+  editTeams = (st.teams && st.teams.length) ? safeClone(st.teams) : genTeams(4);
+  document.getElementById('team-count').value = editTeams.length;
+  document.getElementById('timer-default').value = st.timerDuration || 30;
+
+  renderTeamInputs();
+  renderQBank();
+  renderLive();
+  renderSidebar();
+  applyPhaseToUI(st.phase);
+  wireButtons();
+
+  _subs.push(onStateChange);
+  setInterval(timerTick, 500);
 }
 
-// ─── INIT ─────────────────────────────────────────────
-function initAdmin(){
-  const st=S.get();
-  editTeams = (st.teams && st.teams.length)
-  ? JSON.parse(JSON.stringify(st.teams))
-  : genTeams(4);
+// ═══════════════════════════════════════
+// WIRE ALL BUTTONS — NO INLINE ONCLICK
+// ═══════════════════════════════════════
+function wireButtons() {
+  document.getElementById('btn-gen-slots').addEventListener('click', genSlots);
+  document.getElementById('btn-all-money').addEventListener('click', applyAllMoney);
+  document.getElementById('btn-save-setup').addEventListener('click', saveSetup);
+  document.getElementById('btn-start-show').addEventListener('click', startShow);
+  document.getElementById('btn-add-q').addEventListener('click', addQ);
+  document.getElementById('btn-set-q').addEventListener('click', setQ);
+  document.getElementById('btn-open-bet').addEventListener('click', openBet);
+  document.getElementById('btn-close-bet').addEventListener('click', closeBet);
+  document.getElementById('btn-timer-start').addEventListener('click', startTimer);
+  document.getElementById('btn-timer-stop').addEventListener('click', stopTimer);
+  document.getElementById('btn-timer-reset').addEventListener('click', resetTimer);
+  document.getElementById('btn-correct').addEventListener('click', () => judge(true));
+  document.getElementById('btn-wrong').addEventListener('click', () => judge(false));
+  document.getElementById('btn-next-q').addEventListener('click', nextQuestion);
+  document.getElementById('btn-end-game').addEventListener('click', endGame);
+  document.getElementById('btn-ann-send').addEventListener('click', sendAnn);
+  document.getElementById('btn-ann-clear').addEventListener('click', clearAnn);
+  document.getElementById('btn-sync').addEventListener('click', () => { updateState({ _sync: Date.now() }); notif('All screens synced!', 'success'); });
+  document.getElementById('btn-display').addEventListener('click', () => window.open('index.html', '_blank'));
+  document.getElementById('btn-reset').addEventListener('click', () => {
+    if (confirm('RESET ENTIRE GAME? This will clear all teams, bets, assignments, and return to lobby.')) {
+      resetState();
+      editTeams = genTeams(4);
+      renderTeamInputs();
+      renderQBank();
+      notif('⚠ Game fully reset to default state', 'info');
+    }
+  });
 
-  document.getElementById('team-count').value=editTeams.length;
-  document.getElementById('timer-default').value=st.timerDuration||30;
-  renderTeamInputs();renderQBank();renderLive();renderSidebar();
-  // button wires
-  document.getElementById('gen-btn').onclick=genSlots;
-  document.getElementById('all-money-btn').onclick=applyAllMoney;
-  document.getElementById('save-setup-btn').onclick=saveSetup;
-  document.getElementById('start-show-btn').onclick=startShow;
-  document.getElementById('add-q-btn').onclick=addQ;
-  document.getElementById('set-q-btn').onclick=setQ;
-  document.getElementById('open-bet-btn').onclick=openBet;
-  document.getElementById('close-bet-btn').onclick=closeBet;
-  document.getElementById('timer-start-btn').onclick=startTimer;
-  document.getElementById('timer-stop-btn').onclick=stopTimer;
-  document.getElementById('timer-reset-btn').onclick=resetTimer;
-  document.getElementById('correct-btn').onclick=()=>judge(true);
-  document.getElementById('wrong-btn').onclick=()=>judge(false);
-  document.getElementById('end-game-btn').onclick=endGame;
-  document.getElementById('ann-send-btn').onclick=sendAnn;
-  document.getElementById('ann-clear-btn').onclick=clearAnn;
-  document.getElementById('sync-btn').onclick=()=>{S.update({});notif('All screens synced!','success')};
-  document.getElementById('reset-btn').onclick=()=>{if(confirm('RESET ENTIRE GAME?')){S.reset();editTeams=genTeams(4);renderTeamInputs();renderQBank();renderLive();renderSidebar();notif('Game reset','info')}};
-  document.getElementById('display-btn').onclick=()=>window.open('index.html','_blank');
-  // tabs
-  document.querySelectorAll('.tab').forEach(t=>t.onclick=function(){document.querySelectorAll('.tab').forEach(x=>x.classList.remove('on'));document.querySelectorAll('.tabp').forEach(x=>x.classList.remove('on'));this.classList.add('on');document.getElementById('tabp-'+this.dataset.tab).classList.add('on')});
-  // quick msgs
-  const qms=[['Welcome','🎬 Welcome to the Logistics Auction Show! Let the bidding begin!'],['Betting Open','💰 Betting is now OPEN — place your bets!'],['Betting Closed','🔒 Betting is closed. Activating team now...'],['Timer Start','⏱ Timer starting now — good luck!'],['Round Done','🏆 Great round! Get ready for the next question.'],['Stand By','⚠ Technical break — please stand by...']];
-  document.getElementById('quick-msgs').innerHTML=qms.map(([l,m])=>`<button class="btn btn-blue btn-sm" onclick="quickMsg('${m.replace(/'/g,"\\'")}')">  ${l}</button>`).join('');
-  S.sub(onChange);
-  setInterval(timerTick,500);
+  // Phase quick-set buttons
+  document.getElementById('btn-phase-spin').addEventListener('click', () => setPhase('spin'));
+  document.getElementById('btn-phase-betting').addEventListener('click', () => setPhase('betting'));
+  document.getElementById('btn-phase-answering').addEventListener('click', () => setPhase('answering'));
+  document.getElementById('btn-phase-result').addEventListener('click', () => setPhase('result'));
+
+  // TABS
+  document.querySelectorAll('.tab').forEach(t => {
+    t.addEventListener('click', function() {
+      document.querySelectorAll('.tab').forEach(x => x.classList.remove('on'));
+      document.querySelectorAll('.tabp').forEach(x => x.classList.remove('on'));
+      this.classList.add('on');
+      document.getElementById('tabp-' + this.dataset.tab).classList.add('on');
+    });
+  });
+
+  // Quick messages
+  const qms = [
+    ['Welcome', '🎬 Welcome to the Logistics Auction Show! Let the bidding begin!'],
+    ['Betting Open', '💰 Betting is now OPEN — place your bets!'],
+    ['Betting Closed', '🔒 Betting is closed. Activating team now...'],
+    ['Timer Start', '⏱ Timer starting now — good luck!'],
+    ['Round Done', '🏆 Great round! Get ready for the next question.'],
+    ['Stand By', '⚠ Technical break — please stand by...']
+  ];
+  document.getElementById('quick-msgs').innerHTML = qms.map(([l, m], idx) =>
+    `<button class="btn btn-blue btn-sm" data-qmsg="${idx}"> ${l}</button>`
+  ).join('');
+  document.getElementById('quick-msgs').addEventListener('click', e => {
+    const btn = e.target.closest('[data-qmsg]');
+    if (btn) quickMsg(qms[parseInt(btn.dataset.qmsg)][1]);
+  });
 }
 
-function onChange(st){renderLive();renderSidebar();updatePhase(st)}
-function genTeams(n){return Array.from({length:n},(_,i)=>({name:`Team ${i+1}`,money:10000,wins:0,losses:0}))}
-function updatePhase(st){
-  const labels={lobby:'SETUP',spin:'TEAM SPIN',pregame:'PRE-GAME',game:'LIVE GAME',reveal:'GAME OVER'};
-  const lbl=labels[st.phase]||st.phase.toUpperCase();
-  document.getElementById('aphase').textContent='PHASE: '+lbl;
-  document.getElementById('phase-label').textContent=lbl+' PHASE';
-  const dot=document.getElementById('phase-dot');
-  dot.className='dot '+(st.phase==='game'?'on':'wait');
+// ═══════════════════════════════════════
+// STATE CHANGE HANDLER
+// ═══════════════════════════════════════
+function onStateChange(st) {
+  renderLive();
+  renderSidebar();
+  applyPhaseToUI(st.phase);
 }
 
-// TEAM INPUTS
-function genSlots(){const n=parseInt(document.getElementById('team-count').value);if(isNaN(n)||n<2||n>10){notif('Enter 2–10 teams','error');return}while(editTeams.length<n)editTeams.push({name:`Team ${editTeams.length+1}`,money:10000,wins:0,losses:0});editTeams=editTeams.slice(0,n);renderTeamInputs()}
-function renderTeamInputs(){
-  document.getElementById('team-inputs').innerHTML=editTeams.map((t,i)=>`
+// ═══════════════════════════════════════
+// PHASE UI MAPPING
+// ═══════════════════════════════════════
+const PHASE_COLORS = {
+  lobby: '#00D4FF', spin: '#BF00FF', betting: '#FFD700',
+  answering: '#00FF88', result: '#FF8C00', reveal: '#FFD700'
+};
+const PHASE_BAR_CLASS = {
+  lobby: 'pb-lobby', spin: 'pb-spin', betting: 'pb-betting',
+  answering: 'pb-answering', result: 'pb-result', reveal: 'pb-reveal'
+};
+function applyPhaseToUI(phase) {
+  const labels = { lobby:'LOBBY', spin:'TEAM SPIN', betting:'BETTING OPEN', answering:'ANSWERING', result:'RESULT', reveal:'GAME OVER' };
+  const lbl = labels[phase] || phase.toUpperCase();
+  document.getElementById('aphase').textContent = 'PHASE: ' + lbl;
+  document.getElementById('phase-label').textContent = lbl + ' PHASE';
+  document.getElementById('aside-phase-txt').textContent = lbl;
+  const dot = document.getElementById('phase-dot');
+  dot.className = 'dot ' + (phase === 'answering' ? 'on' : 'wait');
+  const bar = document.getElementById('phase-bar');
+  bar.className = 'phase-bar ' + (PHASE_BAR_CLASS[phase] || 'pb-lobby');
+  const col = PHASE_COLORS[phase] || 'var(--neon-blue)';
+  document.getElementById('aside-phase-txt').style.color = col;
+}
+
+// ═══════════════════════════════════════
+// TEAM SETUP
+// ═══════════════════════════════════════
+function genTeams(n) {
+  return Array.from({ length: n }, (_, i) => ({ name: `Team ${i + 1}`, money: 10000, wins: 0, losses: 0 }));
+}
+function genSlots() {
+  const n = parseInt(document.getElementById('team-count').value);
+  if (isNaN(n) || n < 2 || n > 10) { notif('Enter 2–10 teams', 'error'); return; }
+  while (editTeams.length < n) editTeams.push({ name: `Team ${editTeams.length + 1}`, money: 10000, wins: 0, losses: 0 });
+  editTeams = editTeams.slice(0, n);
+  renderTeamInputs();
+}
+function renderTeamInputs() {
+  document.getElementById('team-inputs').innerHTML = editTeams.map((t, i) => `
     <div class="trow">
       <span style="font-family:'Orbitron',sans-serif;font-size:10px;color:var(--neon-blue);min-width:22px">${i+1}</span>
-      <input class="inp" type="text" value="${esc(t.name)}" placeholder="Team name" onchange="editTeams[${i}].name=this.value" style="flex:1.5">
-      <input class="inp" type="number" value="${t.money}" min="0" onchange="editTeams[${i}].money=parseInt(this.value)||0" style="width:105px">
-      <button class="btn btn-red btn-sm" onclick="editTeams.splice(${i},1);document.getElementById('team-count').value=editTeams.length;renderTeamInputs()">✕</button>
+      <input class="inp" type="text" value="${esc(t.name)}" placeholder="Team name" data-team-name="${i}" style="flex:1.5">
+      <input class="inp" type="number" value="${t.money}" min="0" data-team-money="${i}" style="width:105px">
+      <button class="btn btn-red btn-sm" data-team-del="${i}">✕</button>
     </div>`).join('');
+  // Bind events after render
+  document.querySelectorAll('[data-team-name]').forEach(el => {
+    el.addEventListener('change', () => { editTeams[parseInt(el.dataset.teamName)].name = el.value; });
+  });
+  document.querySelectorAll('[data-team-money]').forEach(el => {
+    el.addEventListener('change', () => { editTeams[parseInt(el.dataset.teamMoney)].money = parseInt(el.value) || 0; });
+  });
+  document.querySelectorAll('[data-team-del]').forEach(el => {
+    el.addEventListener('click', () => {
+      editTeams.splice(parseInt(el.dataset.teamDel), 1);
+      document.getElementById('team-count').value = editTeams.length;
+      renderTeamInputs();
+    });
+  });
 }
-function applyAllMoney(){const v=parseInt(document.getElementById('all-money').value);if(isNaN(v)||v<0){notif('Invalid amount','error');return}editTeams.forEach(t=>t.money=v);renderTeamInputs();notif(`All teams set to ${$m(v)}`,'success')}
-function saveSetup(){
-  if(editTeams.length<2){notif('Need at least 2 teams','error');return}
-  const names=editTeams.map(t=>t.name.trim()).filter(Boolean);
-  if(new Set(names).size!==names.length){notif('Duplicate team names!','error');return}
-  const td=parseInt(document.getElementById('timer-default').value);
-  if(isNaN(td)||td<5||td>60){notif('Timer must be 5–60s','error');return}
-  const teams=editTeams.map(t=>({...t,name:t.name.trim()||`Team_${Date.now()}`}));
-  S.update({teams,timerDuration:td,timerRemaining:td});
-  notif('✅ Configuration saved!','success');
-  document.getElementById('setup-msg').innerHTML=`<span style="color:var(--neon-green)">✅ SAVED — ${teams.length} TEAMS CONFIGURED</span>`;
+function applyAllMoney() {
+  const v = parseInt(document.getElementById('all-money').value);
+  if (isNaN(v) || v < 0) { notif('Invalid amount', 'error'); return; }
+  editTeams.forEach(t => t.money = v);
+  renderTeamInputs();
+  notif(`All teams set to ${$m(v)}`, 'success');
 }
-function startShow(){
-  const st=S.get();if(!st.teams||st.teams.length<2){notif('Save team config first!','error');return}
-  S.update({phase:'spin',gameStarted:true,assignedDevices:[]});
-  notif('🎬 SHOW STARTED — Teams can now spin!','success');
+function saveSetup() {
+  if (editTeams.length < 2) { notif('Need at least 2 teams', 'error'); return; }
+  // Sync names from inputs before saving
+  document.querySelectorAll('[data-team-name]').forEach(el => { editTeams[parseInt(el.dataset.teamName)].name = el.value.trim(); });
+  document.querySelectorAll('[data-team-money]').forEach(el => { editTeams[parseInt(el.dataset.teamMoney)].money = parseInt(el.value) || 0; });
+  const names = editTeams.map(t => t.name.trim()).filter(Boolean);
+  if (new Set(names).size !== names.length) { notif('Duplicate team names!', 'error'); return; }
+  const td = parseInt(document.getElementById('timer-default').value);
+  if (isNaN(td) || td < 5 || td > 60) { notif('Timer must be 5–60s', 'error'); return; }
+  const teams = editTeams.map(t => ({ ...t, name: t.name.trim() || `Team_${Date.now()}` }));
+  updateState({ teams, timerDuration: td, timerRemaining: td });
+  notif('✅ Configuration saved!', 'success');
+  document.getElementById('setup-msg').innerHTML = `<span style="color:var(--neon-green)">✅ SAVED — ${teams.length} TEAMS CONFIGURED</span>`;
+}
+function startShow() {
+  const st = getState();
+  if (!st.teams || st.teams.length < 2) { notif('Save team config first!', 'error'); return; }
+  updateState({ phase: 'spin', assignedDevices: [] });
+  notif('🎬 SHOW STARTED — Teams can now spin!', 'success');
+  updateState({ announcement: '🎬 Welcome! Open index.html to spin and join your team!' });
 }
 
+// ═══════════════════════════════════════
 // QUESTION BANK
-function renderQBank(){
-  const st=S.get();const qs = Array.isArray(st.questions) ? st.questions : [];
-
-  const sel=document.getElementById('q-select');
-  if(sel)sel.innerHTML='<option value="-1">— Choose question —</option>'+qs.map((q,i)=>`<option value="${i}" ${st.currentQuestionIndex===i?'selected':''}>Q${i+1}: ${q.text.substr(0,45)}...</option>`).join('');
-  const el=document.getElementById('q-bank');if(!el)return;
-  el.innerHTML=qs.map((q,i)=>`
+// ═══════════════════════════════════════
+function renderQBank() {
+  const st = getState();
+  const qs = Array.isArray(st.questions) ? st.questions : [];
+  const sel = document.getElementById('q-select');
+  if (sel) {
+    sel.innerHTML = '<option value="-1">— Choose question —</option>' +
+      qs.map((q, i) => `<option value="${i}" ${st.currentQuestionIndex===i?'selected':''}>${'Q'+(i+1)}: ${q.text.substr(0,50)}...</option>`).join('');
+  }
+  const el = document.getElementById('q-bank');
+  if (!el) return;
+  el.innerHTML = qs.map((q, i) => `
     <div class="qcard ${st.currentQuestionIndex===i?'sel':''}" id="qc-${i}">
       <div class="qhdr" id="qhdr-${i}">
         <span class="qnum-lbl">Q${i+1}</span>
         <span class="qtext-lbl">${esc(q.text)}</span>
         <div class="qactions">
-          <button class="btn btn-blue btn-sm" onclick="editQ(${i})">✏ EDIT</button>
-          <button class="btn btn-red btn-sm" onclick="delQ(${i})">🗑</button>
+          <button class="btn btn-blue btn-sm" data-edit-q="${i}">✏ EDIT</button>
+          <button class="btn btn-red btn-sm" data-del-q="${i}">🗑</button>
         </div>
       </div>
       <div id="qedit-${i}" style="display:none">
         <div style="margin-bottom:8px"><label class="lbl">QUESTION TEXT</label><textarea class="inp" id="qt-${i}" rows="2">${esc(q.text)}</textarea></div>
-        <div style="margin-bottom:8px"><label class="lbl">OPTIONS (click circle = correct answer)</label>
-          ${q.options.map((o,j)=>`<div class="qorow"><span style="font-family:'Orbitron',sans-serif;font-size:10px;color:var(--neon-blue);min-width:18px">${'ABCD'[j]}</span><input class="inp" id="qo-${i}-${j}" value="${esc(o)}"><div class="corr-dot ${q.correct===j?'on':''}" id="cd-${i}-${j}" onclick="setCorr(${i},${j})">${q.correct===j?'✓':''}</div></div>`).join('')}
+        <div style="margin-bottom:8px"><label class="lbl">OPTIONS (click ● = correct answer)</label>
+          ${q.options.map((o,j)=>`<div class="qorow"><span style="font-family:'Orbitron',sans-serif;font-size:10px;color:var(--neon-blue);min-width:18px">${'ABCD'[j]}</span><input class="inp" id="qo-${i}-${j}" value="${esc(o)}"><div class="corr-dot ${q.correct===j?'on':''}" id="cd-${i}-${j}" data-corr-qi="${i}" data-corr-oi="${j}">${q.correct===j?'✓':''}</div></div>`).join('')}
         </div>
-        <div style="display:flex;gap:7px"><button class="btn btn-green btn-sm" onclick="saveQ(${i})">💾 SAVE</button><button class="btn btn-blue btn-sm" onclick="cancelQ(${i})">✕ CANCEL</button></div>
+        <div style="display:flex;gap:7px">
+          <button class="btn btn-green btn-sm" data-save-q="${i}">💾 SAVE</button>
+          <button class="btn btn-blue btn-sm" data-cancel-q="${i}">✕ CANCEL</button>
+        </div>
       </div>
     </div>`).join('');
+
+  // Bind q bank events
+  el.querySelectorAll('[data-edit-q]').forEach(b => b.addEventListener('click', () => editQ(parseInt(b.dataset.editQ))));
+  el.querySelectorAll('[data-del-q]').forEach(b => b.addEventListener('click', () => delQ(parseInt(b.dataset.delQ))));
+  el.querySelectorAll('[data-save-q]').forEach(b => b.addEventListener('click', () => saveQ(parseInt(b.dataset.saveQ))));
+  el.querySelectorAll('[data-cancel-q]').forEach(b => b.addEventListener('click', () => cancelQ(parseInt(b.dataset.cancelQ))));
+  el.querySelectorAll('[data-corr-qi]').forEach(b => b.addEventListener('click', () => setCorr(parseInt(b.dataset.corrQi), parseInt(b.dataset.corrOi))));
 }
-function editQ(i){document.getElementById(`qedit-${i}`).style.display='block';document.getElementById(`qhdr-${i}`).style.display='none'}
-function cancelQ(i){document.getElementById(`qedit-${i}`).style.display='none';document.getElementById(`qhdr-${i}`).style.display='flex'}
-function setCorr(qi,oi){const st=S.get();const qs=JSON.parse(JSON.stringify(st.questions));qs[qi].correct=oi;S.update({questions:qs});renderQBank()}
-function saveQ(i){const st=S.get();const qs=JSON.parse(JSON.stringify(st.questions));qs[i].text=document.getElementById(`qt-${i}`).value.trim();qs[i].options=[0,1,2,3].map(j=>document.getElementById(`qo-${i}-${j}`).value.trim());S.update({questions:qs});notif('Question saved!','success');renderQBank()}
-function delQ(i){if(!confirm('Delete this question?'))return;const st=S.get();const qs=JSON.parse(JSON.stringify(st.questions));qs.splice(i,1);S.update({questions:qs,currentQuestionIndex:-1});renderQBank();notif('Deleted','info')}
-function addQ() {
-  const st = S.get();
-
-  const existingQuestions = Array.isArray(st.questions)
-    ? JSON.parse(JSON.stringify(st.questions))
-    : [];
-
-  existingQuestions.push({
-    id: 'q_' + Date.now(),
-    text: 'New question — click Edit to update',
-    options: ['Option A', 'Option B', 'Option C', 'Option D'],
-    correct: 0
+function editQ(i) { document.getElementById(`qedit-${i}`).style.display='block'; document.getElementById(`qhdr-${i}`).style.display='none'; }
+function cancelQ(i) { document.getElementById(`qedit-${i}`).style.display='none'; document.getElementById(`qhdr-${i}`).style.display='flex'; }
+function setCorr(qi, oi) {
+  const st = getState();
+  const qs = safeClone(st.questions || []);
+  if (qs[qi]) { qs[qi].correct = oi; updateState({ questions: qs }); }
+}
+function saveQ(i) {
+  const st = getState();
+  const qs = safeClone(st.questions || []);
+  const textEl = document.getElementById(`qt-${i}`);
+  if (!qs[i] || !textEl) return;
+  qs[i].text = textEl.value.trim();
+  qs[i].options = [0,1,2,3].map(j => {
+    const el = document.getElementById(`qo-${i}-${j}`);
+    return el ? el.value.trim() : qs[i].options[j];
   });
-
-  S.update({ questions: existingQuestions });
-  renderQBank();
-  setTimeout(() => editQ(existingQuestions.length - 1), 80);
+  updateState({ questions: qs });
+  notif('Question saved!', 'success');
+}
+function delQ(i) {
+  if (!confirm('Delete this question?')) return;
+  const st = getState();
+  const qs = safeClone(st.questions || []);
+  qs.splice(i, 1);
+  updateState({ questions: qs, currentQuestionIndex: -1 });
+  notif('Deleted', 'info');
+}
+function addQ() {
+  const st = getState();
+  const qs = safeClone(Array.isArray(st.questions) ? st.questions : []);
+  qs.push({ id: 'q_' + Date.now(), text: 'New question — click Edit to update', options: ['Option A','Option B','Option C','Option D'], correct: 0 });
+  updateState({ questions: qs });
   notif('New question added', 'success');
+  setTimeout(() => editQ(qs.length - 1), 100);
 }
 
-function renderLive(){
-  const st=S.get();
-  // q selector
-  const sel=document.getElementById('q-select');
-  if(sel)sel.innerHTML='<option value="-1">— Choose question —</option>'+(st.questions||[]).map((q,i)=>`<option value="${i}" ${st.currentQuestionIndex===i?'selected':''}>Q${i+1}: ${q.text.substr(0,45)}...</option>`).join('');
-  // team activate
-  const tal=document.getElementById('team-act-list');
-  if(tal)tal.innerHTML=(st.teams||[]).map(t=>{const b=st.bets&&st.bets[t.name];const isOn=st.activeTeam===t.name;return`<div class="team-act-btn ${isOn?'on':''}" onclick="activateTeam('${esc(t.name).replace(/'/g,"\\'")}')"><div><div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:15px;${isOn?'color:var(--neon-blue)':''}">${esc(t.name)}</div><div style="font-family:'Orbitron',sans-serif;font-size:9px;color:rgba(255,255,255,.4)">${$m(t.money)} · W:${t.wins||0} L:${t.losses||0}${b?` · BET:${$m(b)}`:' · No bet'}</div></div><span style="font-size:17px">${isOn?'⚡':'○'}</span></div>`}).join('');
+// ═══════════════════════════════════════
+// LIVE CONTROL RENDERS
+// ═══════════════════════════════════════
+function renderLive() {
+  const st = getState();
+  const qs = Array.isArray(st.questions) ? st.questions : [];
+  // q selector sync
+  const sel = document.getElementById('q-select');
+  if (sel) {
+    sel.innerHTML = '<option value="-1">— Choose question —</option>' +
+      qs.map((q, i) => `<option value="${i}" ${st.currentQuestionIndex===i?'selected':''}>${'Q'+(i+1)}: ${q.text.substr(0,45)}...</option>`).join('');
+  }
+  // team activate list
+  const tal = document.getElementById('team-act-list');
+  if (tal) {
+    tal.innerHTML = (st.teams || []).map(t => {
+      const b = st.bets && st.bets[t.name];
+      const isOn = st.activeTeam === t.name;
+      return `<button class="team-act-btn ${isOn?'on':''}" data-activate="${esc(t.name)}">
+        <div>
+          <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:15px;${isOn?'color:var(--neon-blue)':''}">${esc(t.name)}</div>
+          <div style="font-family:'Orbitron',sans-serif;font-size:9px;color:rgba(255,255,255,.4)">${$m(t.money)} · W:${t.wins||0} L:${t.losses||0}${b?` · BET:${$m(b)}`:' · No bet'}</div>
+        </div>
+        <span style="font-size:17px">${isOn?'⚡':'○'}</span>
+      </button>`;
+    }).join('');
+    tal.querySelectorAll('[data-activate]').forEach(btn => {
+      btn.addEventListener('click', () => activateTeam(btn.dataset.activate));
+    });
+  }
   // answer display
-  const ad=document.getElementById('ans-display');
-  if(ad){
-    if(st.selectedAnswer!==null&&st.selectedAnswer!==undefined&&st.currentQuestionIndex>=0){
-      const q=st.questions[st.currentQuestionIndex];
-      ad.innerHTML=`<span style="color:var(--gold)">📝 ${esc(st.activeTeam||'Team')} answered: </span><span style="color:var(--neon-blue)">[${('ABCD')[st.selectedAnswer]}] ${q?esc(q.options[st.selectedAnswer]):''}</span>`;
-      document.getElementById('correct-btn').disabled=false;document.getElementById('wrong-btn').disabled=false;
-    }else{ad.textContent='Waiting for team answer...';document.getElementById('correct-btn').disabled=true;document.getElementById('wrong-btn').disabled=true}
+  const ad = document.getElementById('ans-display');
+  if (ad) {
+    if (st.selectedAnswer !== null && st.selectedAnswer !== undefined && st.currentQuestionIndex >= 0) {
+      const q = qs[st.currentQuestionIndex];
+      ad.innerHTML = `<span style="color:var(--gold)">📝 ${esc(st.activeTeam||'Team')} answered: </span><span style="color:var(--neon-blue)">[${('ABCD')[st.selectedAnswer]}] ${q ? esc(q.options[st.selectedAnswer]) : ''}</span>`;
+      document.getElementById('btn-correct').disabled = false;
+      document.getElementById('btn-wrong').disabled = false;
+    } else {
+      ad.textContent = 'Waiting for team answer...';
+      document.getElementById('btn-correct').disabled = true;
+      document.getElementById('btn-wrong').disabled = true;
+    }
   }
   // aside q
-  const aq=document.getElementById('aside-q');
-  if(aq&&st.currentQuestionIndex>=0&&st.questions[st.currentQuestionIndex])aq.textContent=`Q${st.currentQuestionIndex+1}: ${st.questions[st.currentQuestionIndex].text.substr(0,80)}...`;
+  const aq = document.getElementById('aside-q');
+  if (aq && st.currentQuestionIndex >= 0 && qs[st.currentQuestionIndex]) {
+    aq.textContent = `Q${st.currentQuestionIndex+1}: ${qs[st.currentQuestionIndex].text.substr(0,80)}...`;
+  }
   // money adj
-  const ma=document.getElementById('money-adj');
-  if(ma)ma.innerHTML=(st.teams||[]).map((t,i)=>`<div style="display:flex;gap:7px;align-items:center;margin-bottom:7px"><span style="font-family:'Rajdhani',sans-serif;font-weight:600;min-width:120px">${esc(t.name)}</span><span style="font-family:'Orbitron',sans-serif;font-size:11px;color:var(--gold);min-width:75px">${$m(t.money)}</span><input class="inp" type="number" id="adj-${i}" placeholder="±amount" style="width:95px"><button class="btn btn-blue btn-sm" onclick="adjustMoney(${i})">APPLY</button></div>`).join('');
+  const ma = document.getElementById('money-adj');
+  if (ma) {
+    ma.innerHTML = (st.teams || []).map((t, i) =>
+      `<div style="display:flex;gap:7px;align-items:center;margin-bottom:7px">
+        <span style="font-family:'Rajdhani',sans-serif;font-weight:600;min-width:120px">${esc(t.name)}</span>
+        <span style="font-family:'Orbitron',sans-serif;font-size:11px;color:var(--gold);min-width:75px">${$m(t.money)}</span>
+        <input class="inp" type="number" data-adj-i="${i}" placeholder="±amount" style="width:95px">
+        <button class="btn btn-blue btn-sm" data-adj-apply="${i}">APPLY</button>
+      </div>`
+    ).join('');
+    ma.querySelectorAll('[data-adj-apply]').forEach(btn => {
+      btn.addEventListener('click', () => adjustMoney(parseInt(btn.dataset.adjApply)));
+    });
+  }
   renderSidebar();
 }
-function renderSidebar(){
-  const st=S.get();
-  const sorted=[...(st.teams||[])].sort((a,b)=>b.money-a.money);
-  document.getElementById('aside-lb').innerHTML=sorted.map((t,i)=>`<div class="lb-row ${st.activeTeam===t.name?'at':''}"><div style="font-family:'Orbitron',sans-serif;font-size:13px;color:rgba(255,255,255,.4);min-width:22px">#${i+1}</div><div style="flex:1;font-family:'Rajdhani',sans-serif;font-weight:600;font-size:13px">${esc(t.name)}</div><div style="font-family:'Orbitron',sans-serif;font-size:11px;color:var(--gold)">${$m(t.money)}</div></div>`).join('');
-  document.getElementById('aside-bets').innerHTML=(st.teams||[]).map(t=>{const b=st.bets&&st.bets[t.name];return`<div class="bet-row ${b?'hb':''}"><span style="font-family:'Rajdhani',sans-serif;font-weight:600;font-size:13px">${esc(t.name)}</span>${b?`<span style="font-family:'Orbitron',sans-serif;font-size:11px;color:var(--gold)">${$m(b)}</span>`:`<span style="color:rgba(255,255,255,.3);font-size:11px">waiting...</span>`}</div>`}).join('');
+
+function renderSidebar() {
+  const st = getState();
+  const sorted = [...(st.teams || [])].sort((a, b) => b.money - a.money);
+  document.getElementById('aside-lb').innerHTML = sorted.map((t, i) =>
+    `<div class="lb-row ${st.activeTeam===t.name?'at':''}">
+      <div style="font-family:'Orbitron',sans-serif;font-size:13px;color:rgba(255,255,255,.4);min-width:22px">#${i+1}</div>
+      <div style="flex:1;font-family:'Rajdhani',sans-serif;font-weight:600;font-size:13px">${esc(t.name)}</div>
+      <div style="font-family:'Orbitron',sans-serif;font-size:11px;color:var(--gold)">${$m(t.money)}</div>
+    </div>`
+  ).join('');
+  document.getElementById('aside-bets').innerHTML = (st.teams || []).map(t => {
+    const b = st.bets && st.bets[t.name];
+    return `<div class="bet-row ${b?'hb':''}">
+      <span style="font-family:'Rajdhani',sans-serif;font-weight:600;font-size:13px">${esc(t.name)}</span>
+      ${b ? `<span style="font-family:'Orbitron',sans-serif;font-size:11px;color:var(--gold)">${$m(b)}</span>` : `<span style="color:rgba(255,255,255,.3);font-size:11px">waiting...</span>`}
+    </div>`;
+  }).join('');
 }
 
+// ═══════════════════════════════════════
 // QUESTION ACTIONS
-function setQ(){const idx=parseInt(document.getElementById('q-select').value);if(idx<0){notif('Select a question first','error');return}S.update({currentQuestionIndex:idx,selectedAnswer:null,lastResult:null,bettingOpen:false,activeTeam:null,bets:{}});renderQBank();notif(`Q${idx+1} selected`,'success')}
-function openBet(){const st=S.get();if(st.currentQuestionIndex<0){notif('Select a question first','error');return}S.update({bettingOpen:true,bets:{},selectedAnswer:null,lastResult:null});notif('💰 Betting OPEN','success');S.update({announcement:'💰 Betting is now OPEN — place your bets!'})}
-function closeBet(){S.update({bettingOpen:false});notif('🔒 Betting CLOSED','info');S.update({announcement:'🔒 Betting is closed. Activating team now...'})}
-function activateTeam(name){S.update({activeTeam:name,selectedAnswer:null,lastResult:null,answerLocked:false});notif(`⚡ ${name} activated!`,'info');S.update({announcement:`⚡ ${name} is now answering!`})}
+// ═══════════════════════════════════════
+function setQ() {
+  const idx = parseInt(document.getElementById('q-select').value);
+  if (idx < 0) { notif('Select a question first', 'error'); return; }
+  updateState({ currentQuestionIndex: idx, selectedAnswer: null, lastResult: null, bets: {} });
+  notif(`Q${idx+1} selected`, 'success');
+}
+function openBet() {
+  const st = getState();
+  if (st.currentQuestionIndex < 0) { notif('Select a question first', 'error'); return; }
+  updateState({ phase: 'betting', bets: {}, selectedAnswer: null, lastResult: null });
+  notif('💰 Betting OPEN', 'success');
+  updateState({ announcement: '💰 Betting is now OPEN — place your bets!' });
+}
+function closeBet() {
+  updateState({ phase: 'answering' });
+  notif('🔒 Betting CLOSED → Answering phase', 'info');
+  updateState({ announcement: '🔒 Betting closed. Active team — answer now!' });
+}
+function activateTeam(name) {
+  updateState({ activeTeam: name, selectedAnswer: null, lastResult: null, phase: 'answering' });
+  notif(`⚡ ${name} activated!`, 'info');
+  updateState({ announcement: `⚡ ${name} is now answering!` });
+}
+function nextQuestion() {
+  updateState({ phase: 'betting', activeTeam: null, selectedAnswer: null, lastResult: null, bets: {}, timerRunning: false, timerRemaining: getState().timerDuration });
+  notif('⏭ Ready for next question', 'info');
+}
 
+// ═══════════════════════════════════════
 // TIMER
-function startTimer(){const ov=parseInt(document.getElementById('timer-override').value);const st=S.get();const d=isNaN(ov)?st.timerDuration:Math.min(60,Math.max(5,ov));S.update({timerDuration:d,timerRemaining:d,timerRunning:true,timerStartedAt:Date.now()});notif(`▶ Timer: ${d}s`,'info')}
-function stopTimer(){const st=S.get();const el=(Date.now()-st.timerStartedAt)/1000;const rem=Math.max(0,st.timerRemaining-el);S.update({timerRunning:false,timerRemaining:rem});notif('⏹ Stopped','info')}
-function resetTimer(){const st=S.get();S.update({timerRunning:false,timerRemaining:st.timerDuration})}
-function timerTick(){
-  const st=S.get();const el=document.getElementById('aside-timer');if(!el)return;
-  let rem=st.timerRemaining;
-  if(st.timerRunning&&st.timerStartedAt){rem=Math.max(0,st.timerRemaining-(Date.now()-st.timerStartedAt)/1000);if(rem<=0&&st.timerRunning){S.update({timerRunning:false,timerRemaining:0});S.update({announcement:'⏰ TIME IS UP!'})}}
-  el.textContent=Math.ceil(rem)>0?Math.ceil(rem):'00';
-  el.style.color=Math.ceil(rem)<=3?'var(--neon-red)':Math.ceil(rem)<=5?'var(--neon-orange)':'var(--neon-blue)';
+// ═══════════════════════════════════════
+function startTimer() {
+  const ov = parseInt(document.getElementById('timer-override').value);
+  const st = getState();
+  const d = isNaN(ov) ? st.timerDuration : Math.min(60, Math.max(5, ov));
+  updateState({ timerDuration: d, timerRemaining: d, timerRunning: true, timerStartedAt: Date.now() });
+  notif(`▶ Timer: ${d}s`, 'info');
+}
+function stopTimer() {
+  const st = getState();
+  const elapsed = st.timerStartedAt ? (Date.now() - st.timerStartedAt) / 1000 : 0;
+  const rem = Math.max(0, (st.timerRemaining || 0) - elapsed);
+  updateState({ timerRunning: false, timerRemaining: rem });
+  notif('⏹ Stopped', 'info');
+}
+function resetTimer() {
+  const st = getState();
+  updateState({ timerRunning: false, timerRemaining: st.timerDuration });
+}
+function timerTick() {
+  const st = getState();
+  const el = document.getElementById('aside-timer');
+  if (!el) return;
+  let rem = st.timerRemaining || 0;
+  if (st.timerRunning && st.timerStartedAt) {
+    rem = Math.max(0, (st.timerRemaining || 0) - (Date.now() - st.timerStartedAt) / 1000);
+    if (rem <= 0 && st.timerRunning) {
+      // Auto-judge as wrong on timeout
+      updateState({ timerRunning: false, timerRemaining: 0 });
+      if (st.phase === 'answering' && st.activeTeam) {
+        autoJudgeTimeout();
+      }
+    }
+  }
+  const secs = Math.ceil(rem);
+  el.textContent = secs > 0 ? secs : '00';
+  el.style.color = secs <= 3 ? 'var(--neon-red)' : secs <= 5 ? 'var(--neon-orange)' : 'var(--neon-blue)';
+}
+function autoJudgeTimeout() {
+  const st = getState();
+  if (!st.activeTeam) return;
+  const ti = (st.teams || []).findIndex(t => t.name === st.activeTeam);
+  if (ti < 0) return;
+  const teams = safeClone(st.teams);
+  const bet = (st.bets && st.bets[st.activeTeam]) ? parseInt(st.bets[st.activeTeam]) : 0;
+  teams[ti].money = Math.max(0, teams[ti].money - bet);
+  teams[ti].losses = (teams[ti].losses || 0) + 1;
+  updateState({
+    teams,
+    phase: 'result',
+    lastResult: { teamName: st.activeTeam, correct: false, betAmount: bet, timestamp: Date.now(), timeout: true },
+    timerRunning: false,
+    activeTeam: null
+  });
+  updateState({ announcement: `⏰ TIME'S UP! ${st.activeTeam} lost ${$m(bet)}` });
 }
 
+// ═══════════════════════════════════════
 // JUDGE
-function judge(correct){
-  const st=S.get();
-  if(!st.activeTeam||st.selectedAnswer===null||st.selectedAnswer===undefined){notif('No answer to judge','error');return}
-  const ti=st.teams.findIndex(t=>t.name===st.activeTeam);if(ti<0)return;
-  const teams=JSON.parse(JSON.stringify(st.teams));
-  const team=teams[ti];
-  const bet=st.bets&&st.bets[st.activeTeam]?parseInt(st.bets[st.activeTeam]):0;
-  if(correct){team.money+=bet;team.wins=(team.wins||0)+1}else{team.money=Math.max(0,team.money-bet);team.losses=(team.losses||0)+1}
-  S.update({teams,lastResult:{teamName:st.activeTeam,correct,betAmount:bet,timestamp:Date.now()},timerRunning:false,activeTeam:null,bettingOpen:false});
-  notif(correct?`✅ ${st.activeTeam} CORRECT! +${$m(bet)}`:`❌ ${st.activeTeam} WRONG! -${$m(bet)}`,correct?'success':'error');
-  S.update({announcement:correct?`✅ ${st.activeTeam} got it RIGHT! +${$m(bet)}`:`❌ ${st.activeTeam} got it WRONG! -${$m(bet)}`});
+// ═══════════════════════════════════════
+function judge(correct) {
+  const st = getState();
+  if (!st.activeTeam || (st.selectedAnswer === null || st.selectedAnswer === undefined)) {
+    notif('No answer to judge', 'error'); return;
+  }
+  const ti = (st.teams || []).findIndex(t => t.name === st.activeTeam);
+  if (ti < 0) return;
+  const teams = safeClone(st.teams);
+  const team = teams[ti];
+  const bet = (st.bets && st.bets[st.activeTeam]) ? parseInt(st.bets[st.activeTeam]) : 0;
+  if (correct) { team.money += bet; team.wins = (team.wins || 0) + 1; }
+  else { team.money = Math.max(0, team.money - bet); team.losses = (team.losses || 0) + 1; }
+  updateState({
+    teams,
+    phase: 'result',
+    lastResult: { teamName: st.activeTeam, correct, betAmount: bet, timestamp: Date.now() },
+    timerRunning: false,
+    activeTeam: null
+  });
+  notif(correct ? `✅ ${st.activeTeam} CORRECT! +${$m(bet)}` : `❌ ${st.activeTeam} WRONG! -${$m(bet)}`, correct ? 'success' : 'error');
+  updateState({ announcement: correct ? `✅ ${st.activeTeam} got it RIGHT! +${$m(bet)}` : `❌ ${st.activeTeam} got it WRONG! -${$m(bet)}` });
 }
-function adjustMoney(i){const st=S.get();const v=parseInt(document.getElementById(`adj-${i}`).value);if(isNaN(v)){notif('Invalid amount','error');return}const teams=JSON.parse(JSON.stringify(st.teams));teams[i].money=Math.max(0,teams[i].money+v);S.update({teams});document.getElementById(`adj-${i}`).value='';notif(`${teams[i].name}: ${v>0?'+':''}${$m(v)}`,'info')}
-function endGame(){const st=S.get();if(!st.teams||!st.teams.length){notif('No teams!','error');return}if(!confirm('End the show and reveal the winner?'))return;const winner=[...st.teams].sort((a,b)=>b.money-a.money)[0];S.update({phase:'reveal',winner,timerRunning:false});notif(`🏆 ${winner.name} WINS!`,'success')}
+function adjustMoney(i) {
+  const st = getState();
+  const inp = document.querySelector(`[data-adj-i="${i}"]`);
+  if (!inp) return;
+  const v = parseInt(inp.value);
+  if (isNaN(v)) { notif('Invalid amount', 'error'); return; }
+  const teams = safeClone(st.teams);
+  if (!teams[i]) return;
+  teams[i].money = Math.max(0, teams[i].money + v);
+  updateState({ teams });
+  inp.value = '';
+  notif(`${teams[i].name}: ${v>0?'+':''}${$m(v)}`, 'info');
+}
+function endGame() {
+  const st = getState();
+  if (!st.teams || !st.teams.length) { notif('No teams!', 'error'); return; }
+  if (!confirm('End the show and reveal the winner?')) return;
+  const winner = [...st.teams].sort((a, b) => b.money - a.money)[0];
+  updateState({ phase: 'reveal', winner, timerRunning: false });
+  notif(`🏆 ${winner.name} WINS!`, 'success');
+}
 
+// ═══════════════════════════════════════
 // ANNOUNCEMENTS
-function sendAnn(){const m=document.getElementById('ann-input').value.trim();if(!m){notif('Enter a message','error');return}S.update({announcement:m});notif('📢 Broadcast sent!','success')}
-function clearAnn(){S.update({announcement:''});document.getElementById('ann-input').value=''}
-function quickMsg(m){document.getElementById('ann-input').value=m;sendAnn()}
-// expose functions globally for inline onclick
-window.setCorr = setCorr;
-window.saveQ = saveQ;
-window.cancelQ = cancelQ;
-window.editQ = editQ;
-window.delQ = delQ;
-window.activateTeam = activateTeam;
-window.adjustMoney = adjustMoney;
-window.quickMsg = quickMsg;
+// ═══════════════════════════════════════
+function sendAnn() {
+  const m = document.getElementById('ann-input').value.trim();
+  if (!m) { notif('Enter a message', 'error'); return; }
+  updateState({ announcement: m });
+  notif('📢 Broadcast sent!', 'success');
+}
+function clearAnn() {
+  updateState({ announcement: '' });
+  document.getElementById('ann-input').value = '';
+}
+function quickMsg(m) {
+  document.getElementById('ann-input').value = m;
+  sendAnn();
+}
 
-
-S.sub(st=>{renderLive();renderSidebar();updatePhase(st)});
 </script>
-
-
-
-
 </body>
 </html>
