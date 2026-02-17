@@ -303,6 +303,89 @@ html,body{width:100%;min-height:100vh;background:var(--bg);color:#fff;font-famil
 </div>
 
 </div>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCSyzYtCd-uiolBucZnncuIWpnE5mPG9Cs",
+  authDomain: "logistics-auction-show.firebaseapp.com",
+  databaseURL: "https://logistics-auction-show-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "logistics-auction-show",
+  storageBucket: "logistics-auction-show.firebasestorage.app",
+  messagingSenderId: "596983567254",
+  appId: "1:596983567254:web:91f5b863db7464886503b7"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const gameRef = ref(db, "gameState");
+
+let state = null;
+
+// INITIAL DEFAULT STATE
+const defaultState = {
+  phase:'lobby',
+  teams:[],
+  questions:[],
+  currentQuestionIndex:-1,
+  activeTeam:null,
+  timerDuration:30,
+  timerRemaining:30,
+  timerRunning:false,
+  timerStartedAt:null,
+  gameStarted:false,
+  announcement:'',
+  round:0,
+  bets:{},
+  bettingOpen:false,
+  selectedAnswer:null,
+  lastResult:null,
+  winner:null,
+  assignedDevices:[],
+  version:0
+};
+
+// LISTEN FOR LIVE UPDATES
+onValue(gameRef, (snapshot) => {
+  const data = snapshot.val();
+  if (!data) {
+    set(gameRef, defaultState);
+  } else {
+    state = data;
+    if(typeof renderLive === "function") renderLive();
+    if(typeof renderSidebar === "function") renderSidebar();
+    if(typeof updatePhase === "function") updatePhase(state);
+  }
+});
+
+// REPLACES S.get()
+function getState(){
+  return state;
+}
+
+// REPLACES S.update()
+function updateState(newData){
+  const updated = {
+    ...state,
+    ...newData
+  };
+  set(gameRef, updated);
+}
+
+// REPLACES S.reset()
+function resetState(){
+  set(gameRef, defaultState);
+}
+
+// MAKE GLOBAL (so old functions still work)
+window.S = {
+  get: getState,
+  update: updateState,
+  reset: resetState,
+  sub: function(){}
+};
+</script>
 <script>
 // ─── SHARED ENGINE ────────────────────────────────────
 const SK='LAS_STATE';
@@ -523,89 +606,7 @@ function quickMsg(m){document.getElementById('ann-input').value=m;sendAnn()}
 
 S.sub(st=>{renderLive();renderSidebar();updatePhase(st)});
 </script>
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyCSyzYtCd-uiolBucZnncuIWpnE5mPG9Cs",
-  authDomain: "logistics-auction-show.firebaseapp.com",
-  databaseURL: "https://logistics-auction-show-default-rtdb.asia-southeast1.firebasedatabase.app",
-  projectId: "logistics-auction-show",
-  storageBucket: "logistics-auction-show.firebasestorage.app",
-  messagingSenderId: "596983567254",
-  appId: "1:596983567254:web:91f5b863db7464886503b7"
-};
-
-const app = initializeApp(firebaseConfig);
-const db = getDatabase(app);
-const gameRef = ref(db, "gameState");
-
-let state = null;
-
-// INITIAL DEFAULT STATE
-const defaultState = {
-  phase:'lobby',
-  teams:[],
-  questions:[],
-  currentQuestionIndex:-1,
-  activeTeam:null,
-  timerDuration:30,
-  timerRemaining:30,
-  timerRunning:false,
-  timerStartedAt:null,
-  gameStarted:false,
-  announcement:'',
-  round:0,
-  bets:{},
-  bettingOpen:false,
-  selectedAnswer:null,
-  lastResult:null,
-  winner:null,
-  assignedDevices:[],
-  version:0
-};
-
-// LISTEN FOR LIVE UPDATES
-onValue(gameRef, (snapshot) => {
-  const data = snapshot.val();
-  if (!data) {
-    set(gameRef, defaultState);
-  } else {
-    state = data;
-    if(typeof renderLive === "function") renderLive();
-    if(typeof renderSidebar === "function") renderSidebar();
-    if(typeof updatePhase === "function") updatePhase(state);
-  }
-});
-
-// REPLACES S.get()
-function getState(){
-  return state;
-}
-
-// REPLACES S.update()
-function updateState(newData){
-  const updated = {
-    ...state,
-    ...newData
-  };
-  set(gameRef, updated);
-}
-
-// REPLACES S.reset()
-function resetState(){
-  set(gameRef, defaultState);
-}
-
-// MAKE GLOBAL (so old functions still work)
-window.S = {
-  get: getState,
-  update: updateState,
-  reset: resetState,
-  sub: function(){}
-};
-</script>
 
 
 </body>
