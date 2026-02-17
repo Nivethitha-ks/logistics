@@ -519,7 +519,8 @@ function startShow(){
 
 // QUESTION BANK
 function renderQBank(){
-  const st=S.get();const qs=st.questions||[];
+  const st=S.get();const qs = Array.isArray(st.questions) ? st.questions : [];
+
   const sel=document.getElementById('q-select');
   if(sel)sel.innerHTML='<option value="-1">— Choose question —</option>'+qs.map((q,i)=>`<option value="${i}" ${st.currentQuestionIndex===i?'selected':''}>Q${i+1}: ${q.text.substr(0,45)}...</option>`).join('');
   const el=document.getElementById('q-bank');if(!el)return;
@@ -547,7 +548,23 @@ function cancelQ(i){document.getElementById(`qedit-${i}`).style.display='none';d
 function setCorr(qi,oi){const st=S.get();const qs=JSON.parse(JSON.stringify(st.questions));qs[qi].correct=oi;S.update({questions:qs});renderQBank()}
 function saveQ(i){const st=S.get();const qs=JSON.parse(JSON.stringify(st.questions));qs[i].text=document.getElementById(`qt-${i}`).value.trim();qs[i].options=[0,1,2,3].map(j=>document.getElementById(`qo-${i}-${j}`).value.trim());S.update({questions:qs});notif('Question saved!','success');renderQBank()}
 function delQ(i){if(!confirm('Delete this question?'))return;const st=S.get();const qs=JSON.parse(JSON.stringify(st.questions));qs.splice(i,1);S.update({questions:qs,currentQuestionIndex:-1});renderQBank();notif('Deleted','info')}
-function addQ(){const st=S.get();const qs=JSON.parse(JSON.stringify(st.questions));qs.push({id:'q_'+Date.now(),text:'New question — click Edit to update',options:['Option A','Option B','Option C','Option D'],correct:0});S.update({questions:qs});renderQBank();setTimeout(()=>editQ(qs.length-1),80);notif('New question added','success')}
+function addQ(){
+  const st = S.get();
+
+  const existingQuestions = st.questions ? JSON.parse(JSON.stringify(st.questions)) : [];
+
+  existingQuestions.push({
+    id:'q_'+Date.now(),
+    text:'New question — click Edit to update',
+    options:['Option A','Option B','Option C','Option D'],
+    correct:0
+  });
+
+  S.update({questions: existingQuestions});
+  renderQBank();
+  setTimeout(()=>editQ(existingQuestions.length-1),80);
+  notif('New question added','success');
+}
 
 // LIVE CONTROL
 function renderLive(){
