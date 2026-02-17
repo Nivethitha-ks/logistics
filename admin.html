@@ -394,6 +394,11 @@ window.S = {
     subscribers.push(callback);
   }
 };
+// Generate device ID once per browser
+if(!localStorage.getItem('LAS_DEVICE_ID')){
+  localStorage.setItem('LAS_DEVICE_ID', 'dev_' + Math.random().toString(36).substr(2,9));
+}
+S.did = localStorage.getItem('LAS_DEVICE_ID');
 
 const SK='LAS_STATE';
 const DQ=[
