@@ -325,11 +325,10 @@ const gameRef = ref(db, "gameState");
 
 
 
-// INITIAL DEFAULT STATE
 const defaultState = {
   phase:'lobby',
   teams:[],
-  questions:[],
+  questions: JSON.parse(JSON.stringify(DQ)),  // 🔥 THIS LINE
   currentQuestionIndex:-1,
   activeTeam:null,
   timerDuration:30,
