@@ -638,6 +638,16 @@ function endGame(){const st=S.get();if(!st.teams||!st.teams.length){notif('No te
 function sendAnn(){const m=document.getElementById('ann-input').value.trim();if(!m){notif('Enter a message','error');return}S.update({announcement:m});notif('📢 Broadcast sent!','success')}
 function clearAnn(){S.update({announcement:''});document.getElementById('ann-input').value=''}
 function quickMsg(m){document.getElementById('ann-input').value=m;sendAnn()}
+// expose functions globally for inline onclick
+window.setCorr = setCorr;
+window.saveQ = saveQ;
+window.cancelQ = cancelQ;
+window.editQ = editQ;
+window.delQ = delQ;
+window.activateTeam = activateTeam;
+window.adjustMoney = adjustMoney;
+window.quickMsg = quickMsg;
+
 
 S.sub(st=>{renderLive();renderSidebar();updatePhase(st)});
 </script>
