@@ -242,8 +242,6 @@ const gameRef = ref(db, "gameState");
 
   
 
-let state = defaultState;
-let subscribers = [];
 
 
 
@@ -328,6 +326,8 @@ const defaultState = {
   assignedDevices:[],
   version:0
 };
+let state = defaultState;
+let subscribers = [];
 
 function initSt(){return{phase:'lobby',teams:[],questions:JSON.parse(JSON.stringify(DQ)),currentQuestionIndex:-1,activeTeam:null,timerDuration:30,timerRemaining:30,timerRunning:false,timerStartedAt:null,gameStarted:false,announcement:'',round:0,bets:{},bettingOpen:false,selectedAnswer:null,lastResult:null,winner:null,assignedDevices:[],version:0}}
 
