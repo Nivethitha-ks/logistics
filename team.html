@@ -260,39 +260,6 @@ onValue(gameRef, (snapshot) => {
   }
 });
 
-
-// REPLACES S.get()
-function getState(){
-  return state;
-}
-
-
-  function updateState(newData){
-  update(gameRef, newData);
-}
-
-
-function resetState(){
-  set(gameRef, defaultState);
-}
-
-
-// MAKE GLOBAL (so old functions still work)
-window.S = {
-  get: getState,
-  update: updateState,
-  reset: resetState,
-  sub: function(callback){
-    subscribers.push(callback);
-  }
-};
-// Generate device ID once per browser
-if(!localStorage.getItem('LAS_DEVICE_ID')){
-  localStorage.setItem('LAS_DEVICE_ID', 'dev_' + Math.random().toString(36).substr(2,9));
-}
-S.did = localStorage.getItem('LAS_DEVICE_ID');
-
-const SK='LAS_STATE';
 const DQ=[
   {id:'q1',text:'What does "ETA" stand for in logistics?',options:['Estimated Time of Arrival','Electronic Tracking Agent','Express Transport Authorization','Enhanced Transit Algorithm'],correct:0},
   {id:'q2',text:'Which shipping term means the seller bears all risks until goods reach the buyer\'s destination?',options:['FOB Origin','CIF','EXW','DDP'],correct:3},
@@ -328,6 +295,39 @@ const defaultState = {
 };
 let state = defaultState;
 let subscribers = [];
+// REPLACES S.get()
+function getState(){
+  return state;
+}
+
+
+  function updateState(newData){
+  update(gameRef, newData);
+}
+
+
+function resetState(){
+  set(gameRef, defaultState);
+}
+
+
+// MAKE GLOBAL (so old functions still work)
+window.S = {
+  get: getState,
+  update: updateState,
+  reset: resetState,
+  sub: function(callback){
+    subscribers.push(callback);
+  }
+};
+// Generate device ID once per browser
+if(!localStorage.getItem('LAS_DEVICE_ID')){
+  localStorage.setItem('LAS_DEVICE_ID', 'dev_' + Math.random().toString(36).substr(2,9));
+}
+S.did = localStorage.getItem('LAS_DEVICE_ID');
+
+const SK='LAS_STATE';
+
 
 function initSt(){return{phase:'lobby',teams:[],questions:JSON.parse(JSON.stringify(DQ)),currentQuestionIndex:-1,activeTeam:null,timerDuration:30,timerRemaining:30,timerRunning:false,timerStartedAt:null,gameStarted:false,announcement:'',round:0,bets:{},bettingOpen:false,selectedAnswer:null,lastResult:null,winner:null,assignedDevices:[],version:0}}
 
