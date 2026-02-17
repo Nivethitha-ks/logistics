@@ -439,7 +439,10 @@ function doLogin(){
 // ─── INIT ─────────────────────────────────────────────
 function initAdmin(){
   const st=S.get();
-  editTeams=st.teams.length?JSON.parse(JSON.stringify(st.teams)):genTeams(4);
+  editTeams = (st.teams && st.teams.length)
+  ? JSON.parse(JSON.stringify(st.teams))
+  : genTeams(4);
+
   document.getElementById('team-count').value=editTeams.length;
   document.getElementById('timer-default').value=st.timerDuration||30;
   renderTeamInputs();renderQBank();renderLive();renderSidebar();
