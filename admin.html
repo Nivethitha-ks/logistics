@@ -319,27 +319,11 @@ const DQ=[
   {id:'q10',text:'What is a "cross-dock" operation in logistics?',options:['Loading cargo across borders','Transferring goods from inbound to outbound without storage','A dock shared between two warehouses','Overnight freight handling at airports'],correct:1}
 ];
 function initSt(){return{phase:'lobby',teams:[],questions:JSON.parse(JSON.stringify(DQ)),currentQuestionIndex:-1,activeTeam:null,timerDuration:30,timerRemaining:30,timerRunning:false,timerStartedAt:null,gameStarted:false,announcement:'',round:0,bets:{},bettingOpen:false,selectedAnswer:null,lastResult:null,winner:null,assignedDevices:[],version:0}}
-class SM{
-  constructor(){this.s=null;this.ls=[];this.ch=null;this.did=this.gid();this.ini()}
-  gid(){let i=sessionStorage.getItem('LAS_DID');if(!i){i='d'+Math.random().toString(36).substr(2,9);sessionStorage.setItem('LAS_DID',i)}return i}
-  ini(){
-    const sv=localStorage.getItem(SK);
-    if(sv){try{this.s=JSON.parse(sv)}catch{this.s=initSt()}}else{this.s=initSt();this.save()}
-    if(typeof BroadcastChannel!=='undefined'){this.ch=new BroadcastChannel('LAS');this.ch.onmessage=e=>{if(e.data&&e.data.t==='SU'&&e.data.s.version>this.s.version){this.s=e.data.s;this.notify()}}}
-    window.addEventListener('storage',e=>{if(e.key===SK&&e.newValue){try{const n=JSON.parse(e.newValue);if(n.version>this.s.version){this.s=n;this.notify()}}catch{}}});
-  }
-  save(){localStorage.setItem(SK,JSON.stringify(this.s))}
-  bcast(){if(this.ch)this.ch.postMessage({t:'SU',s:this.s})}
-  notify(){this.ls.forEach(f=>f(this.s))}
-  get(){return this.s}
-  update(u){this.s={...this.s,...u,version:this.s.version+1};this.save();this.bcast();this.notify()}
-  sub(f){this.ls.push(f)}
-  reset(){this.s=initSt();this.s.questions=JSON.parse(JSON.stringify(DQ));this.save();this.bcast();this.notify()}
-}
+
 function $m(v){return'$'+Number(v).toLocaleString('en-US')}
 function esc(s){if(typeof s!=='string')return'';return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')}
 
-const S=new SM();
+
 const PW='admin123';
 let editTeams=[];
 
@@ -539,5 +523,90 @@ function quickMsg(m){document.getElementById('ann-input').value=m;sendAnn()}
 
 S.sub(st=>{renderLive();renderSidebar();updatePhase(st)});
 </script>
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, set, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyCSyzYtCd-uiolBucZnncuIWpnE5mPG9Cs",
+  authDomain: "logistics-auction-show.firebaseapp.com",
+  databaseURL: "https://logistics-auction-show-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "logistics-auction-show",
+  storageBucket: "logistics-auction-show.firebasestorage.app",
+  messagingSenderId: "596983567254",
+  appId: "1:596983567254:web:91f5b863db7464886503b7"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const gameRef = ref(db, "gameState");
+
+let state = null;
+
+// INITIAL DEFAULT STATE
+const defaultState = {
+  phase:'lobby',
+  teams:[],
+  questions:[],
+  currentQuestionIndex:-1,
+  activeTeam:null,
+  timerDuration:30,
+  timerRemaining:30,
+  timerRunning:false,
+  timerStartedAt:null,
+  gameStarted:false,
+  announcement:'',
+  round:0,
+  bets:{},
+  bettingOpen:false,
+  selectedAnswer:null,
+  lastResult:null,
+  winner:null,
+  assignedDevices:[],
+  version:0
+};
+
+// LISTEN FOR LIVE UPDATES
+onValue(gameRef, (snapshot) => {
+  const data = snapshot.val();
+  if (!data) {
+    set(gameRef, defaultState);
+  } else {
+    state = data;
+    if(typeof renderLive === "function") renderLive();
+    if(typeof renderSidebar === "function") renderSidebar();
+    if(typeof updatePhase === "function") updatePhase(state);
+  }
+});
+
+// REPLACES S.get()
+function getState(){
+  return state;
+}
+
+// REPLACES S.update()
+function updateState(newData){
+  const updated = {
+    ...state,
+    ...newData
+  };
+  set(gameRef, updated);
+}
+
+// REPLACES S.reset()
+function resetState(){
+  set(gameRef, defaultState);
+}
+
+// MAKE GLOBAL (so old functions still work)
+window.S = {
+  get: getState,
+  update: updateState,
+  reset: resetState,
+  sub: function(){}
+};
+</script>
+
+
 </body>
 </html>
