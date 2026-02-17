@@ -321,7 +321,8 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const gameRef = ref(db, "gameState");
 
-let state = null;
+let state = defaultState;
+
 
 // INITIAL DEFAULT STATE
 const defaultState = {
@@ -350,8 +351,9 @@ const defaultState = {
 onValue(gameRef, (snapshot) => {
   const data = snapshot.val();
   if (!data) {
-    set(gameRef, defaultState);
-  } else {
+  state = defaultState;
+  set(gameRef, defaultState);
+} else {
     state = data;
     if(typeof renderLive === "function") renderLive();
     if(typeof renderSidebar === "function") renderSidebar();
@@ -364,14 +366,18 @@ function getState(){
   return state;
 }
 
-// REPLACES S.update()
 function updateState(newData){
+  if(!state) state = defaultState;
+
   const updated = {
     ...state,
     ...newData
   };
-  set(gameRef, updated);
+
+  state = updated;          // update local copy
+  set(gameRef, updated);    // push to firebase
 }
+
 
 // REPLACES S.reset()
 function resetState(){
