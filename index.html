@@ -263,14 +263,14 @@ let state = defaultState;
 onValue(gameRef, (snapshot) => {
   const data = snapshot.val();
   if (!data) {
-  state = defaultState;
-  set(gameRef, defaultState);
-} 
-else {
+    state = defaultState;
+    set(gameRef, defaultState);
+  } else {
     state = data;
-    if(typeof renderLive === "function") renderLive();
-    if(typeof renderSidebar === "function") renderSidebar();
-    if(typeof updatePhase === "function") updatePhase(state);
+
+    subscribers.forEach(cb => {
+      try { cb(state); } catch(e) {}
+    });
   }
 });
 
@@ -295,8 +295,11 @@ window.S = {
   get: getState,
   update: updateState,
   reset: resetState,
-  sub: function(){}
+  sub: function(callback){
+    subscribers.push(callback);
+  }
 };
+
 const SK='LAS_STATE';
 const DQ=[
   {id:'q1',text:'What does "ETA" stand for in logistics?',options:['Estimated Time of Arrival','Electronic Tracking Agent','Express Transport Authorization','Enhanced Transit Algorithm'],correct:0},
