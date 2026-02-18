@@ -3,402 +3,269 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>ADMIN — LOGISTICS AUCTION SHOW</title>
+<title>ADMIN · LOGISTICS AUCTION SHOW</title>
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Orbitron:wght@400;700;900&family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --gold:#FFD700;--neon-blue:#00D4FF;--neon-green:#00FF88;
-  --neon-red:#FF3366;--neon-orange:#FF8C00;--neon-purple:#BF00FF;
-  --bg:#050510;--ease:cubic-bezier(.23,1,.32,1);
-}
-html,body{width:100%;min-height:100vh;background:var(--bg);color:#fff;font-family:'Rajdhani',sans-serif;overflow-y:auto}
-.sf{position:fixed;inset:0;z-index:0;
-  background:radial-gradient(ellipse at 20% 50%,rgba(0,80,150,.12) 0%,transparent 50%),
-             radial-gradient(ellipse at 80% 20%,rgba(80,0,150,.12) 0%,transparent 50%),
-             var(--bg);pointer-events:none}
-.spots{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}
-.spot{position:absolute;top:-200px;width:5px;height:110vh;
-  background:linear-gradient(to bottom,rgba(255,255,255,.08) 0%,transparent 100%);
-  transform-origin:top center;filter:blur(10px)}
-.spot:nth-child(1){left:15%;animation:s1 8s ease-in-out infinite}
-.spot:nth-child(2){left:45%;animation:s2 11s ease-in-out infinite 2s}
-.spot:nth-child(3){left:70%;animation:s3 9s ease-in-out infinite 1s}
-.spot:nth-child(4){left:88%;animation:s4 12s ease-in-out infinite 3s}
-@keyframes s1{0%,100%{transform:rotate(-20deg)}50%{transform:rotate(18deg)}}
-@keyframes s2{0%,100%{transform:rotate(25deg)}50%{transform:rotate(-18deg)}}
-@keyframes s3{0%,100%{transform:rotate(-15deg)}50%{transform:rotate(22deg)}}
-@keyframes s4{0%,100%{transform:rotate(20deg)}50%{transform:rotate(-25deg)}}
-
-/* === PHASE ENGINE VISUAL STATES === */
-.phase-lobby #btn-start-show{opacity:1;pointer-events:auto}
-.phase-spin #btn-start-show{opacity:.4;pointer-events:none}
-
-/* BUTTONS */
-.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;
-  padding:11px 24px;border:none;border-radius:8px;cursor:pointer;
-  font-family:'Orbitron',sans-serif;font-weight:700;font-size:12px;
-  letter-spacing:1.5px;text-transform:uppercase;transition:all .25s var(--ease)}
-.btn:active{transform:scale(.97)}
-.btn-gold{background:linear-gradient(135deg,#7a5900,#FFD700,#7a5900);color:#000;box-shadow:0 0 18px rgba(255,215,0,.4)}
-.btn-gold:hover{box-shadow:0 0 35px rgba(255,215,0,.8);transform:translateY(-2px)}
-.btn-blue{background:linear-gradient(135deg,#004466,#00D4FF,#004466);color:#fff;box-shadow:0 0 15px rgba(0,212,255,.3)}
-.btn-blue:hover{box-shadow:0 0 30px rgba(0,212,255,.7);transform:translateY(-2px)}
-.btn-green{background:linear-gradient(135deg,#005533,#00FF88,#005533);color:#000;box-shadow:0 0 15px rgba(0,255,136,.3)}
-.btn-green:hover{box-shadow:0 0 30px rgba(0,255,136,.7);transform:translateY(-2px)}
-.btn-red{background:linear-gradient(135deg,#7a001a,#FF3366,#7a001a);color:#fff;box-shadow:0 0 15px rgba(255,51,102,.3)}
-.btn-red:hover{box-shadow:0 0 30px rgba(255,51,102,.7);transform:translateY(-2px)}
-.btn-purple{background:linear-gradient(135deg,#3a0066,#BF00FF,#3a0066);color:#fff;box-shadow:0 0 15px rgba(191,0,255,.3)}
-.btn-purple:hover{box-shadow:0 0 30px rgba(191,0,255,.7);transform:translateY(-2px)}
-.btn-orange{background:linear-gradient(135deg,#7a3c00,#FF8C00,#7a3c00);color:#fff;box-shadow:0 0 15px rgba(255,140,0,.3)}
-.btn-orange:hover{box-shadow:0 0 30px rgba(255,140,0,.7);transform:translateY(-2px)}
-.btn-lg{padding:16px 40px;font-size:16px;letter-spacing:2px}
-.btn-sm{padding:7px 14px;font-size:10px;letter-spacing:1px}
-.btn:disabled{opacity:.35;cursor:not-allowed;transform:none!important;box-shadow:none!important}
-/* INPUTS */
-.inp{background:rgba(0,0,0,.4);border:1px solid rgba(0,212,255,.22);border-radius:7px;
-  padding:10px 14px;color:#fff;font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:600;
-  width:100%;transition:border-color .3s,box-shadow .3s;outline:none}
-.inp:focus{border-color:var(--neon-blue);box-shadow:0 0 12px rgba(0,212,255,.3)}
-.inp::placeholder{color:rgba(255,255,255,.3)}
-.lbl{display:block;font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:2px;color:var(--neon-blue);margin-bottom:5px}
-/* NEON TEXT */
-.neon-gold{color:var(--gold);text-shadow:0 0 12px var(--gold),0 0 35px var(--gold)}
-/* GLASS */
-.glass{background:rgba(10,15,40,.82);backdrop-filter:blur(18px);border:1px solid rgba(0,212,255,.2);border-radius:14px}
-/* NOTIFICATION */
-#notif{position:fixed;top:76px;right:20px;z-index:500;padding:12px 22px;border-radius:9px;min-width:220px;
-  font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:600;
-  transform:translateX(120%);transition:transform .4s var(--ease);backdrop-filter:blur(16px)}
+:root{--gold:#F5C518;--nb:#00C9FF;--ng:#00E878;--nr:#FF2D55;--no:#FF9500;--np:#BF5FFF;--bg:#06070F}
+html,body{width:100%;min-height:100vh;background:var(--bg);color:#fff;font-family:'Rajdhani',sans-serif}
+#bg{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 70% 50% at 20% 40%,rgba(0,80,160,.18),transparent 60%),radial-gradient(ellipse 60% 45% at 80% 15%,rgba(100,0,180,.15),transparent 55%)}
+#app{position:relative;z-index:5;min-height:100vh}
+#phasebar{position:fixed;top:0;left:0;right:0;height:4px;z-index:999;transition:background 1s,box-shadow 1s;background:rgba(0,201,255,.5)}
+#notif{position:fixed;top:22px;right:22px;z-index:9999;padding:12px 22px;border-radius:8px;min-width:200px;font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:1.5px;transform:translateX(140%);transition:transform .4s;pointer-events:none;background:rgba(0,201,255,.1);border:1px solid var(--nb);color:var(--nb)}
 #notif.show{transform:translateX(0)}
-#notif.ok{background:rgba(0,255,136,.12);border:1px solid var(--neon-green);color:var(--neon-green)}
-#notif.err{background:rgba(255,51,102,.12);border:1px solid var(--neon-red);color:var(--neon-red)}
-#notif.info{background:rgba(0,212,255,.12);border:1px solid var(--neon-blue);color:var(--neon-blue)}
-/* PHASE BANNER */
-#phase-banner{position:fixed;top:0;left:0;right:0;z-index:200;pointer-events:none;
-  display:flex;align-items:center;justify-content:center;height:3px}
-.phase-bar{width:100%;height:3px;transition:background .6s}
-.pb-lobby{background:rgba(0,212,255,.4)}
-.pb-spin{background:linear-gradient(90deg,var(--neon-blue),var(--neon-purple))}
-.pb-betting{background:linear-gradient(90deg,var(--gold),var(--neon-orange));animation:pbar 1s ease-in-out infinite}
-.pb-answering{background:linear-gradient(90deg,var(--neon-green),var(--neon-blue));animation:pbar .6s ease-in-out infinite}
-.pb-result{background:linear-gradient(90deg,var(--neon-green),var(--gold))}
-.pb-reveal{background:var(--gold)}
-@keyframes pbar{0%,100%{opacity:.7}50%{opacity:1}}
-/* LAYOUT */
-#app{position:relative;z-index:10;min-height:100vh}
+#notif.ok{background:rgba(0,232,120,.12);border-color:var(--ng);color:var(--ng)}
+#notif.err{background:rgba(255,45,85,.12);border-color:var(--nr);color:var(--nr)}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:7px;padding:12px 26px;border:none;border-radius:9px;cursor:pointer;font-family:'Orbitron',sans-serif;font-weight:700;font-size:11px;letter-spacing:2px;text-transform:uppercase;transition:all .25s;position:relative;overflow:hidden}
+.btn:hover{filter:brightness(1.2);transform:translateY(-2px)}
+.btn:active{transform:scale(.96)!important;filter:brightness(.9)}
+.btn-gold{background:linear-gradient(135deg,#4a3000,var(--gold),#4a3000);color:#000;box-shadow:0 0 22px rgba(245,197,24,.4)}
+.btn-blue{background:linear-gradient(135deg,#003050,var(--nb),#003050);color:#fff;box-shadow:0 0 18px rgba(0,201,255,.3)}
+.btn-green{background:linear-gradient(135deg,#004020,var(--ng),#004020);color:#000;box-shadow:0 0 18px rgba(0,232,120,.3)}
+.btn-red{background:linear-gradient(135deg,#500015,var(--nr),#500015);color:#fff;box-shadow:0 0 18px rgba(255,45,85,.3)}
+.btn-sm{padding:8px 16px;font-size:9px;letter-spacing:1.5px}
+.btn-lg{padding:16px 44px;font-size:14px;letter-spacing:2.5px}
+.btn:disabled{opacity:.3;cursor:not-allowed;transform:none!important;filter:none!important;box-shadow:none!important}
+.inp{background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.12);border-radius:8px;padding:10px 14px;color:#fff;font-family:'Rajdhani',sans-serif;font-size:15px;font-weight:600;width:100%;outline:none;transition:.3s}
+.inp:focus{border-color:var(--nb);box-shadow:0 0 12px rgba(0,201,255,.2)}
+.inp::placeholder{color:rgba(255,255,255,.25)}
+.lbl{display:block;font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2.5px;color:var(--nb);margin-bottom:5px}
+/* LOGIN */
 #login{min-height:100vh;display:flex;align-items:center;justify-content:center}
-.login-card{padding:44px;max-width:400px;width:90%;text-align:center}
-.login-title{font-family:'Bebas Neue',sans-serif;font-size:44px;color:var(--gold);margin-bottom:6px;text-shadow:0 0 15px var(--gold)}
-.login-sub{font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:3px;color:rgba(255,255,255,.4);margin-bottom:28px}
-.login-err{color:var(--neon-red);font-family:'Rajdhani',sans-serif;font-size:14px;margin-top:10px;min-height:18px}
+.lcard{width:min(420px,92vw);background:rgba(12,14,26,.95);backdrop-filter:blur(24px);border:1px solid rgba(0,201,255,.25);border-radius:18px;padding:48px 40px;text-align:center}
+.l-eyebrow{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:5px;color:rgba(255,255,255,.3);margin-bottom:14px}
+.l-title{font-family:'Bebas Neue',sans-serif;font-size:54px;color:var(--gold);text-shadow:0 0 20px var(--gold);margin-bottom:4px;letter-spacing:4px}
+.l-sub{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:rgba(255,255,255,.35);margin-bottom:36px}
+.l-err{color:var(--nr);font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;margin-top:10px;min-height:16px}
+/* ADMIN */
 #admin{display:none}
-.ahdr{background:rgba(0,0,0,.65);backdrop-filter:blur(18px);border-bottom:1px solid rgba(0,212,255,.18);
-  padding:14px 22px;position:sticky;top:0;z-index:100;
-  display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px}
-.alogo{font-family:'Bebas Neue',sans-serif;font-size:26px;color:var(--gold);letter-spacing:3px}
-.aphase{font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:2px;color:var(--neon-blue)}
-.abody{display:grid;grid-template-columns:300px 1fr;min-height:calc(100vh - 78px)}
-@media(max-width:900px){.abody{grid-template-columns:1fr}}
-.aside{background:rgba(0,0,0,.4);border-right:1px solid rgba(0,212,255,.12);
-  padding:16px 14px;display:flex;flex-direction:column;gap:16px;overflow-y:auto}
-.aside-sec{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:11px;padding:14px}
-.aside-ttl{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:var(--neon-blue);margin-bottom:10px}
-.amain{padding:18px 22px;overflow-y:auto}
-/* TABS */
-.tabs{display:flex;gap:3px;margin-bottom:20px;background:rgba(0,0,0,.3);padding:5px;border-radius:10px;flex-wrap:wrap}
-.tab{padding:9px 18px;border:none;border-radius:7px;background:transparent;color:rgba(255,255,255,.4);
-  cursor:pointer;font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:2px;transition:all .3s}
-.tab.on{background:rgba(0,212,255,.15);color:var(--neon-blue);box-shadow:0 0 12px rgba(0,212,255,.2)}
-.tab:hover:not(.on){color:rgba(255,255,255,.7);background:rgba(255,255,255,.05)}
-.tabp{display:none;animation:fadeIn .3s}
+.a-hdr{background:rgba(6,7,15,.95);backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.08);padding:14px 24px;position:sticky;top:0;z-index:200;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.a-logo{font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--gold);letter-spacing:4px}
+.phase-badge{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border-radius:6px;font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;background:rgba(0,201,255,.1);border:1px solid rgba(0,201,255,.3);color:var(--nb)}
+.pdot{width:8px;height:8px;border-radius:50%;background:var(--nb);animation:pdot 1.2s ease-in-out infinite}
+@keyframes pdot{0%,100%{opacity:1}50%{opacity:.3}}
+.a-body{display:grid;grid-template-columns:280px 1fr;min-height:calc(100vh - 62px)}
+@media(max-width:900px){.a-body{grid-template-columns:1fr}}
+.aside{padding:16px 14px;background:rgba(0,0,0,.35);border-right:1px solid rgba(255,255,255,.06);display:flex;flex-direction:column;gap:12px;overflow-y:auto;max-height:calc(100vh - 62px);position:sticky;top:62px}
+.amain{padding:20px 24px;overflow-y:auto}
+.sc{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:14px}
+.sc-ttl{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:3px;color:rgba(255,255,255,.4);margin-bottom:10px}
+.tabs{display:flex;gap:3px;background:rgba(0,0,0,.4);padding:5px;border-radius:10px;margin-bottom:22px;flex-wrap:wrap}
+.tab{padding:10px 20px;border:none;border-radius:7px;background:transparent;color:rgba(255,255,255,.35);cursor:pointer;font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;transition:.3s}
+.tab.on{background:rgba(0,201,255,.15);color:var(--nb);box-shadow:0 0 14px rgba(0,201,255,.2)}
+.tab:hover:not(.on){color:rgba(255,255,255,.7);background:rgba(255,255,255,.06)}
+.tabp{display:none;animation:tpf .3s}
 .tabp.on{display:block}
-@keyframes fadeIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
-/* SECTION CARD */
-.scard{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:11px;padding:18px;margin-bottom:14px}
-.scard-ttl{font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:var(--neon-blue);margin-bottom:12px}
-/* TEAM ROWS */
-.trow{display:flex;gap:7px;align-items:center;margin-bottom:7px;animation:fadeIn .3s}
-/* Q CARD */
-.qcard{background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.07);border-radius:11px;padding:14px;margin-bottom:10px;transition:all .3s}
-.qcard:hover{border-color:rgba(0,212,255,.3)}
-.qcard.sel{border-color:var(--neon-blue);background:rgba(0,212,255,.07);box-shadow:0 0 18px rgba(0,212,255,.2)}
-.qhdr{display:flex;align-items:flex-start;gap:10px;margin-bottom:8px}
-.qnum-lbl{font-family:'Orbitron',sans-serif;font-size:10px;color:var(--neon-blue);font-weight:700;min-width:28px}
-.qtext-lbl{flex:1;font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:600}
-.qactions{display:flex;gap:5px;flex-shrink:0}
-.qorow{display:flex;gap:7px;align-items:center;margin-bottom:5px}
-.qorow input{flex:1}
-.corr-dot{width:20px;height:20px;border-radius:50%;border:2px solid rgba(255,255,255,.2);cursor:pointer;
-  flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:10px;transition:all .2s}
-.corr-dot.on{background:var(--neon-green);border-color:var(--neon-green);box-shadow:0 0 8px var(--neon-green)}
-/* LIVE CONTROL */
-.ctrl-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:18px}
-@media(max-width:800px){.ctrl-grid{grid-template-columns:1fr}}
-.team-act-btn{display:flex;align-items:center;justify-content:space-between;padding:11px 13px;
-  border-radius:8px;margin-bottom:7px;background:rgba(255,255,255,.04);border:1px solid rgba(255,255,255,.08);
-  cursor:pointer;transition:all .3s;border-width:0;width:100%;color:#fff;text-align:left}
-.team-act-btn:hover{background:rgba(0,212,255,.08);border-color:rgba(0,212,255,.3)}
-.team-act-btn.on{background:rgba(0,212,255,.14);border:1px solid var(--neon-blue);box-shadow:0 0 14px rgba(0,212,255,.2)}
-/* SIDEBAR DATA ROWS */
-.lb-row{display:flex;align-items:center;gap:8px;padding:7px 9px;border-radius:7px;margin-bottom:5px;background:rgba(255,255,255,.03)}
-.lb-row.at{background:rgba(0,212,255,.09);border:1px solid rgba(0,212,255,.3)}
-.bet-row{display:flex;align-items:center;justify-content:space-between;padding:7px 9px;border-radius:7px;margin-bottom:4px;background:rgba(255,255,255,.03)}
-.bet-row.hb{border:1px solid rgba(255,215,0,.25);background:rgba(255,215,0,.05)}
-/* TIMER BIG */
-.timer-big{font-family:'Orbitron',sans-serif;font-size:52px;font-weight:900;text-align:center;color:var(--neon-blue);text-shadow:0 0 18px var(--neon-blue)}
-/* FOOTER */
-.afoot{display:flex;gap:10px;flex-wrap:wrap;align-items:center;padding:14px 22px;
-  background:rgba(0,0,0,.5);border-top:1px solid rgba(0,212,255,.12);position:sticky;bottom:0;z-index:50}
-.dot{width:9px;height:9px;border-radius:50%}
-.dot.on{background:var(--neon-green);box-shadow:0 0 6px var(--neon-green)}
-.dot.wait{background:var(--neon-orange);box-shadow:0 0 6px var(--neon-orange)}
-.wl{display:inline-flex;padding:2px 7px;border-radius:20px;font-family:'Orbitron',sans-serif;font-size:8px;font-weight:700}
-.ww{background:rgba(0,255,136,.15);color:var(--neon-green);border:1px solid rgba(0,255,136,.3)}
-.wloss{background:rgba(255,51,102,.12);color:var(--neon-red);border:1px solid rgba(255,51,102,.25)}
-
-/* PHASE INDICATOR CARD */
-.phase-indicator{padding:10px 16px;border-radius:9px;margin-bottom:14px;display:flex;align-items:center;gap:10px;
-  background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.2);font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:2px;color:var(--neon-blue)}
-.phase-dot-animated{width:10px;height:10px;border-radius:50%;background:var(--neon-green);
-  box-shadow:0 0 8px var(--neon-green);animation:pdot 1s ease-in-out infinite}
-@keyframes pdot{0%,100%{opacity:1}50%{opacity:.2}}
+@keyframes tpf{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.mc{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.08);border-radius:12px;padding:20px;margin-bottom:16px}
+.mc-ttl{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:3px;color:var(--nb);margin-bottom:14px}
+.trow{display:flex;gap:8px;align-items:center;margin-bottom:8px}
+.qcard{background:rgba(255,255,255,.025);border:1px solid rgba(255,255,255,.08);border-radius:11px;padding:14px;margin-bottom:9px;transition:.3s}
+.qcard:hover{border-color:rgba(0,201,255,.3)}
+.qcard.sel{border-color:var(--nb);background:rgba(0,201,255,.07);box-shadow:0 0 20px rgba(0,201,255,.15)}
+.qhdr{display:flex;align-items:flex-start;gap:10px}
+.qnl{font-family:'Orbitron',sans-serif;font-size:10px;color:var(--nb);font-weight:700;min-width:28px;margin-top:2px}
+.qtext{flex:1;font-family:'Rajdhani',sans-serif;font-size:14px;font-weight:600;line-height:1.45}
+.qbody{overflow:hidden;max-height:0;transition:max-height .4s}
+.qbody.open{max-height:700px;margin-top:12px}
+.qorow{display:flex;gap:8px;align-items:center;margin-bottom:7px}
+.cdot{width:22px;height:22px;border-radius:50%;border:2px solid rgba(255,255,255,.2);cursor:pointer;flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:11px;transition:.2s}
+.cdot.on{background:var(--ng);border-color:var(--ng);box-shadow:0 0 10px var(--ng)}
+.act-btn{display:flex;align-items:center;justify-content:space-between;width:100%;padding:11px 14px;border-radius:9px;border:1px solid rgba(255,255,255,.09);background:rgba(255,255,255,.03);cursor:pointer;color:#fff;font-family:inherit;transition:.3s;margin-bottom:7px;text-align:left}
+.act-btn:hover{background:rgba(0,201,255,.08);border-color:rgba(0,201,255,.3)}
+.act-btn.on{background:rgba(0,232,120,.1);border-color:rgba(0,232,120,.4);box-shadow:0 0 16px rgba(0,232,120,.12)}
+.lbr{display:flex;align-items:center;gap:8px;padding:7px 10px;border-radius:7px;margin-bottom:4px;background:rgba(255,255,255,.03)}
+.lbr.at{background:rgba(0,201,255,.09);border:1px solid rgba(0,201,255,.25)}
+.betr{display:flex;align-items:center;justify-content:space-between;padding:6px 9px;border-radius:6px;margin-bottom:4px;background:rgba(255,255,255,.03)}
+.betr.hb{border:1px solid rgba(245,197,24,.2);background:rgba(245,197,24,.05)}
+.tbig{font-family:'Orbitron',sans-serif;font-weight:900;font-size:56px;text-align:center;color:var(--nb);text-shadow:0 0 20px var(--nb);line-height:1}
+.tbig.warn{color:var(--no);text-shadow:0 0 20px var(--no)}
+.tbig.dang{color:var(--nr);text-shadow:0 0 30px var(--nr);animation:tpulse .3s ease-in-out infinite}
+@keyframes tpulse{0%,100%{transform:scale(1)}50%{transform:scale(1.06)}}
+.flow{display:flex;align-items:center;gap:7px;flex-wrap:wrap;padding:12px 14px;background:rgba(0,0,0,.3);border-radius:10px;margin-bottom:16px;font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:1px}
+.fstep{padding:5px 9px;border-radius:5px;white-space:nowrap}
+.farrow{color:rgba(255,255,255,.25);font-size:12px}
+.ans-box{padding:14px 16px;border-radius:9px;background:rgba(255,255,255,.03);border:1px solid rgba(255,255,255,.08);font-family:'Rajdhani',sans-serif;font-size:16px;min-height:52px;display:flex;align-items:center;transition:.4s;margin-bottom:14px}
+.a-foot{padding:12px 24px;background:rgba(0,0,0,.6);border-top:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:14px;flex-wrap:wrap;position:sticky;bottom:0;z-index:100}
+.cgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:800px){.cgrid{grid-template-columns:1fr}}
 </style>
 </head>
 <body>
-<div class="sf"></div>
-<div class="spots"><div class="spot"></div><div class="spot"></div><div class="spot"></div><div class="spot"></div></div>
-<div id="phase-banner"><div class="phase-bar pb-lobby" id="phase-bar"></div></div>
+<div id="bg"></div>
+<div id="phasebar"></div>
 <div id="notif"></div>
 <div id="app">
 
-<!-- LOGIN -->
 <div id="login">
-  <div class="glass login-card">
-    <div class="login-title neon-gold">⚙ ADMIN</div>
-    <div class="login-sub">LOGISTICS AUCTION SHOW · MASTER CONTROL</div>
-    <div style="margin-bottom:14px">
-      <label class="lbl">ADMIN PASSWORD</label>
-      <input class="inp" type="password" id="pw" placeholder="Enter password" style="margin-bottom:12px">
-    </div>
-    <button class="btn btn-gold" style="width:100%" id="login-btn">🔓 ACCESS CONTROL PANEL</button>
-    <div class="login-err" id="login-err"></div>
+  <div class="lcard">
+    <div class="l-eyebrow">MASTER CONTROL PANEL</div>
+    <div class="l-title">ADMIN</div>
+    <div class="l-sub">LOGISTICS AUCTION SHOW</div>
+    <label class="lbl" style="margin-bottom:6px">PASSWORD</label>
+    <input class="inp" type="password" id="pw" placeholder="admin123" style="margin-bottom:16px;text-align:center;letter-spacing:6px">
+    <button class="btn btn-gold" style="width:100%;font-size:14px;padding:16px" id="L_btn">🔓 ACCESS PANEL</button>
+    <div class="l-err" id="lerr"></div>
   </div>
 </div>
 
-<!-- ADMIN PANEL -->
 <div id="admin">
-  <div class="ahdr">
-    <div>
-      <div class="alogo">⚙ ADMIN CONTROL</div>
-      <div style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:rgba(255,255,255,.35)">LOGISTICS AUCTION SHOW · MASTER</div>
-    </div>
-    <div class="aphase" id="aphase">PHASE: LOBBY</div>
-    <div style="display:flex;gap:8px;flex-wrap:wrap">
-      <button class="btn btn-red btn-sm" id="btn-reset">🔄 RESET GAME</button>
-      <button class="btn btn-gold btn-sm" id="btn-display">📺 MAIN DISPLAY</button>
-    </div>
+  <div class="a-hdr">
+    <div class="a-logo">⚙ ADMIN</div>
+    <div style="width:1px;height:24px;background:rgba(255,255,255,.12)"></div>
+    <div class="phase-badge" id="phase-badge"><div class="pdot" id="pdot"></div><span id="phase-lbl">LOBBY</span></div>
+    <div style="flex:1"></div>
+    <button class="btn btn-blue btn-sm" id="A_display">📺 DISPLAY</button>
+    <button class="btn btn-red btn-sm" id="A_reset">🔄 RESET</button>
   </div>
 
-  <div class="abody">
-    <!-- SIDEBAR -->
+  <div class="a-body">
     <div class="aside">
-      <div class="aside-sec">
-        <div class="aside-ttl">📡 CURRENT PHASE</div>
-        <div class="phase-indicator"><div class="phase-dot-animated"></div><span id="aside-phase-txt">LOBBY</span></div>
-        <div style="display:flex;gap:5px;flex-wrap:wrap" id="phase-btns-quick">
-          <button class="btn btn-blue btn-sm" id="btn-phase-spin">→ SPIN</button>
-          <button class="btn btn-purple btn-sm" id="btn-phase-betting">→ BETTING</button>
-          <button class="btn btn-green btn-sm" id="btn-phase-answering">→ ANSWERING</button>
-          <button class="btn btn-orange btn-sm" id="btn-phase-result">→ RESULT</button>
-        </div>
+      <div class="sc">
+        <div class="sc-ttl">⏱ LIVE TIMER</div>
+        <div class="tbig" id="S_timer">--</div>
+        <div style="text-align:center;margin-top:7px;font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:2px;color:rgba(255,255,255,.3)" id="S_tstatus">STOPPED</div>
       </div>
-      <div class="aside-sec">
-        <div class="aside-ttl">🏆 LEADERBOARD</div>
-        <div id="aside-lb"></div>
-      </div>
-      <div class="aside-sec">
-        <div class="aside-ttl">💰 LIVE BETS</div>
-        <div id="aside-bets"></div>
-      </div>
-      <div class="aside-sec">
-        <div class="aside-ttl">❓ ACTIVE QUESTION</div>
-        <div id="aside-q" style="font-family:'Rajdhani',sans-serif;font-size:12px;color:rgba(255,255,255,.6);line-height:1.5">No question selected</div>
-      </div>
-      <div class="aside-sec">
-        <div class="aside-ttl">⏱ TIMER</div>
-        <div class="timer-big" id="aside-timer">--</div>
-      </div>
+      <div class="sc"><div class="sc-ttl">🏆 LEADERBOARD</div><div id="S_lb"></div></div>
+      <div class="sc"><div class="sc-ttl">💰 LIVE BETS</div><div id="S_bets"></div></div>
+      <div class="sc"><div class="sc-ttl">❓ ACTIVE QUESTION</div><div id="S_q" style="font-family:'Rajdhani',sans-serif;font-size:12px;line-height:1.5;color:rgba(255,255,255,.5)">None</div></div>
     </div>
 
-    <!-- MAIN -->
     <div class="amain">
       <div class="tabs">
-        <button class="tab on" data-tab="setup">⚙ SETUP</button>
-        <button class="tab" data-tab="questions">❓ QUESTIONS</button>
-        <button class="tab" data-tab="live">🎬 LIVE CONTROL</button>
-        <button class="tab" data-tab="broadcast">📢 BROADCAST</button>
+        <button class="tab on" data-t="setup">⚙ SETUP</button>
+        <button class="tab" data-t="questions">❓ QUESTIONS</button>
+        <button class="tab" data-t="live">🎬 LIVE</button>
+        <button class="tab" data-t="broadcast">📢 BROADCAST</button>
       </div>
 
-      <!-- SETUP TAB -->
       <div id="tabp-setup" class="tabp on">
-        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:30px;color:var(--gold);margin-bottom:18px">PRE-GAME SETUP</h2>
-        <div class="scard">
-          <div class="scard-ttl">TEAM COUNT (2–10)</div>
-          <div style="display:flex;gap:10px;align-items:center;flex-wrap:wrap">
-            <input class="inp" type="number" id="team-count" min="2" max="10" value="4" style="width:90px">
-            <button class="btn btn-blue btn-sm" id="btn-gen-slots">GENERATE SLOTS</button>
+        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:34px;color:var(--gold);margin-bottom:20px;letter-spacing:3px">PRE-SHOW SETUP</h2>
+        <div class="mc">
+          <div class="mc-ttl">TEAM CONFIGURATION</div>
+          <div style="display:flex;gap:10px;align-items:flex-end;margin-bottom:14px;flex-wrap:wrap">
+            <div><label class="lbl">TEAM COUNT (2–10)</label><input class="inp" type="number" id="teamCount" min="2" max="10" value="4" style="width:80px"></div>
+            <button class="btn btn-blue btn-sm" id="A_gen">GENERATE</button>
+          </div>
+          <div id="teamInputs"></div>
+          <div style="display:flex;gap:10px;align-items:flex-end;margin-top:10px;flex-wrap:wrap">
+            <div style="flex:1;min-width:160px"><label class="lbl">SET ALL MONEY TO</label><input class="inp" type="number" id="allMoney" value="10000"></div>
+            <button class="btn btn-blue btn-sm" id="A_allMoney">APPLY</button>
           </div>
         </div>
-        <div class="scard">
-          <div class="scard-ttl">TEAM NAMES & STARTING MONEY</div>
-          <div id="team-inputs"></div>
-          <div style="margin-top:12px;display:flex;gap:8px;align-items:flex-end;flex-wrap:wrap">
-            <div style="flex:1;min-width:180px">
-              <label class="lbl">SET ALL TO SAME AMOUNT</label>
-              <input class="inp" type="number" id="all-money" placeholder="e.g. 10000" value="10000">
-            </div>
-            <button class="btn btn-blue btn-sm" id="btn-all-money">APPLY ALL</button>
-          </div>
-        </div>
-        <div class="scard">
-          <div class="scard-ttl">DEFAULT TIMER (5–60 SECONDS)</div>
+        <div class="mc">
+          <div class="mc-ttl">TIMER DEFAULT (5–120s)</div>
           <div style="display:flex;gap:10px;align-items:center">
-            <input class="inp" type="number" id="timer-default" min="5" max="60" value="30" style="width:90px">
-            <span style="font-family:'Rajdhani',sans-serif;font-size:14px;color:rgba(255,255,255,.5)">seconds</span>
+            <input class="inp" type="number" id="timerDef" min="5" max="120" value="30" style="width:90px">
+            <span style="color:rgba(255,255,255,.4);font-family:'Rajdhani',sans-serif">seconds per question</span>
           </div>
         </div>
-        <button class="btn btn-green" id="btn-save-setup">💾 SAVE CONFIGURATION</button>
-        <div id="setup-msg" style="margin-top:10px;font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:2px;min-height:18px"></div>
-        <div style="margin-top:24px;padding:22px;border:1px solid rgba(255,215,0,.3);border-radius:12px;background:rgba(255,215,0,.04)">
-          <div style="font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:3px;color:var(--gold);margin-bottom:10px">⚡ LAUNCH SEQUENCE</div>
-          <p style="font-family:'Rajdhani',sans-serif;font-size:14px;color:rgba(255,255,255,.6);margin-bottom:14px;line-height:1.6">Save configuration above, then click START LIVE SHOW. Teams open index.html on their devices and spin the wheel to claim a team slot.</p>
-          <button class="btn btn-gold btn-lg" id="btn-start-show">🎬 START LIVE SHOW</button>
+        <div style="display:flex;gap:12px;flex-wrap:wrap;margin-bottom:12px">
+          <button class="btn btn-green" id="A_save">💾 SAVE CONFIG</button>
+        </div>
+        <div id="setupMsg" style="font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:2px;min-height:18px;margin-bottom:22px"></div>
+        <div style="padding:22px;border:1px solid rgba(245,197,24,.3);border-radius:14px;background:rgba(245,197,24,.04)">
+          <div style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:3px;color:var(--gold);margin-bottom:10px">LAUNCH SEQUENCE</div>
+          <p style="font-family:'Rajdhani',sans-serif;font-size:14px;color:rgba(255,255,255,.5);margin-bottom:16px;line-height:1.6">Save config first, then START. Teams open <strong style="color:var(--nb)">index.html</strong> to spin and join.</p>
+          <button class="btn btn-gold btn-lg" id="A_start">▶ START LIVE SHOW</button>
         </div>
       </div>
 
-      <!-- QUESTIONS TAB -->
       <div id="tabp-questions" class="tabp">
-        <div style="display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:20px">
-          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:30px;color:var(--gold)">QUESTION BANK</h2>
-          <button class="btn btn-green btn-sm" id="btn-add-q">+ ADD QUESTION</button>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:22px;flex-wrap:wrap;gap:10px">
+          <h2 style="font-family:'Bebas Neue',sans-serif;font-size:34px;color:var(--gold);letter-spacing:3px">QUESTION BANK</h2>
+          <button class="btn btn-green btn-sm" id="A_addQ">+ ADD QUESTION</button>
         </div>
-        <div id="q-bank"></div>
+        <div id="qBank"></div>
       </div>
 
-      <!-- LIVE CONTROL TAB -->
       <div id="tabp-live" class="tabp">
-        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:30px;color:var(--gold);margin-bottom:18px">LIVE SHOW CONTROL</h2>
-
-        <!-- PHASE FLOW GUIDE -->
-        <div class="scard" style="border-color:rgba(255,215,0,.25);background:rgba(255,215,0,.03);margin-bottom:18px">
-          <div class="scard-ttl" style="color:var(--gold)">GAME FLOW (PHASES)</div>
-          <div style="display:flex;gap:6px;flex-wrap:wrap;font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:1px;color:rgba(255,255,255,.5)">
-            <span style="color:var(--neon-blue)">1. SELECT Q</span> →
-            <span style="color:var(--gold)">2. OPEN BETTING</span> →
-            <span style="color:var(--neon-red)">3. CLOSE BETTING</span> →
-            <span style="color:var(--neon-green)">4. ACTIVATE TEAM</span> →
-            <span style="color:var(--neon-orange)">5. START TIMER</span> →
-            <span style="color:var(--neon-purple)">6. JUDGE ANSWER</span>
+        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:34px;color:var(--gold);margin-bottom:18px;letter-spacing:3px">LIVE CONTROL</h2>
+        <div class="flow">
+          <div class="fstep" style="background:rgba(0,201,255,.14);color:var(--nb)">1 SELECT Q</div><div class="farrow">→</div>
+          <div class="fstep" style="background:rgba(245,197,24,.12);color:var(--gold)">2 OPEN BETTING</div><div class="farrow">→</div>
+          <div class="fstep" style="background:rgba(191,95,255,.12);color:var(--np)">3 TEAMS BET</div><div class="farrow">→</div>
+          <div class="fstep" style="background:rgba(255,45,85,.1);color:var(--nr)">4 CLOSE &amp; REVEAL</div><div class="farrow">→</div>
+          <div class="fstep" style="background:rgba(0,232,120,.1);color:var(--ng)">5 ACTIVATE + TIMER</div><div class="farrow">→</div>
+          <div class="fstep" style="background:rgba(255,149,0,.1);color:var(--no)">6 JUDGE</div>
+        </div>
+        <div class="cgrid">
+          <div class="mc">
+            <div class="mc-ttl">STEP 1 · SELECT QUESTION</div>
+            <select class="inp" id="qSelect" style="margin-bottom:10px"><option value="-1">— Choose question —</option></select>
+            <button class="btn btn-blue btn-sm" id="A_setQ">📌 SET QUESTION</button>
+          </div>
+          <div class="mc" style="border-color:rgba(245,197,24,.25)">
+            <div class="mc-ttl" style="color:var(--gold)">STEP 2 · BETTING</div>
+            <p style="font-family:'Rajdhani',sans-serif;font-size:13px;color:rgba(255,255,255,.5);margin-bottom:12px;line-height:1.5">Teams see <strong style="color:var(--gold)">question text only</strong> — options hidden until you close betting.</p>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <button class="btn btn-gold" id="A_openBet">💰 OPEN BETTING</button>
+              <button class="btn btn-red" id="A_closeBet">🔒 CLOSE &amp; REVEAL</button>
+            </div>
+          </div>
+          <div class="mc" style="border-color:rgba(0,201,255,.2)">
+            <div class="mc-ttl">STEP 3 · TIMER</div>
+            <input class="inp" type="number" id="timerOvr" placeholder="Override seconds (blank=default)" style="margin-bottom:12px">
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <button class="btn btn-green btn-sm" id="A_timerStart">▶ START</button>
+              <button class="btn btn-red btn-sm" id="A_timerStop">⏹ STOP</button>
+              <button class="btn btn-blue btn-sm" id="A_timerReset">↺ RESET</button>
+            </div>
+          </div>
+          <div class="mc" style="border-color:rgba(0,232,120,.18)">
+            <div class="mc-ttl">STEP 3 · ACTIVATE TEAM</div>
+            <div id="teamActList"></div>
           </div>
         </div>
-
-        <div class="ctrl-grid">
-          <div class="scard">
-            <div class="scard-ttl">SELECT QUESTION</div>
-            <select class="inp" id="q-select" style="margin-bottom:10px"><option value="-1">— Choose question —</option></select>
-            <div style="display:flex;gap:7px;flex-wrap:wrap">
-              <button class="btn btn-blue btn-sm" id="btn-set-q">📌 SET QUESTION</button>
-            </div>
-          </div>
-          <div class="scard">
-            <div class="scard-ttl">BETTING PHASE</div>
-            <div style="display:flex;gap:7px;flex-wrap:wrap">
-              <button class="btn btn-purple" id="btn-open-bet">💰 OPEN BETTING</button>
-              <button class="btn btn-red" id="btn-close-bet">🔒 CLOSE BETTING</button>
-            </div>
-            <div style="margin-top:8px;font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:1px;color:rgba(255,255,255,.4)">
-              Close betting → Phase moves to ANSWERING → Question revealed to teams
-            </div>
-          </div>
-          <div class="scard">
-            <div class="scard-ttl">TIMER CONTROL</div>
-            <div style="display:flex;gap:7px;align-items:center;margin-bottom:10px">
-              <input class="inp" type="number" id="timer-override" placeholder="Seconds" style="width:90px">
-              <span style="font-family:'Rajdhani',sans-serif;font-size:12px;color:rgba(255,255,255,.4)">override</span>
-            </div>
-            <div style="display:flex;gap:7px;flex-wrap:wrap">
-              <button class="btn btn-green btn-sm" id="btn-timer-start">▶ START</button>
-              <button class="btn btn-red btn-sm" id="btn-timer-stop">⏹ STOP</button>
-              <button class="btn btn-blue btn-sm" id="btn-timer-reset">↺ RESET</button>
-            </div>
-          </div>
-          <div class="scard" style="grid-column:span 2">
-            <div class="scard-ttl">ACTIVATE TEAM TO ANSWER</div>
-            <div id="team-act-list"></div>
-          </div>
-        </div>
-        <div class="scard">
-          <div class="scard-ttl">ANSWER RESULT</div>
-          <div id="ans-display" style="font-family:'Rajdhani',sans-serif;font-size:17px;color:rgba(255,255,255,.6);margin-bottom:14px">Waiting for team answer...</div>
+        <div class="mc" style="border-color:rgba(255,149,0,.2)">
+          <div class="mc-ttl" style="color:var(--no)">STEP 4 · JUDGE ANSWER</div>
+          <div class="ans-box" id="ansDisplay">⏳ Waiting for team answer...</div>
           <div style="display:flex;gap:10px;flex-wrap:wrap">
-            <button class="btn btn-green" id="btn-correct" disabled>✅ CORRECT — AWARD BET</button>
-            <button class="btn btn-red" id="btn-wrong" disabled>❌ WRONG — DEDUCT BET</button>
+            <button class="btn btn-green" id="A_correct" disabled>✅ CORRECT — AWARD BET</button>
+            <button class="btn btn-red" id="A_wrong" disabled>❌ WRONG — DEDUCT BET</button>
           </div>
         </div>
-        <div class="scard" style="margin-top:16px">
-          <div class="scard-ttl">NEXT QUESTION / END</div>
+        <div class="mc">
+          <div class="mc-ttl">GAME FLOW</div>
           <div style="display:flex;gap:10px;flex-wrap:wrap">
-            <button class="btn btn-blue" id="btn-next-q">⏭ NEXT QUESTION</button>
-            <button class="btn btn-gold" id="btn-end-game">🏆 REVEAL WINNER &amp; END SHOW</button>
+            <button class="btn btn-blue" id="A_nextQ">⏭ NEXT QUESTION</button>
+            <button class="btn btn-gold btn-lg" id="A_endGame">🏆 END SHOW &amp; REVEAL WINNER</button>
           </div>
         </div>
       </div>
 
-      <!-- BROADCAST TAB -->
       <div id="tabp-broadcast" class="tabp">
-        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:30px;color:var(--gold);margin-bottom:18px">BROADCAST</h2>
-        <div class="scard">
-          <div class="scard-ttl">SEND ANNOUNCEMENT TO ALL SCREENS</div>
-          <label class="lbl">MESSAGE</label>
-          <textarea class="inp" id="ann-input" rows="3" placeholder="Type announcement..." style="margin-bottom:10px;resize:vertical"></textarea>
-          <div style="display:flex;gap:8px">
-            <button class="btn btn-gold" id="btn-ann-send">📢 BROADCAST NOW</button>
-            <button class="btn btn-blue btn-sm" id="btn-ann-clear">✕ CLEAR</button>
-          </div>
+        <h2 style="font-family:'Bebas Neue',sans-serif;font-size:34px;color:var(--gold);margin-bottom:20px;letter-spacing:3px">BROADCAST</h2>
+        <div class="mc">
+          <div class="mc-ttl">ANNOUNCEMENT TO ALL SCREENS</div>
+          <textarea class="inp" id="annInput" rows="3" placeholder="Type announcement..." style="margin-bottom:12px;resize:vertical"></textarea>
+          <div style="display:flex;gap:8px"><button class="btn btn-gold" id="A_annSend">📢 BROADCAST</button><button class="btn btn-blue btn-sm" id="A_annClear">✕ CLEAR</button></div>
         </div>
-        <div class="scard">
-          <div class="scard-ttl">QUICK MESSAGES</div>
-          <div id="quick-msgs" style="display:flex;gap:7px;flex-wrap:wrap;margin-top:6px"></div>
+        <div class="mc">
+          <div class="mc-ttl">QUICK MESSAGES</div>
+          <div id="quickMsgs" style="display:flex;gap:7px;flex-wrap:wrap;margin-top:4px"></div>
         </div>
-        <div class="scard">
-          <div class="scard-ttl">MANUAL MONEY ADJUSTMENT</div>
-          <div id="money-adj"></div>
-        </div>
+        <div class="mc"><div class="mc-ttl">MANUAL MONEY ADJUSTMENT</div><div id="moneyAdj"></div></div>
       </div>
     </div>
   </div>
 
-  <div class="afoot">
-    <div style="display:flex;align-items:center;gap:8px;font-family:'Orbitron',sans-serif;font-size:11px;letter-spacing:2px">
-      <div class="dot wait" id="phase-dot"></div>
-      <span id="phase-label">LOBBY PHASE</span>
-    </div>
+  <div class="a-foot">
+    <div style="font-family:'Orbitron',sans-serif;font-size:9px;letter-spacing:2px;color:rgba(255,255,255,.3)">LOGISTICS AUCTION SHOW · ADMIN</div>
     <div style="flex:1"></div>
-    <button class="btn btn-blue btn-sm" id="btn-sync">🔄 SYNC ALL</button>
+    <button class="btn btn-blue btn-sm" id="A_sync">🔄 SYNC</button>
   </div>
 </div>
 
 </div>
 
-<script type="module">
-import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
-import { getDatabase, ref, set, update, onValue } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
-
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<script>
 // ═══════════════════════════════════════
-// FIREBASE CONFIG
+// FIREBASE INIT
 // ═══════════════════════════════════════
-const firebaseConfig = {
+var FB_CONFIG = {
   apiKey: "AIzaSyCSyzYtCd-uiolBucZnncuIWpnE5mPG9Cs",
   authDomain: "logistics-auction-show.firebaseapp.com",
   databaseURL: "https://logistics-auction-show-default-rtdb.asia-southeast1.firebasedatabase.app",
@@ -407,621 +274,632 @@ const firebaseConfig = {
   messagingSenderId: "596983567254",
   appId: "1:596983567254:web:91f5b863db7464886503b7"
 };
-const fbApp = initializeApp(firebaseConfig);
-const db = getDatabase(fbApp);
-const gameRef = ref(db, "gameState");
+try { firebase.initializeApp(FB_CONFIG); } catch(e) { document.body.innerHTML='<div style="position:fixed;inset:0;background:#000;color:#FF2D55;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:20px;font-family:monospace;font-size:18px;z-index:9999"><div>⚠ Firebase Error</div><div style="font-size:14px;color:#fff">'+e.message+'</div><div style="font-size:12px;color:rgba(255,255,255,.5)">Make sure you are serving files via HTTP (not file://)</div></div>'; }
+var DB = firebase.database();
+var GREF = DB.ref('gameState');
 
 // ═══════════════════════════════════════
 // DEFAULT QUESTIONS
 // ═══════════════════════════════════════
-const DQ = [
-  {id:'q1',text:'What does "ETA" stand for in logistics?',options:['Estimated Time of Arrival','Electronic Tracking Agent','Express Transport Authorization','Enhanced Transit Algorithm'],correct:0},
-  {id:'q2',text:'Which shipping term means the seller bears all risks until goods reach the buyer\'s destination?',options:['FOB Origin','CIF','EXW','DDP'],correct:3},
-  {id:'q3',text:'What is the maximum weight allowed for a standard 20-foot intermodal shipping container?',options:['24,000 kg','28,000 kg','33,000 kg','38,000 kg'],correct:0},
-  {id:'q4',text:'In "Last Mile" delivery, what does "last mile" refer to?',options:['The final 1-mile drive','Delivery from hub to end customer','International customs clearance','Warehouse-to-port transport'],correct:1},
-  {id:'q5',text:'Which inventory method assumes the first item received is the first sold?',options:['LIFO','FIFO','JIT','ABC Analysis'],correct:1},
-  {id:'q6',text:'What does 3PL stand for in supply chain management?',options:['Third-Party Logistics','Three-Point Loading','Triple Parcel Layer','Tri-Phase Logistics'],correct:0},
-  {id:'q7',text:'Which document is required for all international ocean freight shipments?',options:['Air Waybill','Bill of Lading','Packing Slip','Purchase Order'],correct:1},
-  {id:'q8',text:'What is the total time from order placement to customer delivery called?',options:['Transit Time','Lead Time','Cycle Time','Processing Time'],correct:1},
-  {id:'q9',text:'Which technology uses radio waves to automatically identify and track inventory?',options:['GPS','NFC','RFID','Barcode'],correct:2},
-  {id:'q10',text:'What is a "cross-dock" operation in logistics?',options:['Loading cargo across borders','Transferring goods from inbound to outbound without storage','A dock shared between two warehouses','Overnight freight handling at airports'],correct:1}
+var DEFAULT_Q = [
+  {id:'q1',text:'What does ETA stand for in logistics?',options:['Estimated Time of Arrival','Electronic Tracking Agent','Express Transport Authorization','Enhanced Transit Algorithm'],correct:0},
+  {id:'q2',text:'Which Incoterm means seller bears all risk until buyer destination?',options:['FOB Origin','CIF','EXW','DDP'],correct:3},
+  {id:'q3',text:'What is a cross-dock operation?',options:['Loading cargo across borders','Transfer inbound to outbound without storage','A shared dock between warehouses','Overnight freight handling'],correct:1},
+  {id:'q4',text:'What does 3PL stand for?',options:['Third-Party Logistics','Three-Point Loading','Triple Parcel Layer','Tri-Phase Logistics'],correct:0},
+  {id:'q5',text:'Which technology uses radio waves to track inventory?',options:['GPS','NFC','RFID','Barcode'],correct:2},
+  {id:'q6',text:'Which inventory method assumes first item received is first sold?',options:['LIFO','FIFO','JIT','ABC Analysis'],correct:1},
+  {id:'q7',text:'What document is required for international ocean freight?',options:['Air Waybill','Bill of Lading','Packing Slip','Purchase Order'],correct:1},
+  {id:'q8',text:'What is "last mile" delivery?',options:['Final 1-mile drive','Delivery from hub to end customer','International customs','Warehouse to port transport'],correct:1},
+  {id:'q9',text:'Total time from order to customer delivery?',options:['Transit Time','Lead Time','Cycle Time','Processing Time'],correct:1},
+  {id:'q10',text:'What does SKU stand for?',options:['Stock Keeping Unit','Supply Key Update','Store Knowledge Upload','Shipment Kit Utility'],correct:0}
 ];
-
-// ═══════════════════════════════════════
-// PHASES: lobby | spin | betting | answering | result | reveal
-// ═══════════════════════════════════════
-function makeDefaultState() {
-  return {
-    phase: 'lobby',
-    version: Date.now(),
-    teams: [],
-    questions: JSON.parse(JSON.stringify(DQ)),
-    currentQuestionIndex: -1,
-    activeTeam: null,
-    timerDuration: 30,
-    timerRemaining: 30,
-    timerRunning: false,
-    timerStartedAt: null,
-    announcement: '',
-    round: 0,
-    bets: {},
-    selectedAnswer: null,
-    lastResult: null,
-    winner: null,
-    assignedDevices: []
-  };
-}
-
-// ═══════════════════════════════════════
-// STATE MANAGEMENT
-// ═══════════════════════════════════════
-let _state = makeDefaultState();
-const _subs = [];
-
-onValue(gameRef, snap => {
-  const data = snap.val();
-  if (!data) {
-    _state = makeDefaultState();
-    set(gameRef, _state);
-  } else {
-    _state = data;
-    _subs.forEach(fn => { try { fn(_state); } catch(e) { console.warn(e); } });
-  }
-});
-
-function getState() { return _state; }
-function updateState(patch) { update(gameRef, patch); }
-function resetState() {
-  const fresh = makeDefaultState();
-  fresh.version = Date.now();
-  set(gameRef, fresh);
-}
-function setPhase(phase) { updateState({ phase }); }
 
 // ═══════════════════════════════════════
 // HELPERS
 // ═══════════════════════════════════════
-const PW = 'admin123';
-function $m(v) { return '$' + Number(v||0).toLocaleString('en-US'); }
-function esc(s) { if(typeof s!=='string') return ''; return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
-function safeClone(obj) { try { return JSON.parse(JSON.stringify(obj)); } catch{ return obj; } }
+function freshState() {
+  return {
+    phase: 'lobby', version: Date.now(),
+    teams: [], questions: JSON.parse(JSON.stringify(DEFAULT_Q)),
+    currentQuestionIndex: -1, activeTeam: null,
+    timerDuration: 30, timerRemaining: 30, timerRunning: false, timerStartedAt: null,
+    announcement: '', round: 0, bets: {},
+    selectedAnswer: null, lastResult: null, winner: null, assignedDevices: []
+  };
+}
+var ST = freshState();
+var editTeams = [];
+var adminReady = false;
+var _autoJudged = false;
 
-let editTeams = [];
+function $m(v) { return '$' + Number(v || 0).toLocaleString(); }
+function esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+function clone(o) { return JSON.parse(JSON.stringify(o)); }
+function upd(patch) { GREF.update(patch); }
 
 // ═══════════════════════════════════════
-// NOTIFICATION
+// NOTIFICATIONS
 // ═══════════════════════════════════════
-function notif(msg, type='info') {
-  const el = document.getElementById('notif');
+function notif(msg, type) {
+  var el = document.getElementById('notif');
   el.textContent = msg;
-  el.className = `show ${type==='success'?'ok':type==='error'?'err':'info'}`;
+  var map = {success:'ok', error:'err', info:'info'};
+  el.className = 'show ' + (map[type] || 'info');
   clearTimeout(el._t);
-  el._t = setTimeout(() => el.className = type==='success'?'ok':type==='error'?'err':'info', 3000);
+  el._t = setTimeout(function() { el.className = (el.className || '').replace('show','').trim(); }, 3200);
 }
 
 // ═══════════════════════════════════════
-// LOGIN
+// FIREBASE LISTENER
+// ═══════════════════════════════════════
+GREF.on('value', function(snap) {
+  var d = snap.val();
+  if (!d) { ST = freshState(); GREF.set(ST); return; }
+  ST = d;
+  if (adminReady) onST(ST);
+});
+
+// ═══════════════════════════════════════
+// LOGIN - wired at bottom after DOM ready
 // ═══════════════════════════════════════
 function doLogin() {
-  const pw = document.getElementById('pw').value;
-  if (pw === PW) {
+  var pw = document.getElementById('pw').value;
+  if (pw === 'admin123') {
     document.getElementById('login').style.display = 'none';
     document.getElementById('admin').style.display = 'block';
     initAdmin();
   } else {
-    document.getElementById('login-err').textContent = '❌ Incorrect password';
-    setTimeout(() => document.getElementById('login-err').textContent = '', 2200);
+    document.getElementById('lerr').textContent = 'Wrong password. Hint: admin123';
+    setTimeout(function() { document.getElementById('lerr').textContent = ''; }, 3000);
   }
 }
-document.getElementById('login-btn').addEventListener('click', doLogin);
-document.getElementById('pw').addEventListener('keydown', e => { if (e.key === 'Enter') doLogin(); });
+
+// ═══════════════════════════════════════
+// PHASE COLORS
+// ═══════════════════════════════════════
+var PINFO = {
+  lobby:     {l:'LOBBY',     c:'#00C9FF'},
+  spin:      {l:'SPIN',      c:'#BF5FFF'},
+  betting:   {l:'BETTING',   c:'#F5C518'},
+  answering: {l:'ANSWERING', c:'#00E878'},
+  result:    {l:'RESULT',    c:'#FF9500'},
+  reveal:    {l:'CHAMPION',  c:'#F5C518'}
+};
+function updatePhaseUI(phase) {
+  var info = PINFO[phase] || {l: phase.toUpperCase(), c: '#00C9FF'};
+  document.getElementById('phasebar').style.cssText = 'position:fixed;top:0;left:0;right:0;height:4px;z-index:999;background:linear-gradient(90deg,transparent,' + info.c + ',transparent);box-shadow:0 0 16px ' + info.c;
+  document.getElementById('phase-lbl').textContent = info.l;
+  var badge = document.getElementById('phase-badge');
+  badge.style.cssText = 'display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border-radius:6px;font-family:Orbitron,sans-serif;font-size:9px;letter-spacing:2px;background:' + info.c + '18;border:1px solid ' + info.c + '44;color:' + info.c;
+  document.getElementById('pdot').style.background = info.c;
+}
+
+// ═══════════════════════════════════════
+// ON STATE CHANGE
+// ═══════════════════════════════════════
+function onST(st) {
+  updatePhaseUI(st.phase);
+  renderSidebar(st);
+  renderLivePanel(st);
+  renderQBank(st);
+}
 
 // ═══════════════════════════════════════
 // INIT ADMIN
 // ═══════════════════════════════════════
 function initAdmin() {
-  const st = getState();
-  editTeams = (st.teams && st.teams.length) ? safeClone(st.teams) : genTeams(4);
-  document.getElementById('team-count').value = editTeams.length;
-  document.getElementById('timer-default').value = st.timerDuration || 30;
-
+  editTeams = ST.teams && ST.teams.length ? clone(ST.teams) : genDT(4);
+  document.getElementById('teamCount').value = editTeams.length;
+  document.getElementById('timerDef').value = ST.timerDuration || 30;
   renderTeamInputs();
-  renderQBank();
-  renderLive();
-  renderSidebar();
-  applyPhaseToUI(st.phase);
-  wireButtons();
-
-  _subs.push(onStateChange);
-  setInterval(timerTick, 500);
+  renderQBank(ST);
+  renderSidebar(ST);
+  renderLivePanel(ST);
+  renderBroadcast();
+  updatePhaseUI(ST.phase);
+  adminReady = true;
+  setInterval(timerTick, 250);
 }
-
-// ═══════════════════════════════════════
-// WIRE ALL BUTTONS — NO INLINE ONCLICK
-// ═══════════════════════════════════════
-function wireButtons() {
-  document.getElementById('btn-gen-slots').addEventListener('click', genSlots);
-  document.getElementById('btn-all-money').addEventListener('click', applyAllMoney);
-  document.getElementById('btn-save-setup').addEventListener('click', saveSetup);
-  document.getElementById('btn-start-show').addEventListener('click', startShow);
-  document.getElementById('btn-add-q').addEventListener('click', addQ);
-  document.getElementById('btn-set-q').addEventListener('click', setQ);
-  document.getElementById('btn-open-bet').addEventListener('click', openBet);
-  document.getElementById('btn-close-bet').addEventListener('click', closeBet);
-  document.getElementById('btn-timer-start').addEventListener('click', startTimer);
-  document.getElementById('btn-timer-stop').addEventListener('click', stopTimer);
-  document.getElementById('btn-timer-reset').addEventListener('click', resetTimer);
-  document.getElementById('btn-correct').addEventListener('click', () => judge(true));
-  document.getElementById('btn-wrong').addEventListener('click', () => judge(false));
-  document.getElementById('btn-next-q').addEventListener('click', nextQuestion);
-  document.getElementById('btn-end-game').addEventListener('click', endGame);
-  document.getElementById('btn-ann-send').addEventListener('click', sendAnn);
-  document.getElementById('btn-ann-clear').addEventListener('click', clearAnn);
-  document.getElementById('btn-sync').addEventListener('click', () => { updateState({ _sync: Date.now() }); notif('All screens synced!', 'success'); });
-  document.getElementById('btn-display').addEventListener('click', () => window.open('index.html', '_blank'));
-  document.getElementById('btn-reset').addEventListener('click', () => {
-    if (confirm('RESET ENTIRE GAME? This will clear all teams, bets, assignments, and return to lobby.')) {
-      resetState();
-      editTeams = genTeams(4);
-      renderTeamInputs();
-      renderQBank();
-      notif('⚠ Game fully reset to default state', 'info');
-    }
-  });
-
-  // Phase quick-set buttons
-  document.getElementById('btn-phase-spin').addEventListener('click', () => setPhase('spin'));
-  document.getElementById('btn-phase-betting').addEventListener('click', () => setPhase('betting'));
-  document.getElementById('btn-phase-answering').addEventListener('click', () => setPhase('answering'));
-  document.getElementById('btn-phase-result').addEventListener('click', () => setPhase('result'));
-
-  // TABS
-  document.querySelectorAll('.tab').forEach(t => {
-    t.addEventListener('click', function() {
-      document.querySelectorAll('.tab').forEach(x => x.classList.remove('on'));
-      document.querySelectorAll('.tabp').forEach(x => x.classList.remove('on'));
-      this.classList.add('on');
-      document.getElementById('tabp-' + this.dataset.tab).classList.add('on');
-    });
-  });
-
-  // Quick messages
-  const qms = [
-    ['Welcome', '🎬 Welcome to the Logistics Auction Show! Let the bidding begin!'],
-    ['Betting Open', '💰 Betting is now OPEN — place your bets!'],
-    ['Betting Closed', '🔒 Betting is closed. Activating team now...'],
-    ['Timer Start', '⏱ Timer starting now — good luck!'],
-    ['Round Done', '🏆 Great round! Get ready for the next question.'],
-    ['Stand By', '⚠ Technical break — please stand by...']
-  ];
-  document.getElementById('quick-msgs').innerHTML = qms.map(([l, m], idx) =>
-    `<button class="btn btn-blue btn-sm" data-qmsg="${idx}"> ${l}</button>`
-  ).join('');
-  document.getElementById('quick-msgs').addEventListener('click', e => {
-    const btn = e.target.closest('[data-qmsg]');
-    if (btn) quickMsg(qms[parseInt(btn.dataset.qmsg)][1]);
-  });
-}
-
-// ═══════════════════════════════════════
-// STATE CHANGE HANDLER
-// ═══════════════════════════════════════
-function onStateChange(st) {
-  renderLive();
-  renderSidebar();
-  applyPhaseToUI(st.phase);
-}
-
-// ═══════════════════════════════════════
-// PHASE UI MAPPING
-// ═══════════════════════════════════════
-const PHASE_COLORS = {
-  lobby: '#00D4FF', spin: '#BF00FF', betting: '#FFD700',
-  answering: '#00FF88', result: '#FF8C00', reveal: '#FFD700'
-};
-const PHASE_BAR_CLASS = {
-  lobby: 'pb-lobby', spin: 'pb-spin', betting: 'pb-betting',
-  answering: 'pb-answering', result: 'pb-result', reveal: 'pb-reveal'
-};
-function applyPhaseToUI(phase) {
-  const labels = { lobby:'LOBBY', spin:'TEAM SPIN', betting:'BETTING OPEN', answering:'ANSWERING', result:'RESULT', reveal:'GAME OVER' };
-  const lbl = labels[phase] || phase.toUpperCase();
-  document.getElementById('aphase').textContent = 'PHASE: ' + lbl;
-  document.getElementById('phase-label').textContent = lbl + ' PHASE';
-  document.getElementById('aside-phase-txt').textContent = lbl;
-  const dot = document.getElementById('phase-dot');
-  dot.className = 'dot ' + (phase === 'answering' ? 'on' : 'wait');
-  const bar = document.getElementById('phase-bar');
-  bar.className = 'phase-bar ' + (PHASE_BAR_CLASS[phase] || 'pb-lobby');
-  const col = PHASE_COLORS[phase] || 'var(--neon-blue)';
-  document.getElementById('aside-phase-txt').style.color = col;
+function genDT(n) {
+  var arr = [];
+  for (var i = 0; i < n; i++) arr.push({name: 'Team ' + (i+1), money: 10000, wins: 0, losses: 0});
+  return arr;
 }
 
 // ═══════════════════════════════════════
 // TEAM SETUP
 // ═══════════════════════════════════════
-function genTeams(n) {
-  return Array.from({ length: n }, (_, i) => ({ name: `Team ${i + 1}`, money: 10000, wins: 0, losses: 0 }));
-}
 function genSlots() {
-  const n = parseInt(document.getElementById('team-count').value);
-  if (isNaN(n) || n < 2 || n > 10) { notif('Enter 2–10 teams', 'error'); return; }
-  while (editTeams.length < n) editTeams.push({ name: `Team ${editTeams.length + 1}`, money: 10000, wins: 0, losses: 0 });
+  var n = parseInt(document.getElementById('teamCount').value);
+  if (isNaN(n) || n < 2 || n > 10) { notif('2-10 teams', 'error'); return; }
+  while (editTeams.length < n) editTeams.push({name:'Team '+(editTeams.length+1),money:10000,wins:0,losses:0});
   editTeams = editTeams.slice(0, n);
   renderTeamInputs();
 }
 function renderTeamInputs() {
-  document.getElementById('team-inputs').innerHTML = editTeams.map((t, i) => `
-    <div class="trow">
-      <span style="font-family:'Orbitron',sans-serif;font-size:10px;color:var(--neon-blue);min-width:22px">${i+1}</span>
-      <input class="inp" type="text" value="${esc(t.name)}" placeholder="Team name" data-team-name="${i}" style="flex:1.5">
-      <input class="inp" type="number" value="${t.money}" min="0" data-team-money="${i}" style="width:105px">
-      <button class="btn btn-red btn-sm" data-team-del="${i}">✕</button>
-    </div>`).join('');
-  // Bind events after render
-  document.querySelectorAll('[data-team-name]').forEach(el => {
-    el.addEventListener('change', () => { editTeams[parseInt(el.dataset.teamName)].name = el.value; });
-  });
-  document.querySelectorAll('[data-team-money]').forEach(el => {
-    el.addEventListener('change', () => { editTeams[parseInt(el.dataset.teamMoney)].money = parseInt(el.value) || 0; });
-  });
-  document.querySelectorAll('[data-team-del]').forEach(el => {
-    el.addEventListener('click', () => {
-      editTeams.splice(parseInt(el.dataset.teamDel), 1);
-      document.getElementById('team-count').value = editTeams.length;
-      renderTeamInputs();
-    });
-  });
+  var el = document.getElementById('teamInputs');
+  var html = '';
+  for (var i = 0; i < editTeams.length; i++) {
+    var t = editTeams[i];
+    html += '<div class="trow">' +
+      '<span style="font-family:Orbitron,sans-serif;font-size:10px;color:var(--nb);min-width:24px;font-weight:700">' + (i+1) + '</span>' +
+      '<input class="inp" type="text" value="' + esc(t.name) + '" data-tn="' + i + '" style="flex:2" placeholder="Team name">' +
+      '<input class="inp" type="number" value="' + (t.money || 10000) + '" data-tm="' + i + '" style="width:110px">' +
+      '<button class="btn btn-red btn-sm" data-td="' + i + '">✕</button>' +
+      '</div>';
+  }
+  el.innerHTML = html;
+  var tns = el.querySelectorAll('[data-tn]');
+  for (var i = 0; i < tns.length; i++) {
+    (function(elem) {
+      elem.addEventListener('input', function() { editTeams[parseInt(elem.dataset.tn)].name = elem.value; });
+    })(tns[i]);
+  }
+  var tms = el.querySelectorAll('[data-tm]');
+  for (var i = 0; i < tms.length; i++) {
+    (function(elem) {
+      elem.addEventListener('input', function() { editTeams[parseInt(elem.dataset.tm)].money = parseInt(elem.value) || 0; });
+    })(tms[i]);
+  }
+  var tds = el.querySelectorAll('[data-td]');
+  for (var i = 0; i < tds.length; i++) {
+    (function(elem) {
+      elem.addEventListener('click', function() {
+        editTeams.splice(parseInt(elem.dataset.td), 1);
+        document.getElementById('teamCount').value = editTeams.length;
+        renderTeamInputs();
+      });
+    })(tds[i]);
+  }
 }
-function applyAllMoney() {
-  const v = parseInt(document.getElementById('all-money').value);
+function applyAll() {
+  var v = parseInt(document.getElementById('allMoney').value);
   if (isNaN(v) || v < 0) { notif('Invalid amount', 'error'); return; }
-  editTeams.forEach(t => t.money = v);
+  for (var i = 0; i < editTeams.length; i++) editTeams[i].money = v;
   renderTeamInputs();
-  notif(`All teams set to ${$m(v)}`, 'success');
+  notif('Applied!', 'success');
 }
 function saveSetup() {
-  if (editTeams.length < 2) { notif('Need at least 2 teams', 'error'); return; }
-  // Sync names from inputs before saving
-  document.querySelectorAll('[data-team-name]').forEach(el => { editTeams[parseInt(el.dataset.teamName)].name = el.value.trim(); });
-  document.querySelectorAll('[data-team-money]').forEach(el => { editTeams[parseInt(el.dataset.teamMoney)].money = parseInt(el.value) || 0; });
-  const names = editTeams.map(t => t.name.trim()).filter(Boolean);
-  if (new Set(names).size !== names.length) { notif('Duplicate team names!', 'error'); return; }
-  const td = parseInt(document.getElementById('timer-default').value);
-  if (isNaN(td) || td < 5 || td > 60) { notif('Timer must be 5–60s', 'error'); return; }
-  const teams = editTeams.map(t => ({ ...t, name: t.name.trim() || `Team_${Date.now()}` }));
-  updateState({ teams, timerDuration: td, timerRemaining: td });
-  notif('✅ Configuration saved!', 'success');
-  document.getElementById('setup-msg').innerHTML = `<span style="color:var(--neon-green)">✅ SAVED — ${teams.length} TEAMS CONFIGURED</span>`;
+  var tns = document.querySelectorAll('[data-tn]');
+  for (var i = 0; i < tns.length; i++) editTeams[parseInt(tns[i].dataset.tn)].name = tns[i].value.trim() || 'Team '+(parseInt(tns[i].dataset.tn)+1);
+  var tms = document.querySelectorAll('[data-tm]');
+  for (var i = 0; i < tms.length; i++) editTeams[parseInt(tms[i].dataset.tm)].money = parseInt(tms[i].value) || 0;
+  if (editTeams.length < 2) { notif('Need 2+ teams', 'error'); return; }
+  var names = editTeams.map(function(t) { return t.name; });
+  var uniq = {};
+  for (var i = 0; i < names.length; i++) { if (uniq[names[i]]) { notif('Duplicate names!', 'error'); return; } uniq[names[i]] = 1; }
+  var td = parseInt(document.getElementById('timerDef').value) || 30;
+  upd({teams: clone(editTeams), timerDuration: td, timerRemaining: td});
+  notif('Config saved!', 'success');
+  document.getElementById('setupMsg').innerHTML = '<span style="color:var(--ng)">✅ ' + editTeams.length + ' TEAMS SAVED</span>';
 }
 function startShow() {
-  const st = getState();
-  if (!st.teams || st.teams.length < 2) { notif('Save team config first!', 'error'); return; }
-  updateState({ phase: 'spin', assignedDevices: [] });
-  notif('🎬 SHOW STARTED — Teams can now spin!', 'success');
-  updateState({ announcement: '🎬 Welcome! Open index.html to spin and join your team!' });
+  if (!ST.teams || ST.teams.length < 2) { notif('Save config first!', 'error'); return; }
+  upd({phase: 'spin', assignedDevices: [], announcement: '🎬 SHOW STARTING! Open index.html to spin and join!'});
+  notif('Show started!', 'success');
 }
 
 // ═══════════════════════════════════════
 // QUESTION BANK
 // ═══════════════════════════════════════
-function renderQBank() {
-  const st = getState();
-  const qs = Array.isArray(st.questions) ? st.questions : [];
-  const sel = document.getElementById('q-select');
+function renderQBank(st) {
+  var qs = Array.isArray(st.questions) ? st.questions : [];
+  // Sync select
+  var sel = document.getElementById('qSelect');
   if (sel) {
-    sel.innerHTML = '<option value="-1">— Choose question —</option>' +
-      qs.map((q, i) => `<option value="${i}" ${st.currentQuestionIndex===i?'selected':''}>${'Q'+(i+1)}: ${q.text.substr(0,50)}...</option>`).join('');
+    var opts = '<option value="-1">— Choose question —</option>';
+    for (var i = 0; i < qs.length; i++) {
+      var q = qs[i];
+      var txt = q.text.length > 48 ? q.text.substr(0, 48) + '...' : q.text;
+      opts += '<option value="' + i + '"' + (st.currentQuestionIndex === i ? ' selected' : '') + '>Q' + (i+1) + ': ' + esc(txt) + '</option>';
+    }
+    sel.innerHTML = opts;
   }
-  const el = document.getElementById('q-bank');
+  var el = document.getElementById('qBank');
   if (!el) return;
-  el.innerHTML = qs.map((q, i) => `
-    <div class="qcard ${st.currentQuestionIndex===i?'sel':''}" id="qc-${i}">
-      <div class="qhdr" id="qhdr-${i}">
-        <span class="qnum-lbl">Q${i+1}</span>
-        <span class="qtext-lbl">${esc(q.text)}</span>
-        <div class="qactions">
-          <button class="btn btn-blue btn-sm" data-edit-q="${i}">✏ EDIT</button>
-          <button class="btn btn-red btn-sm" data-del-q="${i}">🗑</button>
-        </div>
-      </div>
-      <div id="qedit-${i}" style="display:none">
-        <div style="margin-bottom:8px"><label class="lbl">QUESTION TEXT</label><textarea class="inp" id="qt-${i}" rows="2">${esc(q.text)}</textarea></div>
-        <div style="margin-bottom:8px"><label class="lbl">OPTIONS (click ● = correct answer)</label>
-          ${q.options.map((o,j)=>`<div class="qorow"><span style="font-family:'Orbitron',sans-serif;font-size:10px;color:var(--neon-blue);min-width:18px">${'ABCD'[j]}</span><input class="inp" id="qo-${i}-${j}" value="${esc(o)}"><div class="corr-dot ${q.correct===j?'on':''}" id="cd-${i}-${j}" data-corr-qi="${i}" data-corr-oi="${j}">${q.correct===j?'✓':''}</div></div>`).join('')}
-        </div>
-        <div style="display:flex;gap:7px">
-          <button class="btn btn-green btn-sm" data-save-q="${i}">💾 SAVE</button>
-          <button class="btn btn-blue btn-sm" data-cancel-q="${i}">✕ CANCEL</button>
-        </div>
-      </div>
-    </div>`).join('');
-
-  // Bind q bank events
-  el.querySelectorAll('[data-edit-q]').forEach(b => b.addEventListener('click', () => editQ(parseInt(b.dataset.editQ))));
-  el.querySelectorAll('[data-del-q]').forEach(b => b.addEventListener('click', () => delQ(parseInt(b.dataset.delQ))));
-  el.querySelectorAll('[data-save-q]').forEach(b => b.addEventListener('click', () => saveQ(parseInt(b.dataset.saveQ))));
-  el.querySelectorAll('[data-cancel-q]').forEach(b => b.addEventListener('click', () => cancelQ(parseInt(b.dataset.cancelQ))));
-  el.querySelectorAll('[data-corr-qi]').forEach(b => b.addEventListener('click', () => setCorr(parseInt(b.dataset.corrQi), parseInt(b.dataset.corrOi))));
-}
-function editQ(i) { document.getElementById(`qedit-${i}`).style.display='block'; document.getElementById(`qhdr-${i}`).style.display='none'; }
-function cancelQ(i) { document.getElementById(`qedit-${i}`).style.display='none'; document.getElementById(`qhdr-${i}`).style.display='flex'; }
-function setCorr(qi, oi) {
-  const st = getState();
-  const qs = safeClone(st.questions || []);
-  if (qs[qi]) { qs[qi].correct = oi; updateState({ questions: qs }); }
+  var html = '';
+  for (var i = 0; i < qs.length; i++) {
+    var q = qs[i];
+    html += '<div class="qcard ' + (st.currentQuestionIndex === i ? 'sel' : '') + '" id="qcard-' + i + '">';
+    html += '<div class="qhdr"><span class="qnl">Q' + (i+1) + '</span><div class="qtext">' + esc(q.text) + '</div>';
+    html += '<button style="border:none;background:transparent;cursor:pointer;color:rgba(255,255,255,.4);font-size:16px;padding:4px" data-qe="' + i + '" title="Edit">✏</button>';
+    html += '<button style="border:none;background:transparent;cursor:pointer;color:rgba(255,100,100,.5);font-size:16px;padding:4px" data-qd="' + i + '" title="Delete">🗑</button>';
+    html += '</div>';
+    html += '<div class="qbody" id="qbody-' + i + '">';
+    html += '<div style="margin-bottom:10px"><label class="lbl">QUESTION</label><textarea class="inp" id="qt-' + i + '" rows="2">' + esc(q.text) + '</textarea></div>';
+    html += '<div style="margin-bottom:10px"><label class="lbl">OPTIONS (click ● = correct)</label>';
+    var letters = ['A','B','C','D'];
+    for (var j = 0; j < q.options.length; j++) {
+      html += '<div class="qorow">';
+      html += '<span style="font-family:Orbitron,sans-serif;font-size:10px;color:var(--nb);min-width:18px;font-weight:700">' + letters[j] + '</span>';
+      html += '<input class="inp" id="qo-' + i + '-' + j + '" value="' + esc(q.options[j]) + '" style="flex:1">';
+      html += '<div class="cdot ' + (q.correct === j ? 'on' : '') + '" data-qi="' + i + '" data-qj="' + j + '">' + (q.correct === j ? '✓' : '') + '</div>';
+      html += '</div>';
+    }
+    html += '</div>';
+    html += '<div style="display:flex;gap:8px"><button class="btn btn-green btn-sm" data-qs="' + i + '">💾 SAVE</button><button class="btn btn-blue btn-sm" data-qc="' + i + '">✕ CANCEL</button></div>';
+    html += '</div></div>';
+  }
+  el.innerHTML = html;
+  // Wire question buttons
+  var qes = el.querySelectorAll('[data-qe]');
+  for (var i = 0; i < qes.length; i++) {
+    (function(btn) {
+      btn.addEventListener('click', function() {
+        var body = document.getElementById('qbody-' + btn.dataset.qe);
+        if (body) body.classList.toggle('open');
+      });
+    })(qes[i]);
+  }
+  var qds = el.querySelectorAll('[data-qd]');
+  for (var i = 0; i < qds.length; i++) {
+    (function(btn) {
+      btn.addEventListener('click', function() {
+        if (!confirm('Delete this question?')) return;
+        var qs2 = clone(ST.questions || []);
+        qs2.splice(parseInt(btn.dataset.qd), 1);
+        upd({questions: qs2, currentQuestionIndex: -1});
+        notif('Deleted', 'info');
+      });
+    })(qds[i]);
+  }
+  var qss = el.querySelectorAll('[data-qs]');
+  for (var i = 0; i < qss.length; i++) {
+    (function(btn) {
+      btn.addEventListener('click', function() { saveQ(parseInt(btn.dataset.qs)); });
+    })(qss[i]);
+  }
+  var qcs = el.querySelectorAll('[data-qc]');
+  for (var i = 0; i < qcs.length; i++) {
+    (function(btn) {
+      btn.addEventListener('click', function() {
+        var body = document.getElementById('qbody-' + btn.dataset.qc);
+        if (body) body.classList.remove('open');
+      });
+    })(qcs[i]);
+  }
+  var cdots = el.querySelectorAll('.cdot');
+  for (var i = 0; i < cdots.length; i++) {
+    (function(dot) {
+      dot.addEventListener('click', function() {
+        var qs2 = clone(ST.questions || []);
+        var qi = parseInt(dot.dataset.qi);
+        if (qs2[qi]) qs2[qi].correct = parseInt(dot.dataset.qj);
+        upd({questions: qs2});
+        notif('Correct answer set', 'success');
+      });
+    })(cdots[i]);
+  }
 }
 function saveQ(i) {
-  const st = getState();
-  const qs = safeClone(st.questions || []);
-  const textEl = document.getElementById(`qt-${i}`);
-  if (!qs[i] || !textEl) return;
-  qs[i].text = textEl.value.trim();
-  qs[i].options = [0,1,2,3].map(j => {
-    const el = document.getElementById(`qo-${i}-${j}`);
-    return el ? el.value.trim() : qs[i].options[j];
-  });
-  updateState({ questions: qs });
+  var qs = clone(ST.questions || []);
+  if (!qs[i]) return;
+  var qt = document.getElementById('qt-' + i);
+  if (qt) qs[i].text = qt.value.trim() || qs[i].text;
+  for (var j = 0; j < 4; j++) {
+    var e = document.getElementById('qo-' + i + '-' + j);
+    if (e) qs[i].options[j] = e.value.trim();
+  }
+  upd({questions: qs});
   notif('Question saved!', 'success');
-}
-function delQ(i) {
-  if (!confirm('Delete this question?')) return;
-  const st = getState();
-  const qs = safeClone(st.questions || []);
-  qs.splice(i, 1);
-  updateState({ questions: qs, currentQuestionIndex: -1 });
-  notif('Deleted', 'info');
+  var body = document.getElementById('qbody-' + i);
+  if (body) body.classList.remove('open');
 }
 function addQ() {
-  const st = getState();
-  const qs = safeClone(Array.isArray(st.questions) ? st.questions : []);
-  qs.push({ id: 'q_' + Date.now(), text: 'New question — click Edit to update', options: ['Option A','Option B','Option C','Option D'], correct: 0 });
-  updateState({ questions: qs });
-  notif('New question added', 'success');
-  setTimeout(() => editQ(qs.length - 1), 100);
+  var qs = clone(Array.isArray(ST.questions) ? ST.questions : []);
+  qs.push({id:'q_'+Date.now(),text:'New question — click ✏ to edit',options:['Option A','Option B','Option C','Option D'],correct:0});
+  upd({questions: qs});
+  notif('Question added', 'success');
+  setTimeout(function() {
+    var body = document.getElementById('qbody-' + (qs.length - 1));
+    if (body) body.classList.add('open');
+  }, 200);
 }
 
 // ═══════════════════════════════════════
-// LIVE CONTROL RENDERS
+// SIDEBAR
 // ═══════════════════════════════════════
-function renderLive() {
-  const st = getState();
-  const qs = Array.isArray(st.questions) ? st.questions : [];
-  // q selector sync
-  const sel = document.getElementById('q-select');
-  if (sel) {
-    sel.innerHTML = '<option value="-1">— Choose question —</option>' +
-      qs.map((q, i) => `<option value="${i}" ${st.currentQuestionIndex===i?'selected':''}>${'Q'+(i+1)}: ${q.text.substr(0,45)}...</option>`).join('');
+function renderSidebar(st) {
+  var sorted = (st.teams || []).slice().sort(function(a,b) { return b.money - a.money; });
+  var lbHtml = '';
+  for (var i = 0; i < sorted.length; i++) {
+    var t = sorted[i];
+    lbHtml += '<div class="lbr ' + (st.activeTeam === t.name ? 'at' : '') + '">' +
+      '<span style="font-family:Orbitron,sans-serif;font-size:13px;color:rgba(255,255,255,.3);min-width:24px">#' + (i+1) + '</span>' +
+      '<span style="flex:1;font-family:Rajdhani,sans-serif;font-weight:700;font-size:13px">' + esc(t.name) + '</span>' +
+      '<span style="font-family:Orbitron,sans-serif;font-size:11px;color:var(--gold);font-weight:700">' + $m(t.money) + '</span></div>';
   }
-  // team activate list
-  const tal = document.getElementById('team-act-list');
+  document.getElementById('S_lb').innerHTML = lbHtml;
+  var betsHtml = '';
+  var teams = st.teams || [];
+  for (var i = 0; i < teams.length; i++) {
+    var t = teams[i];
+    var b = st.bets && st.bets[t.name];
+    betsHtml += '<div class="betr ' + (b ? 'hb' : '') + '">' +
+      '<span style="font-family:Rajdhani,sans-serif;font-weight:600;font-size:13px">' + esc(t.name) + '</span>' +
+      (b ? '<span style="font-family:Orbitron,sans-serif;font-size:11px;color:var(--gold);font-weight:700">' + $m(b) + '</span>'
+         : '<span style="color:rgba(255,255,255,.25);font-size:11px;font-family:Orbitron,sans-serif">—</span>') +
+      '</div>';
+  }
+  document.getElementById('S_bets').innerHTML = betsHtml;
+  var qs = Array.isArray(st.questions) ? st.questions : [];
+  var q = st.currentQuestionIndex >= 0 ? qs[st.currentQuestionIndex] : null;
+  document.getElementById('S_q').textContent = q ? ('Q' + (st.currentQuestionIndex+1) + ': ' + q.text) : 'None selected';
+}
+
+// ═══════════════════════════════════════
+// LIVE PANEL
+// ═══════════════════════════════════════
+function renderLivePanel(st) {
+  var qs = Array.isArray(st.questions) ? st.questions : [];
+  // Team activate list
+  var tal = document.getElementById('teamActList');
   if (tal) {
-    tal.innerHTML = (st.teams || []).map(t => {
-      const b = st.bets && st.bets[t.name];
-      const isOn = st.activeTeam === t.name;
-      return `<button class="team-act-btn ${isOn?'on':''}" data-activate="${esc(t.name)}">
-        <div>
-          <div style="font-family:'Rajdhani',sans-serif;font-weight:700;font-size:15px;${isOn?'color:var(--neon-blue)':''}">${esc(t.name)}</div>
-          <div style="font-family:'Orbitron',sans-serif;font-size:9px;color:rgba(255,255,255,.4)">${$m(t.money)} · W:${t.wins||0} L:${t.losses||0}${b?` · BET:${$m(b)}`:' · No bet'}</div>
-        </div>
-        <span style="font-size:17px">${isOn?'⚡':'○'}</span>
-      </button>`;
-    }).join('');
-    tal.querySelectorAll('[data-activate]').forEach(btn => {
-      btn.addEventListener('click', () => activateTeam(btn.dataset.activate));
-    });
+    var html = '';
+    var teams = st.teams || [];
+    for (var i = 0; i < teams.length; i++) {
+      var t = teams[i];
+      var bet = st.bets && st.bets[t.name];
+      var on = st.activeTeam === t.name;
+      html += '<button class="act-btn ' + (on ? 'on' : '') + '" data-act="' + esc(t.name) + '">' +
+        '<div><div style="font-family:Rajdhani,sans-serif;font-weight:700;font-size:15px;' + (on ? 'color:var(--ng)' : '') + '">' + esc(t.name) + '</div>' +
+        '<div style="font-family:Orbitron,sans-serif;font-size:8px;color:rgba(255,255,255,.35)">' + $m(t.money) + ' · W:' + (t.wins||0) + ' L:' + (t.losses||0) + (bet ? ' · BET:' + $m(bet) : ' · no bet') + '</div></div>' +
+        '<span style="font-size:18px">' + (on ? '⚡' : '○') + '</span></button>';
+    }
+    tal.innerHTML = html;
+    var acts = tal.querySelectorAll('[data-act]');
+    for (var i = 0; i < acts.length; i++) {
+      (function(btn) {
+        btn.addEventListener('click', function() { activateTeam(btn.dataset.act); });
+      })(acts[i]);
+    }
   }
-  // answer display
-  const ad = document.getElementById('ans-display');
+  // Answer display
+  var ad = document.getElementById('ansDisplay');
   if (ad) {
     if (st.selectedAnswer !== null && st.selectedAnswer !== undefined && st.currentQuestionIndex >= 0) {
-      const q = qs[st.currentQuestionIndex];
-      ad.innerHTML = `<span style="color:var(--gold)">📝 ${esc(st.activeTeam||'Team')} answered: </span><span style="color:var(--neon-blue)">[${('ABCD')[st.selectedAnswer]}] ${q ? esc(q.options[st.selectedAnswer]) : ''}</span>`;
-      document.getElementById('btn-correct').disabled = false;
-      document.getElementById('btn-wrong').disabled = false;
+      var q = qs[st.currentQuestionIndex];
+      var ltr = 'ABCD'[st.selectedAnswer];
+      var optTxt = q ? q.options[st.selectedAnswer] : '';
+      ad.innerHTML = '<div style="display:flex;align-items:center;gap:12px;width:100%">' +
+        '<span style="font-family:Orbitron,sans-serif;font-size:22px;color:var(--gold)">[' + ltr + ']</span>' +
+        '<span style="flex:1;font-size:16px">' + esc(optTxt) + '</span>' +
+        '<span style="font-family:Orbitron,sans-serif;font-size:10px;color:rgba(255,255,255,.4)">— ' + esc(st.activeTeam || '?') + '</span></div>';
+      document.getElementById('A_correct').disabled = false;
+      document.getElementById('A_wrong').disabled = false;
     } else {
-      ad.textContent = 'Waiting for team answer...';
-      document.getElementById('btn-correct').disabled = true;
-      document.getElementById('btn-wrong').disabled = true;
+      ad.innerHTML = '⏳ Waiting for team answer...';
+      document.getElementById('A_correct').disabled = true;
+      document.getElementById('A_wrong').disabled = true;
     }
   }
-  // aside q
-  const aq = document.getElementById('aside-q');
-  if (aq && st.currentQuestionIndex >= 0 && qs[st.currentQuestionIndex]) {
-    aq.textContent = `Q${st.currentQuestionIndex+1}: ${qs[st.currentQuestionIndex].text.substr(0,80)}...`;
-  }
-  // money adj
-  const ma = document.getElementById('money-adj');
+  // Money adjustments
+  var ma = document.getElementById('moneyAdj');
   if (ma) {
-    ma.innerHTML = (st.teams || []).map((t, i) =>
-      `<div style="display:flex;gap:7px;align-items:center;margin-bottom:7px">
-        <span style="font-family:'Rajdhani',sans-serif;font-weight:600;min-width:120px">${esc(t.name)}</span>
-        <span style="font-family:'Orbitron',sans-serif;font-size:11px;color:var(--gold);min-width:75px">${$m(t.money)}</span>
-        <input class="inp" type="number" data-adj-i="${i}" placeholder="±amount" style="width:95px">
-        <button class="btn btn-blue btn-sm" data-adj-apply="${i}">APPLY</button>
-      </div>`
-    ).join('');
-    ma.querySelectorAll('[data-adj-apply]').forEach(btn => {
-      btn.addEventListener('click', () => adjustMoney(parseInt(btn.dataset.adjApply)));
-    });
+    var html = '';
+    var teams = st.teams || [];
+    for (var i = 0; i < teams.length; i++) {
+      var t = teams[i];
+      html += '<div style="display:flex;gap:8px;align-items:center;margin-bottom:8px">' +
+        '<span style="font-family:Rajdhani,sans-serif;font-weight:700;min-width:110px;font-size:14px">' + esc(t.name) + '</span>' +
+        '<span style="font-family:Orbitron,sans-serif;font-size:11px;color:var(--gold);min-width:80px">' + $m(t.money) + '</span>' +
+        '<input class="inp" type="number" data-mai="' + i + '" placeholder="±amount" style="width:100px">' +
+        '<button class="btn btn-blue btn-sm" data-maa="' + i + '">APPLY</button></div>';
+    }
+    ma.innerHTML = html;
+    var maas = ma.querySelectorAll('[data-maa]');
+    for (var i = 0; i < maas.length; i++) {
+      (function(btn) {
+        btn.addEventListener('click', function() {
+          var idx = parseInt(btn.dataset.maa);
+          var inp = ma.querySelector('[data-mai="' + idx + '"]');
+          if (!inp) return;
+          var v = parseInt(inp.value);
+          if (isNaN(v)) { notif('Invalid amount', 'error'); return; }
+          var teams2 = clone(ST.teams);
+          if (!teams2[idx]) return;
+          teams2[idx].money = Math.max(0, teams2[idx].money + v);
+          upd({teams: teams2});
+          inp.value = '';
+          notif(teams2[idx].name + ': ' + (v >= 0 ? '+' : '') + $m(v), 'info');
+        });
+      })(maas[i]);
+    }
   }
-  renderSidebar();
-}
-
-function renderSidebar() {
-  const st = getState();
-  const sorted = [...(st.teams || [])].sort((a, b) => b.money - a.money);
-  document.getElementById('aside-lb').innerHTML = sorted.map((t, i) =>
-    `<div class="lb-row ${st.activeTeam===t.name?'at':''}">
-      <div style="font-family:'Orbitron',sans-serif;font-size:13px;color:rgba(255,255,255,.4);min-width:22px">#${i+1}</div>
-      <div style="flex:1;font-family:'Rajdhani',sans-serif;font-weight:600;font-size:13px">${esc(t.name)}</div>
-      <div style="font-family:'Orbitron',sans-serif;font-size:11px;color:var(--gold)">${$m(t.money)}</div>
-    </div>`
-  ).join('');
-  document.getElementById('aside-bets').innerHTML = (st.teams || []).map(t => {
-    const b = st.bets && st.bets[t.name];
-    return `<div class="bet-row ${b?'hb':''}">
-      <span style="font-family:'Rajdhani',sans-serif;font-weight:600;font-size:13px">${esc(t.name)}</span>
-      ${b ? `<span style="font-family:'Orbitron',sans-serif;font-size:11px;color:var(--gold)">${$m(b)}</span>` : `<span style="color:rgba(255,255,255,.3);font-size:11px">waiting...</span>`}
-    </div>`;
-  }).join('');
 }
 
 // ═══════════════════════════════════════
-// QUESTION ACTIONS
+// BROADCAST
+// ═══════════════════════════════════════
+function renderBroadcast() {
+  var QM = [
+    ['🎬 Welcome', '🎬 Welcome to the Logistics Auction Show!'],
+    ['💰 Bet Open', '💰 Betting OPEN — read the question and place your bets!'],
+    ['🔒 Reveal', '🔒 Betting closed! Options revealed — answer now!'],
+    ['⏱ Timer', '⏱ Timer starting — good luck!'],
+    ['⏭ Next Q', '⏭ Next question loading — get ready!'],
+    ['⚠ Break', '⚠ Short break — please stand by...']
+  ];
+  var html = '';
+  for (var i = 0; i < QM.length; i++) html += '<button class="btn btn-blue btn-sm" data-qmi="' + i + '">' + QM[i][0] + '</button>';
+  var el = document.getElementById('quickMsgs');
+  el.innerHTML = html;
+  var btns = el.querySelectorAll('[data-qmi]');
+  for (var i = 0; i < btns.length; i++) {
+    (function(btn, msgs) {
+      btn.addEventListener('click', function() {
+        document.getElementById('annInput').value = msgs[parseInt(btn.dataset.qmi)][1];
+        sendAnn();
+      });
+    })(btns[i], QM);
+  }
+}
+function sendAnn() {
+  var m = document.getElementById('annInput').value.trim();
+  if (!m) { notif('Enter a message', 'error'); return; }
+  upd({announcement: m});
+  notif('Broadcast sent!', 'success');
+}
+
+// ═══════════════════════════════════════
+// GAME ACTIONS
 // ═══════════════════════════════════════
 function setQ() {
-  const idx = parseInt(document.getElementById('q-select').value);
-  if (idx < 0) { notif('Select a question first', 'error'); return; }
-  updateState({ currentQuestionIndex: idx, selectedAnswer: null, lastResult: null, bets: {} });
-  notif(`Q${idx+1} selected`, 'success');
+  var idx = parseInt(document.getElementById('qSelect').value);
+  if (idx < 0) { notif('Choose a question first', 'error'); return; }
+  upd({currentQuestionIndex: idx, selectedAnswer: null, lastResult: null, bets: {}});
+  notif('Q' + (idx+1) + ' loaded', 'success');
 }
-function openBet() {
-  const st = getState();
-  if (st.currentQuestionIndex < 0) { notif('Select a question first', 'error'); return; }
-  updateState({ phase: 'betting', bets: {}, selectedAnswer: null, lastResult: null });
-  notif('💰 Betting OPEN', 'success');
-  updateState({ announcement: '💰 Betting is now OPEN — place your bets!' });
+function openBetting() {
+  if (ST.currentQuestionIndex < 0) { notif('Select a question first!', 'error'); return; }
+  upd({phase: 'betting', bets: {}, selectedAnswer: null, lastResult: null,
+    timerRunning: false, timerRemaining: ST.timerDuration, timerStartedAt: null,
+    announcement: '💰 BETTING OPEN — Read question and place bets! Options hidden.'});
+  notif('Betting opened', 'success');
 }
-function closeBet() {
-  updateState({ phase: 'answering' });
-  notif('🔒 Betting CLOSED → Answering phase', 'info');
-  updateState({ announcement: '🔒 Betting closed. Active team — answer now!' });
+function closeBetting() {
+  upd({phase: 'answering', announcement: '🔒 Betting closed! Options now REVEALED!'});
+  notif('Options revealed → Answering', 'info');
 }
 function activateTeam(name) {
-  updateState({ activeTeam: name, selectedAnswer: null, lastResult: null, phase: 'answering' });
-  notif(`⚡ ${name} activated!`, 'info');
-  updateState({ announcement: `⚡ ${name} is now answering!` });
+  upd({activeTeam: name, selectedAnswer: null, phase: 'answering', announcement: '⚡ ' + name + ' is now answering!'});
+  notif('⚡ ' + name + ' activated', 'info');
 }
-function nextQuestion() {
-  updateState({ phase: 'betting', activeTeam: null, selectedAnswer: null, lastResult: null, bets: {}, timerRunning: false, timerRemaining: getState().timerDuration });
-  notif('⏭ Ready for next question', 'info');
-}
-
-// ═══════════════════════════════════════
-// TIMER
-// ═══════════════════════════════════════
 function startTimer() {
-  const ov = parseInt(document.getElementById('timer-override').value);
-  const st = getState();
-  const d = isNaN(ov) ? st.timerDuration : Math.min(60, Math.max(5, ov));
-  updateState({ timerDuration: d, timerRemaining: d, timerRunning: true, timerStartedAt: Date.now() });
-  notif(`▶ Timer: ${d}s`, 'info');
+  var ov = parseInt(document.getElementById('timerOvr').value);
+  var dur = isNaN(ov) || ov < 1 ? (ST.timerDuration || 30) : Math.min(120, Math.max(1, ov));
+  upd({timerDuration: dur, timerRemaining: dur, timerRunning: true, timerStartedAt: Date.now()});
+  document.getElementById('timerOvr').value = '';
+  notif('Timer: ' + dur + 's started', 'info');
 }
 function stopTimer() {
-  const st = getState();
-  const elapsed = st.timerStartedAt ? (Date.now() - st.timerStartedAt) / 1000 : 0;
-  const rem = Math.max(0, (st.timerRemaining || 0) - elapsed);
-  updateState({ timerRunning: false, timerRemaining: rem });
-  notif('⏹ Stopped', 'info');
+  var rem = ST.timerRemaining || 0;
+  if (ST.timerRunning && ST.timerStartedAt) rem = Math.max(0, (ST.timerRemaining || 0) - (Date.now() - ST.timerStartedAt) / 1000);
+  upd({timerRunning: false, timerRemaining: rem, timerStartedAt: null});
+  notif('Timer stopped', 'info');
 }
 function resetTimer() {
-  const st = getState();
-  updateState({ timerRunning: false, timerRemaining: st.timerDuration });
+  upd({timerRunning: false, timerRemaining: ST.timerDuration || 30, timerStartedAt: null});
+  notif('Timer reset', 'info');
 }
 function timerTick() {
-  const st = getState();
-  const el = document.getElementById('aside-timer');
-  if (!el) return;
-  let rem = st.timerRemaining || 0;
-  if (st.timerRunning && st.timerStartedAt) {
-    rem = Math.max(0, (st.timerRemaining || 0) - (Date.now() - st.timerStartedAt) / 1000);
-    if (rem <= 0 && st.timerRunning) {
-      // Auto-judge as wrong on timeout
-      updateState({ timerRunning: false, timerRemaining: 0 });
-      if (st.phase === 'answering' && st.activeTeam) {
-        autoJudgeTimeout();
-      }
-    }
+  if (!adminReady) return;
+  var rem = ST.timerRemaining || 0;
+  if (ST.timerRunning && ST.timerStartedAt) rem = Math.max(0, (ST.timerRemaining || 0) - (Date.now() - ST.timerStartedAt) / 1000);
+  var s = Math.ceil(rem);
+  var el = document.getElementById('S_timer');
+  if (el) {
+    el.textContent = s > 0 ? (s < 10 ? '0' + s : '' + s) : '00';
+    el.className = 'tbig' + (s <= 3 && s > 0 ? ' dang' : s <= 5 && s > 0 ? ' warn' : '');
   }
-  const secs = Math.ceil(rem);
-  el.textContent = secs > 0 ? secs : '00';
-  el.style.color = secs <= 3 ? 'var(--neon-red)' : secs <= 5 ? 'var(--neon-orange)' : 'var(--neon-blue)';
+  var ts = document.getElementById('S_tstatus');
+  if (ts) { ts.textContent = ST.timerRunning ? '● RUNNING' : '■ STOPPED'; ts.style.color = ST.timerRunning ? 'var(--ng)' : 'rgba(255,255,255,.3)'; }
+  if (rem <= 0 && ST.timerRunning && !_autoJudged && ST.phase === 'answering' && ST.activeTeam) {
+    _autoJudged = true;
+    upd({timerRunning: false, timerRemaining: 0, timerStartedAt: null});
+    autoTimeout();
+  }
+  if (rem > 0) _autoJudged = false;
 }
-function autoJudgeTimeout() {
-  const st = getState();
-  if (!st.activeTeam) return;
-  const ti = (st.teams || []).findIndex(t => t.name === st.activeTeam);
+function autoTimeout() {
+  var teams = clone(ST.teams || []);
+  var ti = -1;
+  for (var i = 0; i < teams.length; i++) { if (teams[i].name === ST.activeTeam) { ti = i; break; } }
   if (ti < 0) return;
-  const teams = safeClone(st.teams);
-  const bet = (st.bets && st.bets[st.activeTeam]) ? parseInt(st.bets[st.activeTeam]) : 0;
+  var bet = ST.bets && ST.bets[ST.activeTeam] ? parseInt(ST.bets[ST.activeTeam]) : 0;
   teams[ti].money = Math.max(0, teams[ti].money - bet);
   teams[ti].losses = (teams[ti].losses || 0) + 1;
-  updateState({
-    teams,
-    phase: 'result',
-    lastResult: { teamName: st.activeTeam, correct: false, betAmount: bet, timestamp: Date.now(), timeout: true },
-    timerRunning: false,
-    activeTeam: null
-  });
-  updateState({ announcement: `⏰ TIME'S UP! ${st.activeTeam} lost ${$m(bet)}` });
+  upd({teams: teams, phase: 'result', timerRunning: false, timerStartedAt: null,
+    lastResult: {teamName: ST.activeTeam, correct: false, betAmount: bet, timestamp: Date.now(), timeout: true},
+    announcement: "⏰ TIME'S UP! " + ST.activeTeam + " ran out of time!"});
+  notif('Timeout!', 'error');
 }
-
-// ═══════════════════════════════════════
-// JUDGE
-// ═══════════════════════════════════════
-function judge(correct) {
-  const st = getState();
-  if (!st.activeTeam || (st.selectedAnswer === null || st.selectedAnswer === undefined)) {
-    notif('No answer to judge', 'error'); return;
-  }
-  const ti = (st.teams || []).findIndex(t => t.name === st.activeTeam);
+function judgeAnswer(correct) {
+  if (ST.selectedAnswer === null || ST.selectedAnswer === undefined) { notif('No answer yet', 'error'); return; }
+  if (!ST.activeTeam) { notif('No active team', 'error'); return; }
+  var teams = clone(ST.teams || []);
+  var ti = -1;
+  for (var i = 0; i < teams.length; i++) { if (teams[i].name === ST.activeTeam) { ti = i; break; } }
   if (ti < 0) return;
-  const teams = safeClone(st.teams);
-  const team = teams[ti];
-  const bet = (st.bets && st.bets[st.activeTeam]) ? parseInt(st.bets[st.activeTeam]) : 0;
+  var team = teams[ti];
+  var bet = ST.bets && ST.bets[ST.activeTeam] ? parseInt(ST.bets[ST.activeTeam]) : 0;
   if (correct) { team.money += bet; team.wins = (team.wins || 0) + 1; }
   else { team.money = Math.max(0, team.money - bet); team.losses = (team.losses || 0) + 1; }
-  updateState({
-    teams,
-    phase: 'result',
-    lastResult: { teamName: st.activeTeam, correct, betAmount: bet, timestamp: Date.now() },
-    timerRunning: false,
-    activeTeam: null
-  });
-  notif(correct ? `✅ ${st.activeTeam} CORRECT! +${$m(bet)}` : `❌ ${st.activeTeam} WRONG! -${$m(bet)}`, correct ? 'success' : 'error');
-  updateState({ announcement: correct ? `✅ ${st.activeTeam} got it RIGHT! +${$m(bet)}` : `❌ ${st.activeTeam} got it WRONG! -${$m(bet)}` });
+  upd({teams: teams, phase: 'result', timerRunning: false, timerStartedAt: null,
+    lastResult: {teamName: ST.activeTeam, correct: correct, betAmount: bet, timestamp: Date.now()},
+    announcement: correct ? '✅ ' + ST.activeTeam + ' CORRECT! +' + $m(bet) : '❌ ' + ST.activeTeam + ' WRONG! -' + $m(bet)});
+  notif(correct ? 'CORRECT +' + $m(bet) : 'WRONG -' + $m(bet), correct ? 'success' : 'error');
 }
-function adjustMoney(i) {
-  const st = getState();
-  const inp = document.querySelector(`[data-adj-i="${i}"]`);
-  if (!inp) return;
-  const v = parseInt(inp.value);
-  if (isNaN(v)) { notif('Invalid amount', 'error'); return; }
-  const teams = safeClone(st.teams);
-  if (!teams[i]) return;
-  teams[i].money = Math.max(0, teams[i].money + v);
-  updateState({ teams });
-  inp.value = '';
-  notif(`${teams[i].name}: ${v>0?'+':''}${$m(v)}`, 'info');
+function nextQ() {
+  upd({phase: 'betting', activeTeam: null, selectedAnswer: null, lastResult: null,
+    bets: {}, timerRunning: false, timerRemaining: ST.timerDuration || 30, timerStartedAt: null,
+    round: (ST.round || 0) + 1, announcement: '⏭ Next question loading — get ready to bet!'});
+  notif('Next question', 'info');
 }
 function endGame() {
-  const st = getState();
-  if (!st.teams || !st.teams.length) { notif('No teams!', 'error'); return; }
-  if (!confirm('End the show and reveal the winner?')) return;
-  const winner = [...st.teams].sort((a, b) => b.money - a.money)[0];
-  updateState({ phase: 'reveal', winner, timerRunning: false });
-  notif(`🏆 ${winner.name} WINS!`, 'success');
+  if (!ST.teams || !ST.teams.length) { notif('No teams', 'error'); return; }
+  if (!confirm('End show and reveal winner?')) return;
+  var winner = (ST.teams || []).slice().sort(function(a,b) { return b.money - a.money; })[0];
+  upd({phase: 'reveal', winner: winner, timerRunning: false, timerStartedAt: null,
+    announcement: '🏆 ' + winner.name + ' WINS THE LOGISTICS AUCTION SHOW!'});
+  notif('🏆 ' + winner.name + ' WINS!', 'success');
 }
 
 // ═══════════════════════════════════════
-// ANNOUNCEMENTS
+// WIRE ALL BUTTONS — runs after DOM loaded
 // ═══════════════════════════════════════
-function sendAnn() {
-  const m = document.getElementById('ann-input').value.trim();
-  if (!m) { notif('Enter a message', 'error'); return; }
-  updateState({ announcement: m });
-  notif('📢 Broadcast sent!', 'success');
-}
-function clearAnn() {
-  updateState({ announcement: '' });
-  document.getElementById('ann-input').value = '';
-}
-function quickMsg(m) {
-  document.getElementById('ann-input').value = m;
-  sendAnn();
-}
-
+(function() {  // DOM already ready - script runs at bottom of body
+  // Login
+  document.getElementById('L_btn').addEventListener('click', doLogin);
+  document.getElementById('pw').addEventListener('keydown', function(e) { if (e.key === 'Enter') doLogin(); });
+  // Header
+  document.getElementById('A_display').addEventListener('click', function() { window.open('index.html', '_blank'); });
+  document.getElementById('A_reset').addEventListener('click', function() {
+    if (!confirm('Full reset? All data cleared.')) return;
+    editTeams = genDT(4);
+    document.getElementById('teamCount').value = 4;
+    renderTeamInputs();
+    GREF.set(freshState());
+    notif('Reset complete', 'info');
+  });
+  document.getElementById('A_sync').addEventListener('click', function() { upd({_sync: Date.now()}); notif('Synced!', 'success'); });
+  // Setup
+  document.getElementById('A_gen').addEventListener('click', genSlots);
+  document.getElementById('A_allMoney').addEventListener('click', applyAll);
+  document.getElementById('A_save').addEventListener('click', saveSetup);
+  document.getElementById('A_start').addEventListener('click', startShow);
+  // Questions
+  document.getElementById('A_addQ').addEventListener('click', addQ);
+  // Live
+  document.getElementById('A_setQ').addEventListener('click', setQ);
+  document.getElementById('A_openBet').addEventListener('click', openBetting);
+  document.getElementById('A_closeBet').addEventListener('click', closeBetting);
+  document.getElementById('A_timerStart').addEventListener('click', startTimer);
+  document.getElementById('A_timerStop').addEventListener('click', stopTimer);
+  document.getElementById('A_timerReset').addEventListener('click', resetTimer);
+  document.getElementById('A_correct').addEventListener('click', function() { judgeAnswer(true); });
+  document.getElementById('A_wrong').addEventListener('click', function() { judgeAnswer(false); });
+  document.getElementById('A_nextQ').addEventListener('click', nextQ);
+  document.getElementById('A_endGame').addEventListener('click', endGame);
+  // Broadcast
+  document.getElementById('A_annSend').addEventListener('click', sendAnn);
+  document.getElementById('A_annClear').addEventListener('click', function() { upd({announcement: ''}); document.getElementById('annInput').value = ''; });
+  // Tabs
+  var tabs = document.querySelectorAll('.tab');
+  for (var i = 0; i < tabs.length; i++) {
+    (function(tab) {
+      tab.addEventListener('click', function() {
+        var all = document.querySelectorAll('.tab');
+        for (var j = 0; j < all.length; j++) all[j].classList.remove('on');
+        var panels = document.querySelectorAll('.tabp');
+        for (var j = 0; j < panels.length; j++) panels[j].classList.remove('on');
+        tab.classList.add('on');
+        var panel = document.getElementById('tabp-' + tab.dataset.t);
+        if (panel) panel.classList.add('on');
+      });
+    })(tabs[i]);
+  }
+})();
 </script>
 </body>
 </html>
