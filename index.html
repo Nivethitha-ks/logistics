@@ -149,6 +149,26 @@ html,body{width:100%;height:100%;background:var(--bg);color:#fff;font-family:'Ra
 @keyframes wpulse{0%,100%{text-shadow:0 0 40px var(--gold),0 0 100px var(--gold)}50%{text-shadow:0 0 80px var(--gold),0 0 200px var(--gold),0 0 300px rgba(245,197,24,.3)}}
 .w-sub{font-family:'Rajdhani',sans-serif;font-size:18px;letter-spacing:4px;color:rgba(255,255,255,.5)}
 .w-money{font-family:'Orbitron',sans-serif;font-weight:900;font-size:clamp(24px,4vw,52px);color:var(--ng);text-shadow:0 0 25px var(--ng)}
+/* ═══ CINEMATIC ADDITIONS ═══ */
+/* Betting phase on display: dramatic full-screen overlay */
+#betting-phase-banner{position:fixed;inset:0;z-index:400;pointer-events:none;display:flex;flex-direction:column;align-items:center;justify-content:flex-start;padding-top:60px;gap:10px;opacity:0;transition:opacity .5s}
+#betting-phase-banner.show{opacity:1}
+.bpb-inner{background:linear-gradient(90deg,transparent,rgba(245,197,24,.08),transparent);border-top:1px solid rgba(245,197,24,.3);border-bottom:1px solid rgba(245,197,24,.3);padding:10px 40px;width:100%;text-align:center}
+.bpb-txt{font-family:'Orbitron',sans-serif;font-size:12px;letter-spacing:5px;color:var(--gold);animation:bpbpulse 1.8s ease-in-out infinite}
+@keyframes bpbpulse{0%,100%{opacity:1;text-shadow:0 0 10px var(--gold)}50%{opacity:.6;text-shadow:0 0 30px var(--gold)}}
+/* Question reveal */
+.qcard.ph-answering{animation:qreveal .6s cubic-bezier(.22,1,.36,1)}
+@keyframes qreveal{0%{transform:scale(.98) translateY(5px);opacity:.4;border-color:rgba(245,197,24,.6)}100%{transform:scale(1) translateY(0);opacity:1}}
+/* Active team spotlight */
+.act-banner.glow{border-color:rgba(0,232,120,.5);box-shadow:0 0 25px rgba(0,232,120,.2),inset 0 0 30px rgba(0,232,120,.04);animation:actpulse 2s ease-in-out infinite}
+@keyframes actpulse{0%,100%{box-shadow:0 0 25px rgba(0,232,120,.2)}50%{box-shadow:0 0 50px rgba(0,232,120,.4)}}
+/* sound viz bars */
+.viz-bars{display:flex;gap:3px;align-items:flex-end;height:18px;padding:0 4px}
+.vbar{width:3px;border-radius:2px;animation:vbar linear infinite}
+@keyframes vbar{0%,100%{height:3px}50%{height:var(--h)}}
+/* leaderboard transition */
+.lbr{transition:all .4s cubic-bezier(.22,1,.36,1)}
+
 </style>
 </head>
 <body>
@@ -164,6 +184,12 @@ html,body{width:100%;height:100%;background:var(--bg);color:#fff;font-family:'Ra
   <div id="ro-verdict">CORRECT!</div>
   <div id="ro-money">+$0</div>
   <div id="ro-team"></div>
+</div>
+<!-- CINEMATIC BETTING PHASE BANNER -->
+<div id="betting-phase-banner">
+  <div class="bpb-inner">
+    <div class="bpb-txt">⏳ BETTING IN PROGRESS — OPTIONS LOCKED</div>
+  </div>
 </div>
 <div id="app">
   <div id="intro-screen" class="screen active">
@@ -200,7 +226,10 @@ html,body{width:100%;height:100%;background:var(--bg);color:#fff;font-family:'Ra
     <div class="ghdr">
       <div class="glogo">🏆 LOGISTICS AUCTION SHOW</div>
       <div class="live-b" style="animation:none"><div class="ldot"></div> LIVE</div>
-      <div style="font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:3px;color:var(--nb)" id="g-round">ROUND 1</div>
+      <div style="display:flex;align-items:center;gap:8px">
+        <div class="viz-bars"><div class="vbar" style="--h:14px;background:var(--nb);opacity:.5;animation-duration:.6s"></div><div class="vbar" style="--h:9px;background:var(--nb);opacity:.5;animation-duration:.8s;animation-delay:.1s"></div><div class="vbar" style="--h:16px;background:var(--nb);opacity:.5;animation-duration:.5s;animation-delay:.2s"></div><div class="vbar" style="--h:7px;background:var(--nb);opacity:.5;animation-duration:.9s;animation-delay:.15s"></div></div>
+        <div style="font-family:'Orbitron',sans-serif;font-size:10px;letter-spacing:3px;color:var(--nb)" id="g-round">ROUND 1</div>
+      </div>
     </div>
     <div class="gann" id="g-ann">WELCOME TO THE LOGISTICS AUCTION SHOW</div>
     <div class="gbody">
@@ -340,6 +369,9 @@ function renderGame(st){
   const phase=st.phase,qs=Array.isArray(st.questions)?st.questions:[],qi=st.currentQuestionIndex,q=qi>=0&&qs[qi]?qs[qi]:null;
   if(st.announcement)document.getElementById('g-ann').textContent=st.announcement;
   document.getElementById('g-round').textContent='ROUND '+(st.round||1);
+  // Toggle betting banner
+  const bpb=document.getElementById('betting-phase-banner');
+  if(bpb)bpb.classList.toggle('show',phase==='betting');
   // Timer
   renderTimer(st);
   // Active team
@@ -358,7 +390,7 @@ function renderGame(st){
       // OPTIONS COMPLETELY HIDDEN — only question text shown
       optsArea.innerHTML=`<div class="opts-locked"><div class="lock-icon">🔒</div><div class="lock-txt">OPTIONS LOCKED</div><div class="lock-sub">Place your bet to unlock · Admin will reveal when betting closes</div></div>`;
     } else {
-      // OPTIONS REVEALED
+      // OPTIONS REVEALED with animation
       optsArea.innerHTML=`<div class="opts-grid">${q.options.map((o,i)=>{let cl='qopt';if(phase==='result'&&st.lastResult){if(i===q.correct)cl+=' cr';else if(i===st.selectedAnswer&&i!==q.correct)cl+=' wr';}return`<div class="${cl}" style="animation-delay:${i*.07}s"><span class="oltr">${'ABCD'[i]}</span>${esc(o)}</div>`;}).join('')}</div>`;
     }
   } else {

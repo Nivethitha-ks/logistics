@@ -89,10 +89,30 @@ html,body{width:100%;min-height:100vh;background:var(--bg);color:#fff;font-famil
 .a-foot{padding:12px 24px;background:rgba(0,0,0,.6);border-top:1px solid rgba(255,255,255,.07);display:flex;align-items:center;gap:14px;flex-wrap:wrap;position:sticky;bottom:0;z-index:100}
 .cgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
 @media(max-width:800px){.cgrid{grid-template-columns:1fr}}
+/* ═══ CINEMATIC ADDITIONS ═══ */
+#ptcls-admin{position:fixed;inset:0;z-index:1;pointer-events:none;overflow:hidden}
+.ptcl{position:absolute;border-radius:50%;animation:pfloat linear infinite}
+@keyframes pfloat{0%{transform:translateY(110vh);opacity:0}10%{opacity:.6}90%{opacity:.3}100%{transform:translateY(-60px);opacity:0}}
+.phase-transition{animation:ptrans .5s ease-out}
+@keyframes ptrans{0%{opacity:0;transform:translateY(-6px)}100%{opacity:1;transform:translateY(0)}}
+.bet-open-flash{animation:betflash .6s ease-out}
+@keyframes betflash{0%{box-shadow:0 0 0 0 rgba(245,197,24,.9)}50%{box-shadow:0 0 60px 20px rgba(245,197,24,.4)}100%{box-shadow:0 0 22px rgba(245,197,24,.3)}}
+.glow-pulse{animation:glowp 2s ease-in-out infinite}
+@keyframes glowp{0%,100%{box-shadow:0 0 14px rgba(0,232,120,.2)}50%{box-shadow:0 0 35px rgba(0,232,120,.5)}}
+/* sound visualizer bars (CSS only, decorative) */
+.viz-bars{display:flex;gap:3px;align-items:flex-end;height:22px;padding:0 6px}
+.vbar{width:3px;border-radius:2px;background:var(--nb);opacity:.4;animation:vbar linear infinite}
+@keyframes vbar{0%,100%{height:4px}50%{height:var(--h)}}
+.sc:hover{border-color:rgba(0,201,255,.2);transition:border-color .3s}
+.phase-badge{transition:all .4s}
+.notif-enter{animation:notifslide .4s var(--ease,cubic-bezier(.22,1,.36,1)) both}
+@keyframes notifslide{from{transform:translateX(140%)}to{transform:translateX(0)}}
+
 </style>
 </head>
 <body>
 <div id="bg"></div>
+<div id="ptcls-admin"></div>
 <div id="phasebar"></div>
 <div id="notif"></div>
 <div id="app">
@@ -115,6 +135,7 @@ html,body{width:100%;min-height:100vh;background:var(--bg);color:#fff;font-famil
     <div style="width:1px;height:24px;background:rgba(255,255,255,.12)"></div>
     <div class="phase-badge" id="phase-badge"><div class="pdot" id="pdot"></div><span id="phase-lbl">LOBBY</span></div>
     <div style="flex:1"></div>
+    <div class="viz-bars"><div class="vbar" style="--h:18px;animation-duration:.6s"></div><div class="vbar" style="--h:12px;animation-duration:.8s;animation-delay:.1s"></div><div class="vbar" style="--h:20px;animation-duration:.5s;animation-delay:.2s"></div><div class="vbar" style="--h:10px;animation-duration:.9s;animation-delay:.3s"></div><div class="vbar" style="--h:16px;animation-duration:.7s;animation-delay:.05s"></div></div>
     <button class="btn btn-blue btn-sm" id="A_display">📺 DISPLAY</button>
     <button class="btn btn-red btn-sm" id="A_reset">🔄 RESET</button>
   </div>
@@ -311,6 +332,9 @@ var ST = freshState();
 var editTeams = [];
 var adminReady = false;
 var _autoJudged = false;
+
+// ── PARTICLES (admin background) ──────
+(function(){var c=document.getElementById('ptcls-admin');if(!c)return;var cols=['rgba(0,201,255,.25)','rgba(245,197,24,.15)','rgba(191,95,255,.15)','rgba(0,232,120,.15)'];for(var i=0;i<20;i++){var p=document.createElement('div');p.className='ptcl';var sz=1+Math.random()*2.5;p.style.cssText='left:'+Math.random()*100+'%;width:'+sz+'px;height:'+sz+'px;background:'+cols[i%cols.length]+';animation-duration:'+(18+Math.random()*22)+'s;animation-delay:-'+(Math.random()*28)+'s';c.appendChild(p);}})();
 
 function $m(v) { return '$' + Number(v || 0).toLocaleString(); }
 function esc(s) { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
@@ -641,7 +665,7 @@ function renderLivePanel(st) {
       var t = teams[i];
       var bet = st.bets && st.bets[t.name];
       var on = st.activeTeam === t.name;
-      html += '<button class="act-btn ' + (on ? 'on' : '') + '" data-act="' + esc(t.name) + '">' +
+      html += '<button class="act-btn ' + (on ? 'on glow-pulse' : '') + '" data-act="' + esc(t.name) + '">' +
         '<div><div style="font-family:Rajdhani,sans-serif;font-weight:700;font-size:15px;' + (on ? 'color:var(--ng)' : '') + '">' + esc(t.name) + '</div>' +
         '<div style="font-family:Orbitron,sans-serif;font-size:8px;color:rgba(255,255,255,.35)">' + $m(t.money) + ' · W:' + (t.wins||0) + ' L:' + (t.losses||0) + (bet ? ' · BET:' + $m(bet) : ' · no bet') + '</div></div>' +
         '<span style="font-size:18px">' + (on ? '⚡' : '○') + '</span></button>';
@@ -755,7 +779,10 @@ function openBetting() {
   upd({phase: 'betting', bets: {}, selectedAnswer: null, lastResult: null,
     timerRunning: false, timerRemaining: ST.timerDuration, timerStartedAt: null,
     announcement: '💰 BETTING OPEN — Read question and place bets! Options hidden.'});
-  notif('Betting opened', 'success');
+  // Flash effect on bet card
+  var betCard = document.querySelector('.mc[style*="gold"]');
+  if (betCard) { betCard.classList.add('bet-open-flash'); setTimeout(function(){betCard.classList.remove('bet-open-flash');},700); }
+  notif('💰 Betting opened!', 'success');
 }
 function closeBetting() {
   upd({phase: 'answering', announcement: '🔒 Betting closed! Options now REVEALED!'});
@@ -855,12 +882,18 @@ function endGame() {
   // Header
   document.getElementById('A_display').addEventListener('click', function() { window.open('index.html', '_blank'); });
   document.getElementById('A_reset').addEventListener('click', function() {
-    if (!confirm('Full reset? All data cleared.')) return;
+    if (!confirm('Full reset? All team assignments and progress will be cleared.')) return;
     editTeams = genDT(4);
     document.getElementById('teamCount').value = 4;
     renderTeamInputs();
-    GREF.set(freshState());
-    notif('Reset complete', 'info');
+    // CRITICAL: Use set() not update() — replace entire state
+    // Increment version with Date.now() so all devices detect the reset
+    var resetState = freshState();
+    resetState.version = Date.now();
+    // Ensure teams have deviceId cleared
+    for (var i = 0; i < resetState.teams.length; i++) resetState.teams[i].deviceId = null;
+    GREF.set(resetState);
+    notif('Reset complete — all devices can spin again', 'info');
   });
   document.getElementById('A_sync').addEventListener('click', function() { upd({_sync: Date.now()}); notif('Synced!', 'success'); });
   // Setup

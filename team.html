@@ -57,12 +57,12 @@ html,body{width:100%;min-height:100vh;background:var(--bg);color:#fff;font-famil
 .q-card.ph-result{border-color:rgba(255,149,0,.35);box-shadow:0 0 22px rgba(255,149,0,.08)}
 .q-num{font-family:'Orbitron',sans-serif;font-size:8px;letter-spacing:3px;color:var(--nb);margin-bottom:10px}
 .q-text{font-family:'Rajdhani',sans-serif;font-size:clamp(16px,4vw,21px);font-weight:600;line-height:1.5}
-/* LOCKED PANEL — shown during betting */
-.opts-locked{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;padding:28px;border-radius:12px;background:rgba(0,0,0,.45);border:1px dashed rgba(245,197,24,.3);margin-top:14px}
+/* LOCKED PANEL — shown during betting — hides EVERYTHING */
+.betting-hidden-block{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:16px;padding:36px 20px;border-radius:12px;background:rgba(0,0,0,.55);border:1px dashed rgba(245,197,24,.35);margin-top:0;min-height:160px}
 .lock-icon{font-size:54px;animation:lockbob 2s ease-in-out infinite}
 @keyframes lockbob{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-8px) scale(1.1)}}
-.lock-txt{font-family:'Orbitron',sans-serif;font-size:14px;letter-spacing:3px;color:var(--gold)}
-.lock-sub{font-family:'Rajdhani',sans-serif;font-size:14px;color:rgba(255,255,255,.45);letter-spacing:1.5px;text-align:center;line-height:1.5}
+.lock-txt{font-family:'Orbitron',sans-serif;font-size:15px;letter-spacing:3px;color:var(--gold);text-shadow:0 0 14px rgba(245,197,24,.4)}
+.lock-sub{font-family:'Rajdhani',sans-serif;font-size:14px;color:rgba(255,255,255,.4);letter-spacing:1px;text-align:center;line-height:1.6}
 /* OPTIONS REVEALED */
 .opts-list{display:flex;flex-direction:column;gap:8px;margin-top:14px}
 .qopt{padding:13px 16px;border-radius:10px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);font-family:'Rajdhani',sans-serif;font-size:clamp(14px,3.5vw,17px);font-weight:600;display:flex;gap:12px;align-items:center;transition:all .35s;animation:optin .3s both;cursor:pointer;width:100%;text-align:left;color:#fff}
@@ -108,14 +108,55 @@ html,body{width:100%;min-height:100vh;background:var(--bg);color:#fff;font-famil
 #winner-panel{text-align:center;padding:28px 20px;display:flex;flex-direction:column;align-items:center;gap:16px}
 .w-trophy{font-size:80px;animation:trophybob 1.2s ease-in-out infinite}
 @keyframes trophybob{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-15px) scale(1.1)}}
+/* ═══ CINEMATIC ADDITIONS ═══ */
+#ptcls-team{position:fixed;inset:0;z-index:2;pointer-events:none;overflow:hidden}
+.ptcl{position:absolute;border-radius:50%;animation:pfloat linear infinite}
+@keyframes pfloat{0%{transform:translateY(110vh);opacity:0}10%{opacity:.7}90%{opacity:.4}100%{transform:translateY(-60px);opacity:0}}
+/* BETTING OVERLAY — cinematic "Betting in Progress" */
+#betting-overlay{position:fixed;inset:0;z-index:500;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:20px;pointer-events:none;opacity:0;transition:opacity .6s;background:radial-gradient(ellipse 80% 60% at 50% 50%,rgba(245,197,24,.04),transparent 70%)}
+#betting-overlay.active{opacity:1}
+.bet-ov-ring{width:120px;height:120px;border-radius:50%;border:3px solid rgba(245,197,24,.3);border-top-color:var(--gold);animation:spinring 1.4s linear infinite;position:relative}
+.bet-ov-icon{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:40px}
+@keyframes spinring{to{transform:rotate(360deg)}}
+.bet-ov-txt{font-family:'Orbitron',sans-serif;font-size:14px;letter-spacing:4px;color:var(--gold);text-shadow:0 0 20px var(--gold);animation:bettingpulse 1.5s ease-in-out infinite}
+@keyframes bettingpulse{0%,100%{opacity:1}50%{opacity:.5}}
+.bet-ov-sub{font-family:'Rajdhani',sans-serif;font-size:15px;color:rgba(255,255,255,.45);letter-spacing:2px}
+/* sound visualizer bars */
+.viz-bars{display:flex;gap:3px;align-items:flex-end;height:18px}
+.vbar{width:3px;border-radius:2px;background:var(--gold);opacity:.5;animation:vbar linear infinite}
+@keyframes vbar{0%,100%{height:3px}50%{height:var(--h)}}
+/* phase transitions */
+.q-card{transition:border-color .6s,box-shadow .6s,transform .4s}
+.q-card.ph-answering{animation:revealcard .5s cubic-bezier(.22,1,.36,1)}
+@keyframes revealcard{0%{transform:scale(.97) translateY(8px);opacity:.5}100%{transform:scale(1) translateY(0);opacity:1}}
+/* shake on wrong */
+@keyframes shake{0%,100%{transform:translateX(0)}20%{transform:translateX(-8px)}40%{transform:translateX(8px)}60%{transform:translateX(-5px)}80%{transform:translateX(5px)}}
+.shake{animation:shake .4s ease-in-out}
+/* Floating money pop */
+.mpop{position:fixed;z-index:8990;font-family:'Orbitron',sans-serif;font-weight:900;font-size:36px;pointer-events:none;animation:mpop 2s var(--ease) forwards;text-shadow:0 0 24px currentColor}
+@keyframes mpop{0%{opacity:1;transform:translateY(0) scale(.8)}40%{transform:translateY(-50px) scale(1.15)}100%{opacity:0;transform:translateY(-120px) scale(.9)}}
+/* spotlight glow on active team */
+.hdr.active-spotlight{border-color:rgba(0,232,120,.6)!important;box-shadow:0 0 40px rgba(0,232,120,.2),0 0 80px rgba(0,232,120,.08)!important;animation:spotpulse 2s ease-in-out infinite}
+@keyframes spotpulse{0%,100%{box-shadow:0 0 40px rgba(0,232,120,.2)}50%{box-shadow:0 0 70px rgba(0,232,120,.4)}}
+/* result banner enter */
+.result-banner{animation:resin .5s cubic-bezier(.22,1,.36,1)}
+
 </style>
 </head>
 <body>
 <div class="bg"></div>
 <div class="scan"></div>
+<div id="ptcls-team"></div>
 <div id="phasebar"></div>
 <div id="ann"></div>
 <div id="flash"></div>
+<!-- CINEMATIC BETTING OVERLAY -->
+<div id="betting-overlay">
+  <div class="bet-ov-ring"><div class="bet-ov-icon">💰</div></div>
+  <div class="bet-ov-txt">BETTING IN PROGRESS</div>
+  <div class="viz-bars"><div class="vbar" style="--h:15px;animation-duration:.5s"></div><div class="vbar" style="--h:10px;animation-duration:.7s;animation-delay:.1s"></div><div class="vbar" style="--h:18px;animation-duration:.4s;animation-delay:.2s"></div><div class="vbar" style="--h:8px;animation-duration:.8s;animation-delay:.15s"></div><div class="vbar" style="--h:13px;animation-duration:.6s;animation-delay:.05s"></div></div>
+  <div class="bet-ov-sub">Place your bet · Question &amp; options revealed after admin closes betting</div>
+</div>
 <div id="app">
   <div class="hdr">
     <div>
@@ -152,6 +193,9 @@ const TEAM_COLORS=['#00C9FF','#FF2D55','#F5C518','#BF5FFF','#00E878','#FF9500','
 const $m=v=>'$'+Number(v||0).toLocaleString();
 const esc=s=>String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
 const PCOLS={lobby:'#00C9FF',spin:'#BF5FFF',betting:'#F5C518',answering:'#00E878',result:'#FF9500',reveal:'#F5C518'};
+
+// ── PARTICLES ──────────────────────────────────
+(function(){var c=document.getElementById('ptcls-team');if(!c)return;var cols=['rgba(0,201,255,.3)','rgba(245,197,24,.15)','rgba(191,95,255,.15)','rgba(0,232,120,.15)'];for(var i=0;i<22;i++){var p=document.createElement('div');p.className='ptcl';var sz=1.5+Math.random()*3;p.style.cssText='left:'+Math.random()*100+'%;width:'+sz+'px;height:'+sz+'px;background:'+cols[i%cols.length]+';animation-duration:'+(14+Math.random()*18)+'s;animation-delay:-'+(Math.random()*24)+'s';c.appendChild(p);}})();
 
 let ST={},prevVer=null,hasBet=false,hasAns=false,myBet=0,lastResTs=0,prevMoney=null,prevPhase=null;
 
@@ -201,8 +245,22 @@ function renderTimer(st){
 // ── FIREBASE ───────────────────────────────────
 GREF.on('value',snap=>{
   const d=snap.val();if(!d)return;
-  if(prevVer!==null&&d.version!==prevVer){hasBet=false;hasAns=false;myBet=0;lastResTs=0;}
+
+  // ══════════════════════════════════════════════
+  // RESET DETECTION — version change = admin reset
+  // Immediately redirect ALL team devices to index.html
+  // so they can spin the wheel fresh
+  // ══════════════════════════════════════════════
+  if(prevVer!==null && d.version!==prevVer){
+    // Clear all local assignment data
+    localStorage.removeItem('LAS_TEAM');
+    localStorage.removeItem('LAS_SPUN_'+localStorage.getItem('LAS_DID'));
+    // Hard redirect — back to spin wheel
+    location.href='index.html';
+    return;
+  }
   prevVer=d.version;
+
   // Reset bet/ans flags on new betting phase
   if(prevPhase&&prevPhase!=='betting'&&d.phase==='betting'){hasBet=false;hasAns=false;myBet=0;}
   if(d.phase==='result'&&prevPhase==='answering'){hasAns=false;}
@@ -214,12 +272,17 @@ function renderAll(st){
   if(st.announcement)showAnn(st.announcement);
   setPhasebar(st.phase);
   updatePhaseInd(st);
+  // Toggle betting overlay (shown over question but under bet panel)
+  const bettingOv=document.getElementById('betting-overlay');
+  if(bettingOv){bettingOv.classList.toggle('active',st.phase==='betting');}
   // Find my team
   const teams=Array.isArray(st.teams)?st.teams:[];
   const myIdx=teams.findIndex(t=>t.name===myName);
   const myTeam=myIdx>=0?teams[myIdx]:null;
   const tc=TEAM_COLORS[myIdx>=0?myIdx%TEAM_COLORS.length:0];
-  // Update header
+  // Update header + spotlight glow if active team
+  const hdr=document.querySelector('.hdr');
+  if(hdr){hdr.classList.toggle('active-spotlight',st.phase==='answering'&&st.activeTeam===myName);}
   if(myTeam){
     document.getElementById('team-name').textContent=myTeam.name.toUpperCase();
     document.getElementById('team-name').style.color=tc;
@@ -228,6 +291,8 @@ function renderAll(st){
       const diff=myTeam.money-prevMoney;
       moneyPop(Math.abs(diff),diff>0);
       flash(diff>0?'g':'r');
+      // Shake on wrong answer
+      if(diff<0){const mc=document.getElementById('main-content');if(mc){mc.classList.add('shake');setTimeout(()=>mc.classList.remove('shake'),500);}}
     }
     prevMoney=myTeam.money;
     document.getElementById('team-money').textContent=$m(myTeam.money);
@@ -259,19 +324,32 @@ function renderMain(st,myTeam,tc){
   // ────────────────────────────────────────────
   // GAME PHASES: betting | answering | result
   let html='';
-  // QUESTION SECTION
-  html+=`<div class="q-card ph-${phase}">`;
-  if(q){
-    html+=`<div class="q-num">QUESTION ${qi+1}</div>`;
-    html+=`<div class="q-text">${esc(q.text)}</div>`;
-    // ╔══════════════════════════════════════════╗
-    // ║  BETTING PHASE: QUESTION TEXT ONLY        ║
-    // ║  OPTIONS ARE COMPLETELY HIDDEN            ║
-    // ╚══════════════════════════════════════════╝
-    if(phase==='betting'){
-      html+=`<div class="opts-locked"><div class="lock-icon">🔒</div><div class="lock-txt">OPTIONS LOCKED</div><div class="lock-sub">Options will be revealed after admin closes betting</div></div>`;
-    } else {
-      // ANSWERING & RESULT: OPTIONS REVEALED
+
+  // ╔══════════════════════════════════════════╗
+  // ║  BETTING PHASE                           ║
+  // ║  Question text AND options = HIDDEN      ║
+  // ║  Teams only see bet input + "locked" UI  ║
+  // ╚══════════════════════════════════════════╝
+  if(phase==='betting'){
+    html+=`<div class="q-card ph-betting">
+      <div class="q-num">⏳ ROUND ${(st.round||0)+1} — BETTING OPEN</div>
+      <div class="betting-hidden-block">
+        <div class="lock-icon">🔒</div>
+        <div class="lock-txt">QUESTION HIDDEN</div>
+        <div class="lock-sub">The question &amp; options will be revealed<br>once admin closes betting</div>
+      </div>
+    </div>`;
+  }
+
+  // ╔══════════════════════════════════════════╗
+  // ║  ANSWERING / RESULT                      ║
+  // ║  Question + options fully revealed       ║
+  // ╚══════════════════════════════════════════╝
+  if(phase==='answering'||phase==='result'){
+    html+=`<div class="q-card ph-${phase}">`;
+    if(q){
+      html+=`<div class="q-num">QUESTION ${qi+1}</div>`;
+      html+=`<div class="q-text">${esc(q.text)}</div>`;
       html+=`<div class="opts-list">`;
       q.options.forEach((o,i)=>{
         let cl='qopt';
@@ -281,11 +359,11 @@ function renderMain(st,myTeam,tc){
         html+=`<button class="${cl}" data-ans="${i}" ${disabled} style="animation-delay:${i*.07}s"><span class="oltr">${'ABCD'[i]}</span>${esc(o)}</button>`;
       });
       html+=`</div>`;
+    } else {
+      html+=`<div class="q-num">WAITING</div><div class="q-text" style="color:rgba(255,255,255,.4)">Admin is selecting a question...</div>`;
     }
-  } else {
-    html+=`<div class="q-num">WAITING</div><div class="q-text" style="color:rgba(255,255,255,.4)">Admin is selecting a question...</div>`;
+    html+=`</div>`;
   }
-  html+=`</div>`;
 
   // ╔══════════════════════════════════════════╗
   // ║  BETTING PANEL (only during betting)     ║
